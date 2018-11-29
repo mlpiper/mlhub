@@ -1,0 +1,31 @@
+{
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "infer",
+  "label": "PySparkLogisticInfer",
+  "program": "LRInfer.py",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "temp-shared-path",
+      "label": "Shared path",
+      "type": "str",
+      "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
+      "optional": true
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ],
+  "version": 1
+}
+
