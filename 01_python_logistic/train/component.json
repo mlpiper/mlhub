@@ -1,0 +1,32 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "name": "train",
+  "label": "PythonLogisticTrain",
+  "program": "LRTrain.py",
+  "modelBehavior": "ModelProducer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "max_iter",
+      "label": "Maximum number of iterations",
+      "type": "int",
+      "description": "Maximum number of iterations taken for the algorithm to converge",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ],
+  "version": 1
+}
+
