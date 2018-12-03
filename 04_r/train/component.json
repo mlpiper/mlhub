@@ -1,0 +1,32 @@
+{
+  "engineType": "Python",
+  "language": "R",
+  "name": "train",
+  "label": "RLinearRegressionTrain",
+  "program": "LRTrain.R",
+  "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "num-samples",
+      "label": "Number of Samples",
+      "type": "int",
+      "description": "Number of synthetic samples to generate",
+      "optional": true,
+      "default": 50
+    },
+    {
+      "key": "output-model",
+          "label": "Model output file",
+          "type": "str",
+          "description": "File to use for saving the trained model",
+          "optional": true,
+          "tag": "model_dir"
+    }
+  ],
+  "version": 1
+}
+
