@@ -1,0 +1,94 @@
+"""
+This is a sample code showing how tensorflow code can be instrumented in MCenter.
+"""
+import argparse
+import time
+import tensorflow as tf
+import pandas as pd
+import numpy as np
+from parallelm.mlops import mlops as mlops
+from parallelm.mlops.stats.bar_graph import BarGraph
+from parallelm.mlops.stats.multi_line_graph import MultiLineGraph
+from parallelm.mlops.predefined_stats import PredefinedStats
+
+"""
+Function to add the arguments that are provided as arguments to the component.
+"""
+def add_parameters(parser):
+    parser.add_argument("--output_file", dest="output_file", type=str, required=False, default="tmp/image_predictions", help='Prediction directory')
+    parser.add_argument("--model_dir", dest="model_dir", type=str, required=False, help='Model Directory', default="/tmp/tf_log")
+
+def main(args):
+    # Parse arguments
+    parser = argparse.ArgumentParser()
+    add_parameters(parser)
+    args = parser.parse_args()
+    mlops.init()
+
+    # Create synthetic data (Gaussian Distribution, Poisson Distribution and Beta Distribution)
+    num_samples = 50
+    num_features = 20
+
+    np.random.seed(0)
+    g = np.random.normal(0, 1, (num_samples,num_features))
+    p = np.random.poisson(0.7, (num_samples,num_features))
+    b = np.random.beta(2, 2, (num_samples,num_features))
+
+    test_data = np.concatenate((g, p, b), axis=0)
+    np.random.seed()
+    features = test_data[np.random.choice(test_data.shape[0], num_samples, replace=False)]
+
+    # Start tensorflow session
+    sess = tf.InteractiveSession()
+    tag_set = ["serve"]
+    if args.model_dir is not None:
+        try:
+            print("args.model_dir = ", args.model_dir)
+            tf.saved_model.loader.load(sess, tag_set, args.model_dir)
+        except Exception as e:
+            print("Model not found")
+            print("Got exception: " + str(e))
+            return 0
+
+    ########## Start of ParallelM instrumentation #############
+    mlops.set_data_distribution_stat(data=features)
+    ########## End of ParallelM instrumentation #############
+
+    ########## Start of ParallelM instrumentation #############
+    mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, len(features))
+    ########## End of ParallelM instrumentation #############
+
+    graph = tf.get_default_graph()
+    x = graph.get_tensor_by_name("features:0")
+    y_pred = graph.get_tensor_by_name("predictions:0")
+    predictions = sess.run(y_pred, {x:features})
+    print('predictions',np.array(predictions))
+    
+    ########## Start of ParallelM instrumentation #############
+    # Bar graph showing prediction distribution
+    predict_int = np.argmax(predictions, axis=1)
+    unique, counts = np.unique(predict_int, return_counts=True)
+    counts = list(map(int,counts))
+    x_series = list(map(str, unique))
+    mlt = BarGraph().name("Prediction Distribution").cols(x_series).data(list(counts))
+    mlops.set_stat(mlt)
+    ########## End of ParallelM instrumentation #############
+
+    # Show average prediction probability value for each prediction
+    num_labels = len(np.unique(predict_int))
+    probability = np.zeros((num_labels,))
+    for a in range(0,num_labels):
+        temp = predictions[np.argmax(predictions, axis=1)==a,:]
+        print(temp)
+        probability[a] = np.mean(temp[:,a])
+    print("probability", list(np.squeeze(probability)))
+
+    ########## Start of ParallelM instrumentation #############
+    # Bar graph of average probability in each class
+    bg = BarGraph().name("Probability of Each Label").cols(x_series).data(list(np.squeeze(probability)))
+    mlops.set_stat(bg)
+    ########## End of ParallelM instrumentation #############
+
+
+if __name__ == "__main__":
+    tf.app.run()

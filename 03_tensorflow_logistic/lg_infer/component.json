@@ -1,0 +1,31 @@
+{
+  "engineType": "Tensorflow",
+  "name": "lg_infer",
+  "label": "LogisticRegInfer",
+  "program": "predict.py",
+  "modelBehavior": "ModelConsumer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "output_file",
+      "label": "Output file",
+      "type": "str",
+      "description": "File for output predictions",
+      "optional": true,
+      "defaultValue": "/tmp/image_predictions"
+    },
+    {
+      "key": "model_dir",
+      "label": "Model dir",
+      "type": "str",
+      "description": "Directory for loading the retrained model",
+      "optional": true,
+      "tag": "input_model_path",
+      "defaultValue": ""
+    }
+  ],
+  "version": 1
+}
+
