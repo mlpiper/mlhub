@@ -6,6 +6,7 @@ import time
 import tensorflow as tf
 import pandas as pd
 import numpy as np
+
 from parallelm.mlops import mlops as mlops
 from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.multi_line_graph import MultiLineGraph
@@ -23,6 +24,8 @@ def main(args):
     parser = argparse.ArgumentParser()
     add_parameters(parser)
     args = parser.parse_args()
+
+    # Initialize MLOps Library
     mlops.init()
 
     # Create synthetic data (Gaussian Distribution, Poisson Distribution and Beta Distribution)
@@ -50,13 +53,13 @@ def main(args):
             print("Got exception: " + str(e))
             return 0
 
-    ########## Start of ParallelM instrumentation #############
+    # Output Health Statistics to MCenter
+    # MLOps API to report the distribution statistics of each feature in the data and compare it automatically with the ones
+    # reported during training to generate the similarity score.
     mlops.set_data_distribution_stat(data=features)
-    ########## End of ParallelM instrumentation #############
 
-    ########## Start of ParallelM instrumentation #############
+    # Output the number of samples being processed using MCenter
     mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, len(features))
-    ########## End of ParallelM instrumentation #############
 
     graph = tf.get_default_graph()
     x = graph.get_tensor_by_name("features:0")
@@ -64,17 +67,15 @@ def main(args):
     predictions = sess.run(y_pred, {x:features})
     print('predictions',np.array(predictions))
     
-    ########## Start of ParallelM instrumentation #############
-    # Bar graph showing prediction distribution
+    # Ouput prediction distribution as a BarGraph using MCenter 
     predict_int = np.argmax(predictions, axis=1)
     unique, counts = np.unique(predict_int, return_counts=True)
     counts = list(map(int,counts))
     x_series = list(map(str, unique))
     mlt = BarGraph().name("Prediction Distribution").cols(x_series).data(list(counts))
     mlops.set_stat(mlt)
-    ########## End of ParallelM instrumentation #############
 
-    # Show average prediction probability value for each prediction
+    # Show average prediction probability value for each prediction 
     num_labels = len(np.unique(predict_int))
     probability = np.zeros((num_labels,))
     for a in range(0,num_labels):
@@ -83,11 +84,9 @@ def main(args):
         probability[a] = np.mean(temp[:,a])
     print("probability", list(np.squeeze(probability)))
 
-    ########## Start of ParallelM instrumentation #############
-    # Bar graph of average probability in each class
+    # Plot average probability in each class using MCenter
     bg = BarGraph().name("Probability of Each Label").cols(x_series).data(list(np.squeeze(probability)))
     mlops.set_stat(bg)
-    ########## End of ParallelM instrumentation #############
 
 
 if __name__ == "__main__":

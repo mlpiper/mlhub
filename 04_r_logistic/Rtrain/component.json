@@ -1,11 +1,13 @@
 {
+  "version": 1,
   "engineType": "Python",
   "language": "R",
-  "name": "train",
+  "name": "Rtrain",
   "label": "RLinearRegressionTrain",
   "program": "LRTrain.R",
   "modelBehavior": "ModelProducer",
   "group": "Algorithms",
+  "description": "Component is responsible for running linear regression training on synthetic data",
   "useMLOps": true,
   "inputInfo": [],
   "outputInfo": [],
@@ -26,7 +28,6 @@
           "optional": true,
           "tag": "model_dir"
     }
-  ],
-  "version": 1
+  ]
 }
 

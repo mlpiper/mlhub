@@ -1,4 +1,5 @@
 {
+  "version": 1,
   "engineType": "PySpark",
   "language": "Python",
   "name": "train",
@@ -8,6 +9,7 @@
   "inputInfo": [],
   "outputInfo": [],
   "group": "Algorithms",
+  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
   "useMLOps": true,
   "arguments": [
     {
@@ -33,7 +35,6 @@
       "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
       "optional": true
     }
-  ],
-  "version": 1
+  ]
 }
 

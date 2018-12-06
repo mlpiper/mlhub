@@ -25,7 +25,7 @@ def parse_args():
 
 
 def main():
-    # Initialize spark and mlops
+    # Initialize spark and MLOps
     spark = SparkSession.builder.appName("LogisticRegression").getOrCreate()
     mlops.init(spark.sparkContext)
 
@@ -46,7 +46,7 @@ def main():
         spark.sparkContext.stop()
         exit()
 
-    # Generate synthetic data for inference (Gaussian Distribution, poisson Distribution and beta Distribution)
+    # Generate synthetic data for inference (Gaussian Distribution, Poisson Distribution and Beta Distribution)
     num_samples = 50
     num_features = 20
 
@@ -62,17 +62,15 @@ def main():
     # Create a spark dataframe from the synthetic data generated
     inferenceData = spark.createDataFrame(pd.DataFrame(test_features,columns=feature_names[1:num_features+1]))
 
-    ########## Start of ParallelM instrumentation ############
-    # Report the data distribution using mlops
+    # Output Health Statistics to MCenter
+    # MLOps API to report the distribution statistics of each feature in the data and compare it automatically with the ones
+    # reported during training to generate the similarity score
     mlops.set_data_distribution_stat(inferenceData)
-    ########## End of ParallelM instrumentation ##############
 
     num_samples = inferenceData.count()
     
-    ########## Start of ParallelM instrumentation ############
-    # Report the number of samples being processed
+    # Report the number of samples being processed using MCenter
     mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, num_samples, st.TIME_SERIES)
-    ########## End of ParallelM instrumentation ##############
 
     # Make inference predictions
     predicted_df = model_lg.transform(inferenceData)
@@ -83,13 +81,11 @@ def main():
     prediction_counts = np.array(histogram_predictions.select("count").collect())
     
 
-    ########## Start of ParallelM instrumentation ##############
-    # Report label distribution as a BarGraph
+    # Report label distribution as a BarGraph using MCenter
     bar_predictions = BarGraph().name("Prediction Distribution").cols((prediction_values[0]).astype(str).tolist()).data((prediction_counts[0]).tolist())
     mlops.set_stat(bar_predictions)
-    ########## Start of ParallelM instrumentation ############## 
     
-    # Stop spark context and mlops
+    # Stop spark context and MLOps
     spark.sparkContext.stop()
     mlops.done()
     

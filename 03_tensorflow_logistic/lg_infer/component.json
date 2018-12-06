@@ -1,4 +1,5 @@
 {
+  "version": 1,
   "engineType": "Tensorflow",
   "name": "lg_infer",
   "label": "LogisticRegInfer",
@@ -7,6 +8,7 @@
   "inputInfo": [],
   "outputInfo": [],
   "group": "Algorithms",
+  "description": "Component is responsible for creating prediction from tensorflow saved model",
   "arguments": [
     {
       "key": "output_file",
@@ -25,7 +27,6 @@
       "tag": "input_model_path",
       "defaultValue": ""
     }
-  ],
-  "version": 1
+  ]
 }
 

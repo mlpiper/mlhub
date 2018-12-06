@@ -30,12 +30,16 @@ def parse_args():
 
 
 def main():
-    # Initialize spark and mlops
+    # Initialize spark and MLOps
     spark = SparkSession.builder.appName("LogisticRegression").getOrCreate()
     mlops.init(spark.sparkContext)
 
     # parse the arguments to component
     options = parse_args()
+    print("PM: Configuration:")
+    print("PM: Maximum iterations:             [{}]".format(options.max_iter))
+    print("PM: Output model:                   [{}]".format(options.output_model))
+    print("PM: Temp shared path:               [{}]".format(options.temp_shared_path))
 
     # Generate synthetic data using scikit learn
     num_samples = 50
@@ -43,6 +47,7 @@ def main():
     
     X,y = make_classification(n_samples=num_samples, n_features=num_features, n_informative=2, n_redundant=1, n_classes=3, n_clusters_per_class=1, random_state=42)
     X = X + np.random.uniform(0, 5) * np.random.normal(0, 1, (num_samples,num_features))
+    
     feature_names = ["".join(ascii_lowercase[a]) for a in range(num_features + 1)]
     feature_names[0] = "label"
 
@@ -55,16 +60,13 @@ def main():
     column_names = value.astype(str).tolist()
     print("Label distributions: \n {0}".format(label_distribution))
 
-    ########## Start of ParallelM instrumentation ##############
-    # Report label distribution as a BarGraph
+    # Output label distribution as a BarGraph using MCenter
     bar = BarGraph().name("Label Distribution").cols((label_distribution[:,0]).astype(str).tolist()).data((label_distribution[:,1]).tolist())
     mlops.set_stat(bar)
-    ########## End of ParallelM instrumentation ################
 
-    ########## Start of ParallelM instrumentation ############
-    # Report the data distribution using mlops
+    # Output Health Statistics to MCenter
+    # Report features whose distribution should be compared during inference
     mlops.set_data_distribution_stat(trainingData)
-    ########## End of ParallelM instrumentation ##############
 
     # Fit a logsitic regression model
     assembler = VectorAssembler(inputCols=feature_names[1:num_features+1], outputCol="features")
@@ -79,10 +81,8 @@ def main():
     labelCol="label", predictionCol="prediction", metricName="accuracy")
     accuracy = evaluator.evaluate(predictions)
 
-    #################### Start of ParallelM instrumentation ################
-    # Report accuracy of the chosen model
+    # Report accuracy of the chosen model using MCenter
     mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
-    #################### End of ParallelM instrumentation ################
     
     # Save the spark model 
     SparkPipelineModelHelper()\
@@ -91,7 +91,7 @@ def main():
         .set_shared_path_prefix(shared_path_prefix=options.temp_shared_path)\
         .save_sparkml_model(model)
     
-    # Stop spark context and mlops
+    # Stop spark context and MLOps
     spark.sparkContext.stop()
     mlops.done()
     

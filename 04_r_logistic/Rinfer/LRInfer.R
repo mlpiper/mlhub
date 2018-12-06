@@ -41,25 +41,26 @@ if (file.exists(opt$input_model)) {
   # Generate synthetic data for linear regression algorithm
   inference.data <- data.frame(x1 = rnorm(num.samples), x2 = rnorm(num.samples), x3 = rnorm(num.samples))
 
-  ########## Start of ParallelM instrumentation ############
+  # Output the number of samples being processed using MCenter
   mlops$set_stat(PredefinedStats$PREDICTIONS_COUNT, num.samples)
+  
+  # Output Health Statistics to MCenter
+  # MLOps API to report the distribution statistics of each feature in the data and compare it automatically with the ones
+  # reported during training to generate the similarity score
   mlops$set_data_distribution_stat(data = inference.data)
-  ########## End of ParallelM instrumentation ##############
 
   # Make predictions
   y <- predict.lm(model, inference.data)
   prediction.histogram <- hist(y)
   
-  ########## Start of ParallelM instrumentation ############
-  # Prediction distributiion
+  # Output label distribution as a BarGraph using MCenter
   mlt_cont <- BarGraph()$name("Prediction Distribution")$cols(prediction.histogram$breaks)$data(prediction.histogram$counts)$as_continuous()
   mlops$set_stat(mlt_cont)
-  ########## End of ParallelM instrumentation ##############
   
 } else {
   print("file not found: ")
 }
 
-## MLOps done to stop the library
+## Terminate MLOps
 mlops$done()
 

@@ -1,11 +1,13 @@
 {
+  "version": 1,
   "engineType": "Python",
   "language": "R",
-  "name": "infer",
+  "name": "Rinfer",
   "label": "RLinearRegressionInfer",
   "program": "LRInfer.R",
   "modelBehavior": "ModelConsumer",
   "group": "Algorithms",
+  "description": "Component is responsible for creating prediction from given model",
   "useMLOps": true,
   "inputInfo": [],
   "outputInfo": [],
@@ -18,7 +20,6 @@
       "optional": true,
       "tag": "input_model_path"
     }
-  ],
-  "version": 1
+  ]
 }
 

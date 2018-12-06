@@ -1,4 +1,5 @@
 {
+  "version": 1,
   "engineType": "Python",
   "language": "Python",
   "name": "train",
@@ -8,6 +9,7 @@
   "inputInfo": [],
   "outputInfo": [],
   "group": "Algorithms",
+  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
   "useMLOps": true,
   "arguments": [
     {
@@ -26,7 +28,6 @@
       "optional": true,
       "tag": "model_dir"
     }
-  ],
-  "version": 1
+  ]
 }
 

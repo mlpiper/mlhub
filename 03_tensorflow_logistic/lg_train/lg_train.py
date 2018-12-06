@@ -31,15 +31,20 @@ def main(args):
     parser = argparse.ArgumentParser()
     add_parameters(parser)
     args = parser.parse_args()
+    print("PM: Configuration:")
+    print("PM: Step size:                  [{}]".format(args.step_size))
+    print("PM: Iterations:                 [{}]".format(args.iterations))
+    print("PM: Model version:              [{}]".format(args.model_version))
+    print("PM: Stats interval:             [{}]".format(args.stats_interval))
+    print("PM: Save dir:                   [{}]".format(args.save_dir))
 
-    # Initialize MLOps, which will be used for reporting stats
+    # Initialize MLOps Library
     mlops.init()
 
     # print the number of iteration used by optimization algorithm
     print('Training for %i iterations' % args.iterations)
 
     # Create sythetic data using scikit learn
-    
     num_samples = 50
     num_features = 20
 
@@ -61,17 +66,13 @@ def main(args):
     column_names = value.astype(str).tolist()
     print("Label distributions: \n {0}".format(label_distribution))
 
-    ########## Start of ParallelM instrumentation #############
-    # Report the distribution of labels in the dataset as a bar graph
+    # Output label distribution as a BarGraph using MCenter
     bar = BarGraph().name("Label Distribution").cols((label_distribution[:,0]).astype(str).tolist()).data((label_distribution[:,1]).tolist())
     mlops.set_stat(bar)
-    ########## Start of ParallelM instrumentation ##############
 
-    ########## Start of ParallelM instrumentation #############
-    # Histogram input
+    # Output Health Statistics to MCenter
     # Report features whose distribution should be compared during inference
     mlops.set_data_distribution_stat(features)
-    ########## Start of ParallelM instrumentation #############
 
     # Algorithm parameters parsed from arguments
     learning_rate = args.step_size
@@ -127,35 +128,28 @@ def main(args):
             print("accuracy", a)
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
 
-    ########## Start of ParallelM instrumentation #############
-    # Plot the cost function
+    # Plot the cost function using MCenter
     gg = Graph().name("Cost function across epochs").set_x_series(iteration_array).add_y_series(label="Cost Function Across Iterations", data=cost_array)
     gg.x_title("Average Cost")
     gg.y_title('Iterations')
     mlops.set_stat(gg)
 
-    # Plot the accuracy function
+    # Plot the accuracy function using MCenter
     gg1 = Graph().name("Accuracy across epochs").set_x_series(iteration_array).add_y_series(label="Accuracy Across Iterations", data=accuracy_array)
     gg1.x_title("Accuracy")
     gg1.y_title('Iterations')
     mlops.set_stat(gg1)
-    ########## End of ParallelM instrumentation #############
 
-    ########## Start of ParallelM instrumentation #############
-    # Plot accuracy and cost across epochs
+    # Plot accuracy and cost across epochs using MCenter
     mg = MultiGraph().name("Cost and Accuracy Progress Across Epochs")
     mg.add_series(x=iteration_array,label="Cost Function Across Iterations", y=cost_array)
     mg.add_series(x=iteration_array,label="Accuracy across epochs", y=accuracy_array)
     mlops.set_stat(mg)
-    ########## End of ParallelM instrumentation #############
 
-
-    ########## Start of ParallelM instrumentation #############
-    # Plot final cost and accuracy in this session
+    # Plot final cost and accuracy in this session using MCenter
     mlt = MultiLineGraph().name("Final Accuracy and Cost").labels(["Cost", "Accuracy"])
     mlt.data([cost_array[-1], accuracy_array[-1]])
     mlops.set_stat(mlt)
-    ########## End of ParallelM instrumentation #############
 
     # Save the model
     export_path = args.save_dir
