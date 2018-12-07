@@ -3,7 +3,7 @@
   "engineType": "PySpark",
   "language": "Python",
   "name": "infer",
-  "label": "PySparkLogisticInfer",
+  "label": "Logistic Regression Inference",
   "program": "LRInfer.py",
   "modelBehavior": "ModelConsumer",
   "useMLOps": true,

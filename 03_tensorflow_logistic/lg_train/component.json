@@ -2,7 +2,7 @@
   "version": 1,
   "engineType": "Tensorflow",
   "name": "lg_train",
-  "label": "LogisticRegTrain",
+  "label": "Logistic Regression Train",
   "program": "lg_train.py",
   "modelBehavior": "ModelProducer",
   "inputInfo": [],

@@ -3,7 +3,7 @@
   "engineType": "PySpark",
   "language": "Python",
   "name": "train",
-  "label": "PySparkLogisticTrain",
+  "label": "Logistic Regression Train",
   "program": "LRTrain.py",
   "modelBehavior": "ModelProducer",
   "inputInfo": [],

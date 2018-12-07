@@ -2,7 +2,7 @@
   "version": 1,
   "engineType": "Tensorflow",
   "name": "lg_infer",
-  "label": "LogisticRegInfer",
+  "label": "Logistic Regression Inference",
   "program": "predict.py",
   "modelBehavior": "ModelConsumer",
   "inputInfo": [],

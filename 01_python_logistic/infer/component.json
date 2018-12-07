@@ -3,7 +3,7 @@
   "engineType": "Python",
   "language": "Python",
   "name": "infer",
-  "label": "PythonLogisticInfer",
+  "label": "Logistic Regression Inference",
   "program": "LRInfer.py",
   "modelBehavior": "ModelConsumer",
   "useMLOps": true,

@@ -3,7 +3,7 @@
   "engineType": "Python",
   "language": "R",
   "name": "Rinfer",
-  "label": "RLinearRegressionInfer",
+  "label": "Linear Regression Inference",
   "program": "LRInfer.R",
   "modelBehavior": "ModelConsumer",
   "group": "Algorithms",
