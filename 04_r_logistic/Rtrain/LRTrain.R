@@ -54,7 +54,7 @@ rmse = sqrt(mean(residuals(model)^2))
 
 # Report RMSE values as a time-series graph using MCenter
 mlops$set_stat('RMSE', rmse)
-########## End of ParallelM instrumentation ##############
+
 
 
 # Save this model
