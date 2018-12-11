@@ -1,17 +1,16 @@
 import argparse
-import numpy as np
-import pandas as pd
 from string import ascii_lowercase
 
-import pyspark
+import numpy as np
+import pandas as pd
+
 from pyspark.sql import SparkSession
 
-from parallelm.mlops import mlops as mlops
 from parallelm.mlops import StatCategory as st
-from parallelm.mlops.stats.bar_graph import BarGraph
-from parallelm.mlops.predefined_stats import PredefinedStats
+from parallelm.mlops import mlops as mlops
 from parallelm.mlops.common.spark_pipeline_model_helper import SparkPipelineModelHelper
-
+from parallelm.mlops.predefined_stats import PredefinedStats
+from parallelm.mlops.stats.bar_graph import BarGraph
 
 def parse_args():
     """
@@ -31,15 +30,15 @@ def main():
 
     # parse the arguments to component
     options = parse_args()
-    
+
     # Load the model, exit gracefully if model is not found
     try:
         model_lg = \
-            SparkPipelineModelHelper()\
-            .set_shared_context(spark_context=spark.sparkContext)\
-            .set_local_path(local_path=options.input_model)\
-            .set_shared_path_prefix(shared_path_prefix=options.temp_shared_path)\
-            .load_sparkml_model()
+            SparkPipelineModelHelper() \
+                .set_shared_context(spark_context=spark.sparkContext) \
+                .set_local_path(local_path=options.input_model) \
+                .set_shared_path_prefix(shared_path_prefix=options.temp_shared_path) \
+                .load_sparkml_model()
     except Exception as e:
         print(e)
         mlops.done()
@@ -51,16 +50,16 @@ def main():
     num_features = 20
 
     np.random.seed(0)
-    g = np.random.normal(0, 1, (num_samples,num_features))
-    p = np.random.poisson(0.7, (num_samples,num_features))
-    b = np.random.beta(2, 2, (num_samples,num_features))
+    g = np.random.normal(0, 1, (num_samples, num_features))
+    p = np.random.poisson(0.7, (num_samples, num_features))
+    b = np.random.beta(2, 2, (num_samples, num_features))
     test_data = np.concatenate((g, p, b), axis=0)
     np.random.seed()
     test_features = test_data[np.random.choice(test_data.shape[0], num_samples, replace=False)]
-    feature_names = ["".join(ascii_lowercase[a]) for a in range(num_features+1)]
+    feature_names = ["".join(ascii_lowercase[a]) for a in range(num_features + 1)]
 
     # Create a spark dataframe from the synthetic data generated
-    inferenceData = spark.createDataFrame(pd.DataFrame(test_features,columns=feature_names[1:num_features+1]))
+    inferenceData = spark.createDataFrame(pd.DataFrame(test_features, columns=feature_names[1:num_features + 1]))
 
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data and compare it automatically with the ones
@@ -68,7 +67,7 @@ def main():
     mlops.set_data_distribution_stat(inferenceData)
 
     num_samples = inferenceData.count()
-    
+
     # Report the number of samples being processed using MCenter
     mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, num_samples, st.TIME_SERIES)
 
@@ -79,16 +78,16 @@ def main():
     histogram_predictions = predicted_df.groupby("prediction").count()
     prediction_values = np.array(histogram_predictions.select("prediction").collect())
     prediction_counts = np.array(histogram_predictions.select("count").collect())
-    
 
     # Report label distribution as a BarGraph using MCenter
-    bar_predictions = BarGraph().name("Prediction Distribution").cols((prediction_values[0]).astype(str).tolist()).data((prediction_counts[0]).tolist())
+    bar_predictions = BarGraph().name("Prediction Distribution").cols((prediction_values[0]).astype(str).tolist()).data(
+        (prediction_counts[0]).tolist())
     mlops.set_stat(bar_predictions)
-    
+
     # Stop spark context and MLOps
     spark.sparkContext.stop()
     mlops.done()
-    
+
 
 if __name__ == "__main__":
     main()

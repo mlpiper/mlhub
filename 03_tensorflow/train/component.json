@@ -1,9 +1,9 @@
 {
   "version": 1,
   "engineType": "Tensorflow",
-  "name": "lg_train",
+  "name": "train",
   "label": "Logistic Regression Train",
-  "program": "lg_train.py",
+  "program": "lr_train.py",
   "modelBehavior": "ModelProducer",
   "inputInfo": [],
   "outputInfo": [],

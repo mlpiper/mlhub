@@ -1,9 +1,9 @@
 {
   "version": 1,
   "engineType": "Tensorflow",
-  "name": "lg_infer",
+  "name": "infer",
   "label": "Logistic Regression Inference",
-  "program": "predict.py",
+  "program": "lr_infer.py",
   "modelBehavior": "ModelConsumer",
   "inputInfo": [],
   "outputInfo": [],

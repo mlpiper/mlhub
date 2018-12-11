@@ -2,7 +2,7 @@
   "version": 1,
   "engineType": "Python",
   "language": "R",
-  "name": "Rtrain",
+  "name": "train",
   "label": "Linear Regression Train",
   "program": "LRTrain.R",
   "modelBehavior": "ModelProducer",
@@ -22,11 +22,11 @@
     },
     {
       "key": "output-model",
-          "label": "Model output file",
-          "type": "str",
-          "description": "File to use for saving the trained model",
-          "optional": true,
-          "tag": "model_dir"
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
     }
   ]
 }

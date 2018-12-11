@@ -3,28 +3,35 @@ This is sample code showing how tensorflow code can be instrumented in MCenter.
 """
 import argparse
 import time
-import tensorflow as tf
-import pandas as pd
-import numpy as np
-import pip
-from sklearn.datasets import make_classification
 
+import numpy as np
+import tensorflow as tf
+
+from sklearn.datasets import make_classification
 from parallelm.mlops import mlops as mlops
+from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.graph import Graph
 from parallelm.mlops.stats.graph import MultiGraph
-from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.multi_line_graph import MultiLineGraph
 
 """
 Function to add the arguments that are provided as arguments to the component.
 """
+
+
 def add_parameters(parser):
     parser.add_argument("--step_size", dest="step_size", type=float, required=False, default=0.01, help='Learning rate')
-    parser.add_argument("--iterations", dest="iterations", type=int, required=False, default=100, help='Number of training iterations')
-    parser.add_argument("--model_version", dest="model_version", type=int, required=False, default=1, help='Model version')
-    parser.add_argument("--stats_interval", dest="stats_interval", type=int, required=False, default=1, help='Print stats after this number of iterations')
-    parser.add_argument("--save_dir", dest="save_dir", type=str, required=False, help='Directory for saving the trained model', default="/tmp/tf_model")
-    parser.add_argument("--text_model_format", dest="use_text", required=False, default=False, action='store_true', help='Whether SavedModel should be binary or text')
+    parser.add_argument("--iterations", dest="iterations", type=int, required=False, default=100,
+                        help='Number of training iterations')
+    parser.add_argument("--model_version", dest="model_version", type=int, required=False, default=1,
+                        help='Model version')
+    parser.add_argument("--stats_interval", dest="stats_interval", type=int, required=False, default=1,
+                        help='Print stats after this number of iterations')
+    parser.add_argument("--save_dir", dest="save_dir", type=str, required=False,
+                        help='Directory for saving the trained model', default="/tmp/tf_model")
+    parser.add_argument("--text_model_format", dest="use_text", required=False, default=False, action='store_true',
+                        help='Whether SavedModel should be binary or text')
+
 
 def main(args):
     # Parse arguments
@@ -48,10 +55,11 @@ def main(args):
     num_samples = 50
     num_features = 20
 
-    features, labels = make_classification(n_samples=50, n_features=20, n_informative=2, n_redundant=1, n_classes=3, n_clusters_per_class=1, random_state=42)
-    
+    features, labels = make_classification(n_samples=50, n_features=20, n_informative=2, n_redundant=1, n_classes=3,
+                                           n_clusters_per_class=1, random_state=42)
+
     # Add noise to the data
-    noisy_features = np.random.uniform(0, 5) * np.random.normal(0, 1, (num_samples,num_features))
+    noisy_features = np.random.uniform(0, 5) * np.random.normal(0, 1, (num_samples, num_features))
     features = features + noisy_features
 
     num_features = (features.shape[1])
@@ -59,7 +67,7 @@ def main(args):
 
     # One-hot encode labels for all data
     onehot_labels = np.eye(num_labels)[labels]
-    
+
     # Label distribution in training
     value, counts = np.unique(labels, return_counts=True)
     label_distribution = np.asarray((value, counts)).T
@@ -67,7 +75,8 @@ def main(args):
     print("Label distributions: \n {0}".format(label_distribution))
 
     # Output label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("Label Distribution").cols((label_distribution[:,0]).astype(str).tolist()).data((label_distribution[:,1]).tolist())
+    bar = BarGraph().name("Label Distribution").cols((label_distribution[:, 0]).astype(str).tolist()).data(
+        (label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
 
     # Output Health Statistics to MCenter
@@ -81,7 +90,7 @@ def main(args):
 
     # tf Graph Input
     x = tf.placeholder(tf.float32, [None, num_features], name="features")
-    y = tf.placeholder(tf.float32, [None, num_labels], name = "labels")
+    y = tf.placeholder(tf.float32, [None, num_labels], name="labels")
 
     # Set model weights
     W = tf.Variable(tf.zeros([num_features, num_labels]))
@@ -91,10 +100,10 @@ def main(args):
     serialized_tf_example = tf.placeholder(tf.string, name='tf_example')
 
     # Construct model
-    pred = tf.nn.softmax(tf.matmul(x, W) + b, name = "predictions") # Softmax
+    pred = tf.nn.softmax(tf.matmul(x, W) + b, name="predictions")  # Softmax
 
     # Minimize error using cross entropy
-    cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reduction_indices=1))
+    cost = tf.reduce_mean(-tf.reduce_sum(y * tf.log(pred), reduction_indices=1))
 
     # Gradient Descent
     optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
@@ -121,29 +130,31 @@ def main(args):
         # Compute average loss
         avg_cost += c / num_samples
         # Display logs per epoch step
-        if (epoch+1) % display_step == 0:
+        if (epoch + 1) % display_step == 0:
             iteration_array.append(epoch)
             cost_array.append(avg_cost)
             accuracy_array.append(np.float(a))
             print("accuracy", a)
-            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
+            print("Epoch:", '%04d' % (epoch + 1), "cost=", "{:.9f}".format(avg_cost))
 
     # Plot the cost function using MCenter
-    gg = Graph().name("Cost function across epochs").set_x_series(iteration_array).add_y_series(label="Cost Function Across Iterations", data=cost_array)
+    gg = Graph().name("Cost function across epochs").set_x_series(iteration_array).add_y_series(
+        label="Cost Function Across Iterations", data=cost_array)
     gg.x_title("Average Cost")
     gg.y_title('Iterations')
     mlops.set_stat(gg)
 
     # Plot the accuracy function using MCenter
-    gg1 = Graph().name("Accuracy across epochs").set_x_series(iteration_array).add_y_series(label="Accuracy Across Iterations", data=accuracy_array)
+    gg1 = Graph().name("Accuracy across epochs").set_x_series(iteration_array).add_y_series(
+        label="Accuracy Across Iterations", data=accuracy_array)
     gg1.x_title("Accuracy")
     gg1.y_title('Iterations')
     mlops.set_stat(gg1)
 
     # Plot accuracy and cost across epochs using MCenter
     mg = MultiGraph().name("Cost and Accuracy Progress Across Epochs")
-    mg.add_series(x=iteration_array,label="Cost Function Across Iterations", y=cost_array)
-    mg.add_series(x=iteration_array,label="Accuracy across epochs", y=accuracy_array)
+    mg.add_series(x=iteration_array, label="Cost Function Across Iterations", y=cost_array)
+    mg.add_series(x=iteration_array, label="Accuracy across epochs", y=accuracy_array)
     mlops.set_stat(mg)
 
     # Plot final cost and accuracy in this session using MCenter
@@ -168,9 +179,9 @@ def main(args):
     classification_signature = (
         tf.saved_model.signature_def_utils.build_signature_def(
             inputs={
-                tf.saved_model.signature_constants.CLASSIFY_INPUTS:classification_inputs},
-            outputs={tf.saved_model.signature_constants.CLASSIFY_OUTPUT_CLASSES:classification_outputs_classes,
-                     tf.saved_model.signature_constants.CLASSIFY_OUTPUT_SCORES:classification_outputs_scores},
+                tf.saved_model.signature_constants.CLASSIFY_INPUTS: classification_inputs},
+            outputs={tf.saved_model.signature_constants.CLASSIFY_OUTPUT_CLASSES: classification_outputs_classes,
+                     tf.saved_model.signature_constants.CLASSIFY_OUTPUT_SCORES: classification_outputs_scores},
             method_name=tf.saved_model.signature_constants.CLASSIFY_METHOD_NAME))
 
     tensor_info_x = tf.saved_model.utils.build_tensor_info(x)
@@ -187,7 +198,7 @@ def main(args):
     builder.add_meta_graph_and_variables(
         sess, [tf.saved_model.tag_constants.SERVING],
         signature_def_map={
-            'predict_images':prediction_signature,
+            'predict_images': prediction_signature,
             tf.saved_model.signature_constants.DEFAULT_SERVING_SIGNATURE_DEF_KEY:
                 classification_signature,
         },

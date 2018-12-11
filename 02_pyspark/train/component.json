@@ -3,22 +3,30 @@
   "engineType": "PySpark",
   "language": "Python",
   "name": "train",
-  "label": "Logistic Regression Train",
-  "program": "LRTrain.py",
+  "label": "Random Forest Classification Train",
+  "program": "rf_train.py",
   "modelBehavior": "ModelProducer",
   "inputInfo": [],
   "outputInfo": [],
   "group": "Algorithms",
-  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
+  "description": "Component is responsible for running random forest classification training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
   "useMLOps": true,
   "arguments": [
     {
-      "key": "max-iter",
-      "label": "Iterations",
+      "key": "num-trees",
+      "label": "Number of Trees",
       "type": "int",
-      "description": "Maximum number of iterations",
+      "description": "Number of trees in the forest",
       "optional": true,
-      "defaultValue": 100
+      "defaultValue": 2
+    },
+    {
+      "key": "max-depth",
+      "label": "Maximum Depth",
+      "type": "int",
+      "description": "Maximum depth of each tree in the forest",
+      "optional": true,
+      "defaultValue": 2
     },
     {
       "key": "output-model",

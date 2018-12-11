@@ -2,7 +2,7 @@
   "version": 1,
   "engineType": "Python",
   "language": "R",
-  "name": "Rinfer",
+  "name": "infer",
   "label": "Linear Regression Inference",
   "program": "LRInfer.R",
   "modelBehavior": "ModelConsumer",

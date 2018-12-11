@@ -1,13 +1,11 @@
 from __future__ import print_function
 
-import numpy as np
-import pandas as pd
 import argparse
-import random
 import pickle
 
-from parallelm.mlops import mlops as mlops
+import numpy as np
 from parallelm.mlops import StatCategory as st
+from parallelm.mlops import mlops as mlops
 from parallelm.mlops.predefined_stats import PredefinedStats
 from parallelm.mlops.stats.bar_graph import BarGraph
 
@@ -18,6 +16,8 @@ def parse_args():
     :return:
     """
     parser = argparse.ArgumentParser()
+    parser.add_argument("--num_samples", help="# samples")
+    parser.add_argument("--num_features", help="# features")
     parser.add_argument("--input-model", help="Path of input model to create")
     options = parser.parse_args()
     return options
@@ -43,8 +43,8 @@ def main():
     classifier = pickle.load(file_obj)
 
     # Create synthetic data (Gaussian Distribution, Poisson Distribution and Beta Distribution)
-    num_samples = 50
-    num_features = 20
+    num_samples = int(pm_options.num_samples)
+    num_features = int(pm_options.num_features)
 
     np.random.seed(0)
     g = np.random.normal(0, 1, (num_samples, num_features))
@@ -65,9 +65,6 @@ def main():
 
     # Predict labels
     result = classifier.predict(test_features)
-    # Predict probability
-    class_probability = classifier.predict_proba(test_features)
-    maximum_prob = np.max(class_probability, axis=1)
 
     # Label distribution in prediction
     value, counts = np.unique(result, return_counts=True)
