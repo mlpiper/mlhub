@@ -25,7 +25,7 @@ def parse_args():
 
 def main():
     # Initialize spark and MLOps
-    spark = SparkSession.builder.appName("LogisticRegression").getOrCreate()
+    spark = SparkSession.builder.appName("RandomForestClassifier").getOrCreate()
     mlops.init(spark.sparkContext)
 
     # parse the arguments to component
@@ -33,7 +33,7 @@ def main():
 
     # Load the model, exit gracefully if model is not found
     try:
-        model_lg = \
+        model_rf = \
             SparkPipelineModelHelper() \
                 .set_shared_context(spark_context=spark.sparkContext) \
                 .set_local_path(local_path=options.input_model) \
@@ -72,7 +72,7 @@ def main():
     mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, num_samples, st.TIME_SERIES)
 
     # Make inference predictions
-    predicted_df = model_lg.transform(inferenceData)
+    predicted_df = model_rf.transform(inferenceData)
 
     # Create a bar graph with label and confidence distributions
     histogram_predictions = predicted_df.groupby("prediction").count()
