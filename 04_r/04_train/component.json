@@ -2,7 +2,7 @@
   "version": 1,
   "engineType": "Python",
   "language": "R",
-  "name": "train",
+  "name": "04_train",
   "label": "Linear Regression Train",
   "program": "LRTrain.R",
   "modelBehavior": "ModelProducer",
