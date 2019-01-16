@@ -1,14 +1,14 @@
 {
   "version": 1,
   "engineType": "Tensorflow",
-  "name": "infer",
-  "label": "Logistic Regression Inference",
+  "name": "lr-predict-tf-standalone",
+  "label": "Logistic Regression Inference (TF, Standalone)",
+  "description": "Component is responsible for creating prediction from tensorflow saved model",
   "program": "lr_infer.py",
   "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
   "inputInfo": [],
   "outputInfo": [],
-  "group": "Algorithms",
-  "description": "Component is responsible for creating prediction from tensorflow saved model",
   "arguments": [
     {
       "key": "output_file",

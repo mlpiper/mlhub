@@ -69,7 +69,7 @@ def main(args):
     predictions = sess.run(y_pred, {x: features})
     print('predictions', np.array(predictions))
 
-    # Ouput prediction distribution as a BarGraph using MCenter 
+    # Ouput prediction distribution as a BarGraph using MCenter
     predict_int = np.argmax(predictions, axis=1)
     unique, counts = np.unique(predict_int, return_counts=True)
     counts = list(map(int, counts))
@@ -77,7 +77,7 @@ def main(args):
     mlt = BarGraph().name("Prediction Distribution").cols(x_series).data(list(counts))
     mlops.set_stat(mlt)
 
-    # Show average prediction probability value for each prediction 
+    # Show average prediction probability value for each prediction
     num_labels = len(np.unique(predict_int))
     probability = np.zeros((num_labels,))
     for a in range(0, num_labels):

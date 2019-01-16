@@ -2,14 +2,14 @@
   "version": 1,
   "engineType": "PySpark",
   "language": "Python",
-  "name": "train",
-  "label": "Random Forest Classification Train",
+  "name": "rf-class-train-standalone",
+  "label": "Random Forest Classification Train (Standalone)",
+  "description": "Component is responsible for running random forest classification training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
   "program": "rf_train.py",
   "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
   "inputInfo": [],
   "outputInfo": [],
-  "group": "Algorithms",
-  "description": "Component is responsible for running random forest classification training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
   "useMLOps": true,
   "arguments": [
     {

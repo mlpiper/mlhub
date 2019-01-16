@@ -1,14 +1,14 @@
 {
   "version": 1,
   "engineType": "Tensorflow",
-  "name": "train",
-  "label": "Logistic Regression Train",
+  "name": "lr-train-tf-standalone",
+  "label": "Logistic Regression Train, (TF, Standalone)",
+  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
   "program": "lr_train.py",
   "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
   "inputInfo": [],
   "outputInfo": [],
-  "group": "Algorithms",
-  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
   "arguments": [
     {
       "key": "step_size",
