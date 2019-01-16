@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "infer",
+  "label": "Random Forest Classifiction Inference",
+  "program": "rf_infer.py",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "description": "Component is responsible for creating prediction from given spark model",
+  "arguments": [
+    {
+      "key": "temp-shared-path",
+      "label": "Shared path",
+      "type": "str",
+      "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
+      "optional": true
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+

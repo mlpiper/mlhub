@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "R",
+  "name": "04_infer",
+  "label": "Linear Regression Inference",
+  "program": "LRInfer.R",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "description": "Component is responsible for creating prediction from given model",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+

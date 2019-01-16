@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "train",
+  "label": "Random Forest Classification Train",
+  "program": "rf_train.py",
+  "modelBehavior": "ModelProducer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "description": "Component is responsible for running random forest classification training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "num-trees",
+      "label": "Number of Trees",
+      "type": "int",
+      "description": "Number of trees in the forest",
+      "optional": true,
+      "defaultValue": 2
+    },
+    {
+      "key": "max-depth",
+      "label": "Maximum Depth",
+      "type": "int",
+      "description": "Maximum depth of each tree in the forest",
+      "optional": true,
+      "defaultValue": 2
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    },
+    {
+      "key": "temp-shared-path",
+      "label": "Shared path",
+      "type": "str",
+      "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
+      "optional": true
+    }
+  ]
+}
+

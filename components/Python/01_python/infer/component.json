@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "name": "infer",
+  "label": "Support Vector Classification Inference",
+  "program": "svc_infer.py",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "description": "Component is responsible for creating prediction from given scikit-learn pickled model",
+  "arguments": [
+    {
+      "key": "num_features",
+      "type": "int",
+      "label": "Number of Features",
+      "description": "Number of Features (columns)",
+      "optional": true,
+      "defaultValue": 21
+    },
+    {
+      "key": "num_samples",
+      "type": "int",
+      "label": "Number of Samples",
+      "description": "Number of Samples (rows)",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+
