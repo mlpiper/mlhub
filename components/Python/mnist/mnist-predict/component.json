@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "name": "mnist-predict",
+  "label": "MNist Predict (Standalone)",
+  "program": "mnist_inference.py",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "total_records",
+      "label": "Num records",
+      "type": "int",
+      "description": "Number of samples to process (-1 for inf)",
+      "optional": true,
+      "defaultValue": 1000
+    },
+    {
+      "key": "input_dir",
+      "label": "input dir",
+      "type": "str",
+      "description": "Where to cache the input data set",
+      "optional": true,
+      "defaultValue": "/data-lake/mnist_data"
+    },
+    {
+      "key": "output_file",
+      "label": "output file",
+      "type": "str",
+      "description": "Where to output predictions",
+      "optional": true,
+      "defaultValue": "/data-lake/mnist_predictions"
+    },
+    {
+      "key": "model_dir",
+      "label": "model dir",
+      "type": "str",
+      "description": "SavedModel input directory",
+      "optional": true,
+      "tag": "input_model_path",
+      "defaultValue": ""
+    },
+    {
+      "key": "sig_name",
+      "label": "signature",
+      "type": "str",
+      "description": "Signature to use within the SavedModel",
+      "optional": true,
+      "defaultValue": "predict_images"
+    },
+    {
+      "key": "stats_interval",
+      "label": "Statistics Interval",
+      "type": "int",
+      "description": "Print stats after this number of iterations",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "track_conf",
+      "label": "Confidence tracking",
+      "type": "int",
+      "description": "Whether to track prediction confidence",
+      "optional": true,
+      "defaultValue": 0
+    },
+    {
+      "key": "conf_thresh",
+      "label": "Low Confidence Threshold",
+      "type": "int",
+      "description": "Threshold for confidence alerts",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "conf_percent",
+      "label": "Low Confidence Percent",
+      "type": "int",
+      "description": "Percent of low confidence inferences to raise an alert",
+      "optional": true,
+      "defaultValue": 10
+    }
+  ]
+}

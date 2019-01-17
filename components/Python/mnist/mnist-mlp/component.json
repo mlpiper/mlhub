@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "engineType": "Python",
+    "language": "Python",
+    "name": "mnist-mlp",
+    "label": "Mnist mlp (Standalone)",
+    "program": "multilayer_perceptron.py",
+    "modelBehavior": "ModelProducer",
+    "group": "Algorithms",
+    "inputInfo": [],
+    "outputInfo": [],
+    "arguments": [
+        {
+            "key": "epochs",
+            "label": "Epochs",
+            "type": "int",
+            "description": "Number of training epochs",
+            "optional": true,
+            "defaultValue": 15
+        },
+        {
+            "key": "model_dir",
+            "label": "Model output directory",
+            "type": "str",
+            "description": "Directory for saving the trained model",
+            "optional": false,
+            "tag": "model_dir"
+        },
+        {
+            "key": "input_dir",
+            "label": "Input cache directory",
+            "type": "str",
+            "description": "Directory for caching the input files",
+            "optional": true,
+            "defaultValue": "/data-lake/mnist_data"
+        },
+        {
+            "key": "display_step",
+            "label": "Stats interval",
+            "type": "int",
+            "description": "How often to display stats",
+            "optional": true,
+            "defaultValue": 1
+        }
+    ]
+}
