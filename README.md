@@ -3,16 +3,19 @@
 This repository contains collections of ML components and pipelines. 
 
 ## Components
+TBD
 
 ## Pipelines
-
+TBD
 
 ## How to Run
+TBD
 
 ## Installaing pre-requisites
+TBD
 
 ### How to run a component
-How to run
+TBD
 
 ### How to run a pipeline
-How to run a pipeline
+TBD
