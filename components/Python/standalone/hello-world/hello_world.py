@@ -14,6 +14,7 @@ def main():
     args = parser.parse_args()
 
     if args.use_mlops > 0:
+        
         ## MLOps start
         from parallelm.mlops import mlops
         from parallelm.mlops.stats_category import StatCategory
@@ -21,8 +22,8 @@ def main():
         # Initialize the mlops library
         mlops.init()
         
-        # 
-        mlops.set_stat("Testing set_stat", 50)
+        # Display a stat with value 1  
+        mlops.set_stat("Hello World!", 1)
         
         # Release mlops resources
         mlops.done()
