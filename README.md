@@ -1,21 +1,13 @@
 # mlhub
-
-This repository contains collections of ML components and pipelines. 
+This repository contains Machine Learning (ML) components code, as part of the MLPiper project.
 
 ## Components
-TBD
+An ML Component is a code block that can run on its own or be connected to other ML Components to create a pipeline.
 
-## Pipelines
-TBD
+## Note
+This is a very early release. Definition of components and pipelines will appear here shortly.
 
-## How to Run
-TBD
+The MLPiper project will include 2 other parts:
 
-## Installaing pre-requisites
-TBD
-
-### How to run a component
-TBD
-
-### How to run a pipeline
-TBD
+1) mlcomp - a runner which will run components and pipelines.
+2) mlops - an API to instrument components for reporting statistics.
