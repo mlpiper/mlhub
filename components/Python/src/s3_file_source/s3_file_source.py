@@ -31,31 +31,3 @@ class S3FileSource(ConnectableComponent):
         client.download_file(self._params["bucket"], self._params["key"], file_path)
 
         return file_path
-
-
-def parse_args():
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--aws-access-key-id", default=None, help="Access key ID")
-    parser.add_argument("--aws-secret-access-key", default=None, help="Secret key")
-    parser.add_argument("--region", default=None, help="AWS region name")
-    parser.add_argument("--bucket", default=None, help="S3 bucket name")
-    parser.add_argument("--key", default=None, help="S3 key name")
-    parser.add_argument("--parent-directory", default="/tmp", help="Parent directory where to save file")
-    options = parser.parse_args()
-    return options
-
-
-def main():
-    options = parse_args()
-
-    python_engine = PythonEngine("s3_file_source")
-    s3_source = S3FileSource(python_engine)
-    s3_source.configure(vars(options))
-    output_list = s3_source.materialize([])
-
-    print("File downloaded to: {}".format(output_list[0]))
-
-
-if __name__ == "__main__":
-    main()
