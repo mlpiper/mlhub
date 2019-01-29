@@ -30,4 +30,4 @@ class S3FileSink(ConnectableComponent):
         data = open(file_path, 'rb')
         client.put_object(Bucket=self._params["bucket"], Key=self._params["key"], Body=data)
 
-        return file_path
+        return

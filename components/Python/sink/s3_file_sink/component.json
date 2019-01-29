@@ -7,11 +7,11 @@
   "description": "Save a file to an S3 bucket + key",
   "program": "s3_file_sink.py",
   "componentClass": "S3FileSink",
-  "group": "Connectors",
+  "group": "Sinks",
   "useMLOps": true,
   "inputInfo": [{
     "description": "File name",
-    "label": "File-Name",
+    "label": "File to read contents",
     "defaultComponent": "",
     "type": "str",
     "group": "data"
