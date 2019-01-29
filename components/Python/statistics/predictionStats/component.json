@@ -1,0 +1,48 @@
+{
+  "engineType": "Python",
+  "userStandalone": false,
+  "language": "Python",
+  "name": "predictionStats",
+  "label": "H2O predictionStats",
+  "description": "Read the H2O prediction file and generates statistics.",
+  "program": "stats.py",
+  "componentClass": "StatsReport",
+  "group": "Statistics",
+  "useMLOps": true,
+  "inputInfo": [{
+    "description": "Input file name",
+    "label": "File-Name",
+    "defaultComponent": "",
+    "type": "str",
+    "group": "data"
+    }
+  ],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "alert",
+      "label": "Alert Mechanism",
+      "description": "Binary value indicating if the alert should be raised",
+      "type": "boolean",
+      "default": 1,
+      "optional": true
+    },
+    {
+      "key": "samples",
+      "label": "Percentage of samples",
+      "description": "Percentage of samples that are required to be above a specified confidence value.",
+      "type": "int",
+      "default": 0,
+      "optional": true
+    },
+    {
+      "key": "confidence",
+      "label": "Confidence Value",
+      "description": "Minimum tolerable confidence value",
+      "type": "int",
+      "default": 0,
+      "optional": true
+    }
+  ],
+  "version": 1
+}
