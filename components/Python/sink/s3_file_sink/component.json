@@ -11,7 +11,7 @@
   "useMLOps": true,
   "inputInfo": [{
     "description": "File name",
-    "label": "File to read contents",
+    "label": "File-Name",
     "defaultComponent": "",
     "type": "str",
     "group": "data"
@@ -53,6 +53,30 @@
       "description": "S3 Key",
       "type": "str",
       "optional": false
+    },
+    {
+      "key": "get_save_file_size",
+      "label": "Get saved file size",
+      "description": "S3 save file size",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
+    },
+    {
+      "key": "get_save_time",
+      "label": "Get file save time",
+      "description": "S3 file upload latency",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
+    },
+    {
+      "key": "get_save_line_count",
+      "label": "Get output line count",
+      "description": "S3 get line count",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
     }
   ],
   "version": 1

@@ -56,6 +56,30 @@
       "optional": false
     },
     {
+      "key": "get_file_size",
+      "label": "Get File Size",
+      "description": "S3 get file size",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
+    },
+    {
+      "key": "get_fetch_time",
+      "label": "Get fetch time",
+      "description": "Get fetch latency",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
+    },
+    {
+      "key": "get_line_count",
+      "label": "Get fetch time",
+      "description": "Get file line count",
+      "type": "boolean",
+      "defaultValue": 1,
+      "optional": true
+    },
+    {
       "key": "parent_directory",
       "label": "Parent Directory",
       "description": "Parent directory to use for storing the file",

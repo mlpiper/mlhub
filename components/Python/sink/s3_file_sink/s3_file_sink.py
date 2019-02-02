@@ -4,9 +4,11 @@ import argparse
 import os
 import boto3
 import uuid
+import time
 
 from parallelm.components import ConnectableComponent
 from parallelm.ml_engine.python_engine import PythonEngine
+from parallelm.mlops import mlops as mlops
 
 
 class S3FileSink(ConnectableComponent):
@@ -22,12 +24,28 @@ class S3FileSink(ConnectableComponent):
     def _save_file(self, file_path):
         self._logger.info(" *** save file .. params:{}".format(self._params))
 
+        # Initialize mlops
+        mlops.init()
+
+        if self._params["get_save_file_size"]:
+            file_size = os.stat(file_path).st_size
+            mlops.set_stat("s3.outputFileSize", file_size)
+
+        if self._params["get_save_line_count"]:
+            line_count = len(open(file_path).readlines())
+            mlops.set_stat("s3.outputFileLineCount", line_count)
+
         client = boto3.client(
             's3',
             aws_access_key_id=self._params["aws_access_key_id"],
             aws_secret_access_key=self._params["aws_secret_access_key"],
         )
+
         data = open(file_path, 'rb')
+        save_start_time = time.time()
         client.put_object(Bucket=self._params["bucket"], Key=self._params["key"], Body=data)
+        save_elapsed_time = time.time() - save_start_time
+        if self._params["get_save_time"]:
+            mlops.set_stat("s3.outputSaveTimemsec", save_elapsed_time)
 
         return
