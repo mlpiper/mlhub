@@ -34,8 +34,8 @@ class S3FileSource(ConnectableComponent):
 
         if self._params["get_file_size"]:
             resp_obj = client.head_object(Bucket=self._params["bucket"], Key=self._params["key"])
-            file_size = resp_obj['ContentLength']
-            mlops.set_stat("s3.inputFileSize", file_size)
+            file_size = resp_obj['ContentLength'] / (1024 * 1024)
+            mlops.set_stat("s3.inputFileSizeMB", file_size)
 
         file_path = os.path.join(self._params["parent_directory"], "s3_file_" + str(uuid.uuid4()))
 

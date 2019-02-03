@@ -57,8 +57,8 @@
     },
     {
       "key": "get_file_size",
-      "label": "Get File Size",
-      "description": "S3 get file size",
+      "label": "Get File Size MB",
+      "description": "Report S3 file size in MB",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true
@@ -66,7 +66,7 @@
     {
       "key": "get_fetch_time",
       "label": "Get fetch time",
-      "description": "Get fetch latency",
+      "description": "Report fetch latency (msec)",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true
@@ -74,7 +74,7 @@
     {
       "key": "get_line_count",
       "label": "Get fetch time",
-      "description": "Get file line count",
+      "description": "Report line count",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true

@@ -10,7 +10,7 @@
   "group": "Sinks",
   "useMLOps": true,
   "inputInfo": [{
-    "description": "File name",
+    "description": "File to read contents",
     "label": "File-Name",
     "defaultComponent": "",
     "type": "str",
@@ -56,24 +56,24 @@
     },
     {
       "key": "get_save_file_size",
-      "label": "Get saved file size",
-      "description": "S3 save file size",
+      "label": "Report file size",
+      "description": "Report S3 saved file size (MB)",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true
     },
     {
       "key": "get_save_time",
-      "label": "Get file save time",
-      "description": "S3 file upload latency",
+      "label": "Report file save time",
+      "description": "Report S3 file upload latency (msec)",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true
     },
     {
       "key": "get_save_line_count",
-      "label": "Get output line count",
-      "description": "S3 get line count",
+      "label": "Report line count",
+      "description": "Report S3 file line count",
       "type": "boolean",
       "defaultValue": 1,
       "optional": true

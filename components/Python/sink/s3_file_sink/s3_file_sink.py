@@ -28,8 +28,8 @@ class S3FileSink(ConnectableComponent):
         mlops.init()
 
         if self._params["get_save_file_size"]:
-            file_size = os.stat(file_path).st_size
-            mlops.set_stat("s3.outputFileSize", file_size)
+            file_size = os.stat(file_path).st_size / (1024 * 1024)
+            mlops.set_stat("s3.outputFileSizeMB", file_size)
 
         if self._params["get_save_line_count"]:
             line_count = len(open(file_path).readlines())
