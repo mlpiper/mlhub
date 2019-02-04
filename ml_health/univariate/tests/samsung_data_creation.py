@@ -4,8 +4,26 @@
 """
 
 import numpy as np
+import argparse
+import os
 
-path = "/data-lake/ml-prototypes/classification/ml/samsung/"
+
+def parse_args():
+    """
+    Parse Arguments from component
+    :return:
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", help="original data path", default="/data-lake/ml-prototypes/classification/ml/samsung/")
+    parser.add_argument("--output", help="output data path", default="/data-lake/ml-prototypes/classification/ml/samsung/")
+    options = parser.parse_args()
+    return options
+
+options = parse_args()
+#path = "/data-lake/ml-prototypes/classification/ml/samsung/"
+#write_path = "/data-lake/ml-prototypes/classification/ml/samsung/"
+path = options.path
+write_path = options.output
 
 
 ###############################################################################
@@ -26,7 +44,9 @@ labels_test = np.reshape(labels_test,(len(labels_test),1))
 Train = np.concatenate((labels_train,dataset_train),axis=1)
 Test = np.concatenate((labels_test,dataset_test),axis=1)
 
-write_path = "/data-lake/ml-prototypes/classification/ml/samsung/"
+os.makedirs(write_path + '/original/train')
+os.makedirs(write_path + '/original/test')
+
 np.savetxt(write_path + 'original/train/samsung_train.csv', Train, fmt='%.4e', delimiter=',')
 np.savetxt(write_path + 'original/test/samsung_test.csv', Test, fmt='%.4e', delimiter=',')
 
@@ -41,4 +61,5 @@ Test_noisy = 2*np.random.randn(Test.shape[0],Test.shape[1]-1) + Test[:,1:Test.sh
 label = Test[:,0].reshape(Test.shape[0],-1)
 Test_noisy = np.concatenate((label,Test_noisy),axis=1)
 
+os.makedirs(write_path + '/noisy')
 np.savetxt(write_path + 'noisy/samsung_test_noisy.csv', Test_noisy, fmt='%.4e', delimiter=',')

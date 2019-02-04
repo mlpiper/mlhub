@@ -4,8 +4,25 @@
 
 import numpy as np
 import pandas as pd
+import argparse
+import os
 
-path = "/data-lake/ml-prototypes/regression/ml/videos/"
+def parse_args():
+    """
+    Parse Arguments from component
+    :return:
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--path", help="original data path", default="/data-lake/ml-prototypes/regression/ml/videos/")
+    parser.add_argument("--output", help="output data path", default="/data-lake/ml-prototypes/regression/ml/videos/")
+    options = parser.parse_args()
+    return options
+
+options = parse_args()
+#path = "/data-lake/ml-prototypes/regression/ml/videos/"
+#write_path = "/data-lake/ml-prototypes/regression/ml/videos/"
+path = options.path
+write_path = options.output
 
 ###############################################################################
 ########## Read the dataset and save it in a numpy array ######################
@@ -31,6 +48,8 @@ np.random.shuffle(Train)
 np.random.shuffle(Test)
 
 
-write_path = "/data-lake/ml-prototypes/regression/ml/videos/"
+os.makedirs(write_path + '/original/train')
+os.makedirs(write_path + '/original/test')
+
 np.savetxt(write_path + 'original/train/videos_train.csv', Train, fmt='%.4e', delimiter=',')
 np.savetxt(write_path + 'original/test/videos_test.csv', Test, fmt='%.4e', delimiter=',')

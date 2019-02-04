@@ -3,6 +3,8 @@ This code produces results reported in Table .., .. and .. of the KDD 2019 paper
 """
 import sys
 import numpy as np
+import argparse
+import os
 from sklearn.ensemble import RandomForestClassifier
 
 sys.path.insert(0,'../../..')
@@ -10,12 +12,26 @@ import ml_health.univariate.univariate_health_calculator as hc
 import ml_health.experiments.machineLearning.datasetMix as dm
 import ml_health.experiments.machineLearning.randomNoise as rn
 
+def parse_args():
+    """
+    Parse Arguments from component
+    :return:
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--telco-path", help="telco data path", default="/data-lake/ml-prototypes/classification/ml/realm-im2015-vod-traces/X_SAR/")
+    parser.add_argument("--samsung-path", help="samsung data path", default="/data-lake/ml-prototypes/classification/ml/samsung/")
+    parser.add_argument("--video-path", help="video data path",
+            default="/data-lake/ml-prototypes/regression/ml/videos/")
+    options = parser.parse_args()
+    return options
+
+options = parse_args()
 np.random.seed(seed=0)
 
 # Read the TELCO dataset for all loads
 #all_path = ["periodic_load", "flashcrowd_load", "linear_increase", "constant_load", "poisson_load"]
 all_path = ["periodic_load", "flashcrowd_load", "linear_increase"]
-telco_path = '/data-lake/ml-prototypes/classification/ml/realm-im2015-vod-traces/X_SAR/'
+telco_path = options.telco_path 
 
 values = [10, 50, 100, 200]
 RMSE = np.zeros((len(all_path),len(all_path),len(values)))
@@ -32,8 +48,8 @@ for train_path in all_path:
     train_num = train_num + 1
     for test_path in all_path:
         test_num = test_num + 1
-        train_load_path = telco_path + train_path + "/"
-        test_load_path = telco_path + test_path + "/"
+        train_load_path = telco_path + "/" + train_path + "/"
+        test_load_path = telco_path + "/" + test_path + "/"
         train_load = np.genfromtxt(train_load_path + "Train.csv", delimiter=',')
         validate_load = np.genfromtxt(train_load_path + "Validate.csv", delimiter=',')
         # Combine the train and validation data (50%)
@@ -111,11 +127,12 @@ print('confidence_full', confidence_full_correlation)
 ### Samsung data test
 values = [10, 20, 30, 40, 50, 100, 200, 500, 1000, 5000, 10000, 20000]
 # Path to datasets on data-lake
-path = "/data-lake/ml-prototypes/classification/ml/"
+path = options.samsung_path
+
 np.random.seed(45)
 # Read training and test datasets
-Train = np.genfromtxt(path + 'samsung/original/train/samsung_train.csv', dtype = float, delimiter=",")
-Test = np.genfromtxt(path + 'samsung/original/test/samsung_test.csv', dtype = float, delimiter=",")
+Train = np.genfromtxt(path + '/original/train/samsung_train.csv', dtype = float, delimiter=",")
+Test = np.genfromtxt(path + '/original/test/samsung_test.csv', dtype = float, delimiter=",")
 
 algorithm = RandomForestClassifier(n_estimators=10, max_depth=2, random_state=0)
 algorithm.fit(Train[:,1:],Train[:,0])
@@ -223,12 +240,12 @@ from sklearn.metrics import mean_squared_error
 from ml_health.experiments.machineLearning.misc.epsilon_regression import EpsilonDecider
 
 values = [10, 20, 30, 40, 50, 100, 200, 500, 1000, 5000, 10000, 20000]
-path = "/data-lake/ml-prototypes/regression/ml/"
+path = options.video_path
 # Video (last value is the target value)
-Train_superset = np.genfromtxt(path + 'videos/original/train/videos_train.csv', dtype = float, delimiter=",")
+Train_superset = np.genfromtxt(path + '/original/train/videos_train.csv', dtype = float, delimiter=",")
 Train = Train_superset
-np.savetxt(path + "videos/original/train/videos_train_subset_yakov", Train, fmt = '%0.4f', delimiter=",")
-Test = np.genfromtxt(path + 'videos/original/test/videos_test.csv', dtype = float, delimiter=",")
+np.savetxt(path + "/original/train/videos_train_subset_yakov", Train, fmt = '%0.4f', delimiter=",")
+Test = np.genfromtxt(path + '/original/test/videos_test.csv', dtype = float, delimiter=",")
 num_samples, num_features = Train.shape
 print("Number of training samples in video: ", num_samples)
 num_samples, num_features = Test.shape
