@@ -1,0 +1,31 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "name": "lr-train",
+  "label": "Logistic Regression Train",
+  "program": "LRTrain.py",
+  "modelBehavior": "ModelProducer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "data-file",
+      "label": "Data file",
+      "type": "str",
+      "description": "Data file to use",
+      "optional": false
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ],
+  "version": 1
+}
+

@@ -1,0 +1,31 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "name": "lr-predict",
+  "label": "Logistic Regression Infer",
+  "program": "LRInfer.py",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "input-file",
+      "label": "Input file to process",
+      "type": "str",
+      "description": "File to process for clustering",
+      "optional": false
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ],
+  "version": 1
+}
+

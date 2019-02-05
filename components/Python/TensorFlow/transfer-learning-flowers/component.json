@@ -1,0 +1,135 @@
+{
+  "engineType": "Tensorflow",
+  "name": "transfer-learning-flowers",
+  "label": "Image Retraining",
+  "program": "retrain.py",
+  "modelBehavior": "ModelProducer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "image_dir",
+      "label": "Input data directory",
+      "type": "str",
+      "description": "Directory for input data",
+      "optional": false,
+      "defaultValue": ""
+    },
+    {
+      "key": "learning_rate",
+      "label": "Learning Rate",
+      "type": "int",
+      "description": "Learning rate",
+      "optional": true,
+      "defaultValue": 0.01
+    },
+    {
+      "key": "how_many_training_steps",
+      "label": "Number of iterations",
+      "type": "int",
+      "description": "Number of training steps",
+      "optional": true,
+      "defaultValue": 10
+    },
+    {
+      "key": "train_batch_size",
+      "label": "Training batch size",
+      "type": "int",
+      "description": "Training batch input size",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "validation_batch_size",
+      "label": "Validation batch size",
+      "type": "int",
+      "description": "Validation batch input size",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "test_batch_size",
+      "label": "Test batch size",
+      "type": "int",
+      "description": "Test batch input size",
+      "optional": true,
+      "defaultValue": -1
+    },
+    {
+      "key": "eval_step_interval",
+      "label": "Stats interval",
+      "type": "int",
+      "description": "How often to evaluate training results",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "saved_model_dir",
+      "label": "Model output dir",
+      "type": "str",
+      "description": "Directory for saving the retrained model",
+      "optional": true,
+      "tag": "model_dir",
+      "defaultValue": ""
+    },
+    {
+      "key": "summaries_dir",
+      "label": "Log directory",
+      "type": "str",
+      "description": "TensorBoard log directory",
+      "optional": true,
+      "defaultValue": "",
+      "tag": "tflog_dir"
+    },
+    {
+      "key": "tfhub_module",
+      "label": "TensorFlow Hub module",
+      "type": "str",
+      "description": "TensorBoard Hub module",
+      "optional": true,
+      "defaultValue": "file:///data-lake/tensorflow/Inception/gitHubDownload"
+    },
+    {
+      "key": "tfhub_cache_dir",
+      "label": "TensorFlow Hub cache directory",
+      "type": "str",
+      "description": "TensorBoard Hub cache directory",
+      "optional": true,
+      "defaultValue": "/tmp/tf_hub_cache"
+    },
+    {
+      "key": "output_graph",
+      "label": "Where to put the output graph",
+      "type": "str",
+      "description": "TF output graph",
+      "optional": true,
+      "defaultValue": "/tmp/output_graph.pb"
+    },
+    {
+      "key": "intermediate_output_graphs_dir",
+      "label": "intermediate graph location",
+      "type": "str",
+      "description": "Where to store intermediate graphs",
+      "optional": true,
+      "defaultValue": "/tmp/intermediate_graph/"
+    },
+    {
+      "key": "summaries_dir",
+      "label": "Summaries directory",
+      "type": "str",
+      "description": "Where to store summaries",
+      "optional": true,
+      "defaultValue": "/tmp/retrain_logs"
+    },
+    {
+      "key": "bottleneck_dir",
+      "label": "Bottleneck directory",
+      "type": "str",
+      "description": "Where to store bottleneck files",
+      "optional": true,
+      "defaultValue": "/tmp/bottleneck"
+    }
+  ],
+  "version": 1
+}

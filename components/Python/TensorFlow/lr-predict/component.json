@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "engineType": "Tensorflow",
+  "name": "lr-predict",
+  "label": "Logistic Regression Inference",
+  "description": "Component is responsible for creating prediction from tensorflow saved model",
+  "program": "lr_infer.py",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "output_file",
+      "label": "Output file",
+      "type": "str",
+      "description": "File for output predictions",
+      "optional": true,
+      "defaultValue": "/tmp/image_predictions"
+    },
+    {
+      "key": "model_dir",
+      "label": "Model dir",
+      "type": "str",
+      "description": "Directory for loading the retrained model",
+      "optional": true,
+      "tag": "input_model_path",
+      "defaultValue": ""
+    }
+  ]
+}
+

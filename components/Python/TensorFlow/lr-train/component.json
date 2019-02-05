@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "engineType": "Tensorflow",
+  "name": "lr-train",
+  "label": "Logistic Regression Train",
+  "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",
+  "program": "lr_train.py",
+  "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "step_size",
+      "label": "Step Size",
+      "type": "float",
+      "description": "Learning rate",
+      "optional": true,
+      "defaultValue": 0.01
+    },
+    {
+      "key": "iterations",
+      "label": "Number of iterations",
+      "type": "int",
+      "description": "Number of training iterations",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "stats_interval",
+      "label": "Statistics Interval",
+      "type": "int",
+      "description": "Print stats after this number of iterations",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "save_dir",
+      "label": "Model output dir",
+      "type": "str",
+      "description": "Directory for saving the trained model",
+      "optional": true,
+      "tag": "model_dir",
+      "defaultValue": ""
+    }
+  ]
+}
+
