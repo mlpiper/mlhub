@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "name": "svc-train",
+  "label": "Support Vector Classification Train",
+  "description": "Component is responsible for running svc training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
+  "program": "svc_train.py",
+  "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
+  "inputInfo": [],
+  "outputInfo": [],
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "num_features",
+      "type": "int",
+      "label": "Number of Features",
+      "description": "Number of Features (columns)",
+      "optional": true,
+      "defaultValue": 21
+    },
+    {
+      "key": "num_samples",
+      "type": "int",
+      "label": "Number of Samples",
+      "description": "Number of Samples (rows)",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "C",
+      "label": "Penalty parameter C",
+      "type": "float",
+      "description": "Penalty parameter C of the error term",
+      "optional": true,
+      "defaultValue": 1.0
+    },
+    {
+      "key": "kernel",
+      "label": "Kernel",
+      "type": "str",
+      "description": "Specifies the kernel type to be used in the algorithm. It must be one of ‘linear’, ‘poly’, ‘rbf’, ‘sigmoid’, ‘precomputed’ or a callable. If none is given, ‘rbf’ will be used. If a callable is given it is used to pre-compute the kernel matrix from data matrices; that matrix should be an array of shape n_samples, n_samples).",
+      "optional": true,
+      "defaultValue": "rbf"
+    },
+    {
+      "key": "degree",
+      "label": "Degree of the polynomial kernel function",
+      "type": "int",
+      "description": "Degree of the polynomial kernel function (‘poly’). Ignored by all other kernels.",
+      "optional": true,
+      "defaultValue": 3
+    },
+    {
+      "key": "gamma",
+      "label": "Gamma",
+      "type": "str",
+      "description": "Kernel coefficient for ‘rbf’, ‘poly’ and ‘sigmoid’.Current default is ‘auto’ which uses 1 / n_features, if gamma='scale' is passed then it uses 1 / (n_features * X.std()) as value of gamma. The current default of gamma, ‘auto’, will change to ‘scale’ in version 0.22. ‘auto_deprecated’, a deprecated version of ‘auto’ is used as a default indicating that no explicit value of gamma was passed.",
+      "optional": true,
+      "defaultValue": "auto"
+    },
+    {
+      "key": "tol",
+      "label": "Tolerance for stopping criterion",
+      "type": "float",
+      "description": "Tolerance for stopping criterion.",
+      "optional": true,
+      "defaultValue": 0.001
+    },
+    {
+      "key": "max_iter",
+      "label": "Maximum number of iterations",
+      "type": "int",
+      "description": "Maximum number of iterations taken for the algorithm to converge",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ]
+}
+

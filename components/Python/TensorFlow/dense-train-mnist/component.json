@@ -1,0 +1,46 @@
+{
+    "version": 1,
+    "engineType": "Python",
+    "language": "Python",
+    "name": "dense-train-mnist",
+    "label": "Dense Train mnist",
+    "program": "mnist_saved_model.py",
+    "modelBehavior": "ModelProducer",
+    "group": "Algorithms",
+    "inputInfo": [],
+    "outputInfo": [],
+    "arguments": [
+        {
+            "key": "training_iteration",
+            "label": "Number of Iterations",
+            "type": "int",
+            "description": "Number of training iterations",
+            "optional": true,
+            "defaultValue": 1000
+        },
+        {
+            "key": "display_step",
+            "label": "Display step",
+            "type": "int",
+            "description": "How often to display stats",
+            "optional": true,
+            "defaultValue": 100
+        },
+        {
+            "key": "save_dir",
+            "label": "Model output directory",
+            "type": "str",
+            "description": "Directory for saving the trained model",
+            "optional": false,
+            "tag": "model_dir"
+        },
+        {
+            "key": "input_cache_dir",
+            "label": "Input cache directory",
+            "type": "str",
+            "description": "Directory for caching the input files",
+            "optional": true,
+            "defaultValue": "/data-lake/mnist_data"
+        }
+    ]
+}
