@@ -1,0 +1,45 @@
+{
+  "engineType": "Tensorflow",
+  "name": "predict-flowers",
+  "label": "Image Inference",
+  "program": "predict.py",
+  "modelBehavior": "ModelConsumer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "image_base_dir",
+      "label": "Input data directory",
+      "type": "str",
+      "description": "Directory for input data",
+      "optional": false
+    },
+    {
+      "key": "output_file",
+      "label": "Output file",
+      "type": "str",
+      "description": "File for output predictions",
+      "optional": true,
+      "defaultValue": "/tmp/image_predictions"
+    },
+    {
+      "key": "model_dir",
+      "label": "Model dir",
+      "type": "str",
+      "description": "Directory for loading the retrained model",
+      "optional": true,
+      "tag": "input_model_path",
+      "defaultValue": ""
+    },
+    {
+      "key": "total_predictions",
+      "label": "Number of predictions",
+      "type": "int",
+      "description": "Number of predictions to make",
+      "optional": true,
+      "defaultValue": 100
+    }
+  ],
+  "version": 1
+}

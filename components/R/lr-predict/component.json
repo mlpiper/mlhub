@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "R",
+  "name": "lr-predict",
+  "label": "Linear Regression Inference",
+  "description": "Component is responsible for creating prediction from given model",
+  "program": "LRInfer.R",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+

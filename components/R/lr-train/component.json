@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "R",
+  "name": "lr-train",
+  "label": "Linear Regression Train",
+  "description": "Component is responsible for running linear regression training on synthetic data",
+  "group": "Algorithms",
+  "program": "LRTrain.R",
+  "modelBehavior": "ModelProducer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "num-samples",
+      "label": "Number of Samples",
+      "type": "int",
+      "description": "Number of synthetic samples to generate",
+      "optional": true,
+      "default": 50
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ]
+}
+
