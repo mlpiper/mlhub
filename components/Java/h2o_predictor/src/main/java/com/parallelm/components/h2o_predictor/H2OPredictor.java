@@ -28,6 +28,8 @@ import hex.genmodel.easy.prediction.*;
 import hex.genmodel.MojoModel;
 import org.apache.log4j.PatternLayout;
 
+import static java.lang.System.out;
+
 abstract class SampleReader {
 
     abstract public RowData nextSample() throws Exception;
