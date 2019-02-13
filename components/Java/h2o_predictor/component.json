@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Java",
+  "userStandalone": false,
+  "name": "h2o_predictor",
+  "label": "H2O Predictor using MOJO",
+  "program": "h2o_predictor.jar",
+  "componentClass": "com.parallelm.components.h2o_predictor.H2OPredictor",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [
+    {
+      "label": "samples-file",
+      "description": "Samples Input file, csv format. First line should contain features names",
+      "defaultComponent": "",
+      "type": "str",
+      "group": "data"
+    }
+  ],
+  "outputInfo": [
+    {
+      "label": "predictions-file",
+      "description": "Output file containing predictions",
+      "defaultComponent": "",
+      "type": "str",
+      "group": "data"
+    }
+  ],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "input_model",
+      "label": "Model input file",
+      "description": "File to use for loading the model",
+      "type": "str",
+      "optional": true,
+      "tag": "input_model_path"
+    },
+    {
+      "key": "samples_file",
+      "label": "Prediction samples file",
+      "description": "Samples Input file, csv format. First line should contain features names",
+      "type": "str",
+      "optional": true
+    },
+    {
+      "key": "output_file",
+      "label": "Predictions output file",
+      "description": "File to save predictions in, if a directory is provided then the file is created inside",
+      "type": "str",
+      "optional": true
+    }
+  ]
+}

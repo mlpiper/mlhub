@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "group": "ModelConnectors",
+  "name": "model_connector_h2o_open",
+  "label": "H2o.ai Open Model Connector",
+  "description": "H2o.ai model connector, to fetch model from H2o server",
+  "icon": "h2o.png",
+  "userStandalone": false,
+  "program": "main.py",
+  "componentClass": "ComponentH2oModelConnector",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [
+    {
+      "description": "Model",
+      "label": "model",
+      "defaultComponent": "",
+      "type": "object",
+      "group": "model"
+    }
+  ],
+  "arguments": [
+    {
+      "key": "server_url",
+      "label": "Server URL",
+      "description": "URL of H2o.ai server...",
+      "type": "str"
+    },
+    {
+      "key": "model_name",
+      "label": "Model Name",
+      "description": "Model name to fetch",
+      "type": "str",
+      "tag": "can_list"
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "group": "ModelConnectors",
+  "name": "model_connector_url",
+  "label": "URL Connector",
+  "description": "Import a model given its URL",
+  "icon": "url_icon",
+  "userStandalone": false,
+  "program": "main.py",
+  "componentClass": "MCenterComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [
+    {
+      "description": "Model",
+      "label": "model",
+      "defaultComponent": "",
+      "type": "object",
+      "group": "model"
+    }
+  ],
+  "arguments": [
+    {
+      "key": "url",
+      "label": "Model URL",
+      "description": "URL of to download model from",
+      "type": "str"
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "group": "ModelConnectors",
+  "name": "model_connector_s3",
+  "label": "S3 Model Connector",
+  "description": "Importing a model from an S3 bucket",
+  "icon": "s3.png",
+  "userStandalone": false,
+  "program": "main.py",
+  "componentClass": "MCenterComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [
+    {
+      "description": "Model",
+      "label": "model",
+      "defaultComponent": "",
+      "type": "object",
+      "group": "model"
+    }
+  ],
+  "arguments": [
+    {
+      "key": "aws_access_key_id",
+      "label": "AWS Access Key",
+      "description": "AWS Access Key",
+      "type": "str"
+    },
+    {
+      "key": "aws_secret_access_key",
+      "label": "AWS secret access key",
+      "description": "AWS secret access key",
+      "type": "str"
+    },
+    {
+      "key": "region",
+      "label": "AWS Region",
+      "description": "AWS Region",
+      "type": "str"
+    },
+    {
+      "key": "bucket",
+      "label": "S3 bucket name",
+      "description": "S3 bucket name",
+      "type": "str"
+    },
+    {
+      "key": "key",
+      "label": "S3 Key",
+      "description": "S3 Key",
+      "type": "str"
+    }
+  ]
+}

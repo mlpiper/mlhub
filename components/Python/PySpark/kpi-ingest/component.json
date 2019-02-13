@@ -1,0 +1,22 @@
+{
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "kpi-ingest",
+  "label": "KPI Ingest",
+  "program": "main.py",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "kpi-file",
+      "label": "KPI File",
+      "type": "str",
+      "description": "Path of the file containing the KPI values",
+      "optional": false
+    }
+  ],
+  "version": 1
+}
