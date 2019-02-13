@@ -80,7 +80,6 @@ abstract class PredictionWriter {
     abstract public void writeHeader(ArrayList<String> header) throws Exception;
     abstract public void writePrediction(ArrayList<Object> record) throws Exception;
     abstract public void close() throws Exception;
-
 }
 
 class CSVPredictionWriter extends PredictionWriter {
@@ -194,12 +193,15 @@ public class H2OPredictor extends MCenterComponent
 
     }
 
-    private void loadModel() throws Exception {
+    //private void loadModel() throws Exception {
+    public void loadModel() throws Exception {
 
         boolean convertUnknownCategoricalLevelsToNa =
                 (boolean) params.getOrDefault("convert_unknown_categorical_levels_to_na", true);
         boolean convertInvalidNumbersToNa =
                 (boolean) params.getOrDefault("convert_invalid_numbers_to_na", true);
+
+        modelFilePath = Paths.get((String) params.get("input_model"));
 
         mojoModel = MojoModel.load(modelFilePath.toString());
         EasyPredictModelWrapper.Config config =  new EasyPredictModelWrapper.Config()
@@ -311,6 +313,8 @@ public class H2OPredictor extends MCenterComponent
             System.exit(1);
         }
         System.out.println(options);
+
+        out.println("options:  "+ options);
 
         middleComponent.configure(options.getAttrs());
         List<Object> parentObjs = new ArrayList<Object>();
