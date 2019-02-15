@@ -67,11 +67,11 @@ def main():
     ########## End of ParallelM instrumentation ################
 
     # Samples with high probability
-    high_prob_samples = test_features[np.where(maximum_prob > confidence)]
-    high_prob_predictions = result[np.where(maximum_prob > confidence)]
+    high_prob_samples = test_features[np.where(maximum_prob >= confidence)]
+    high_prob_predictions = result[np.where(maximum_prob >= confidence)]
     unique_elements_high, counts_elements_high = np.unique(high_prob_predictions, return_counts=True)
     unique_elements_high = [str(i) for i in unique_elements_high]
-    print("High confidence predictions: \n {0} \n with frequency {1}".format(unique_elements_high, counts_elements_low))
+    print("High confidence predictions: \n {0} \n with frequency {1}".format(unique_elements_high, counts_elements_high))
 
     ########## Start of ParallelM instrumentation ##############
     # BarGraph showing distribution of high confidence labels

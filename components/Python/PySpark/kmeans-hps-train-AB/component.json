@@ -1,0 +1,51 @@
+{
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "kmeans-hps-train-AB",
+  "label": "kmeans-hps-train-AB",
+  "program": "KmeansTrainingHPS_AB.py",
+  "modelBehavior": "ModelProducer",
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "data-file",
+      "label": "Data file",
+      "type": "str",
+      "description": "Data file to use",
+      "optional": false
+    },
+    {
+      "key": "with-headers",
+      "label": "with headers",
+      "type": "str",
+      "description": "Data file is with headers",
+      "optional": false
+    },
+    {
+      "key": "KRange",
+      "label": "KRange",
+      "type": "str",
+      "description": "Number of clusters. values to scan",
+      "optional": false
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    },
+    {
+      "key": "temp-shared-path",
+      "label": "Shared path",
+      "type": "str",
+      "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
+      "optional": true
+    }
+  ],
+  "version": 1
+}

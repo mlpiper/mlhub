@@ -1,8 +1,8 @@
 {
   "engineType": "Python",
   "language": "Python",
-  "name": "lr-train",
-  "label": "Logistic Regression Train",
+  "name": "logistic-hps-train",
+  "label": "logistic-hps-train",
   "program": "LRTrain.py",
   "modelBehavior": "ModelProducer",
   "inputInfo": [],
@@ -16,6 +16,14 @@
       "type": "str",
       "description": "Data file to use",
       "optional": false
+    },
+    {
+      "key": "regularization-range",
+      "label": "regularization-range",
+      "type": "str",
+      "description": "Regularization HPS list",
+      "optional": true,
+      "defaultValue": "0.001,0.01,0.1,1.0,10,100"
     },
     {
       "key": "output-model",

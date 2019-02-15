@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 import pandas as pd
 from sklearn.model_selection import cross_val_score
+from sklearn.model_selection import GridSearchCV
 import argparse
 import sys
 
@@ -19,6 +20,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-file", help="Data file to use as input")
     parser.add_argument("--output-model", help="Data file to save model")
+    parser.add_argument("--regularization-range", help="Regularization HPS list",
+                        default="0.001,0.01,0.1,1.0,10,100", required=False)
     options = parser.parse_args()
     return options
 
@@ -28,6 +31,7 @@ def main():
     print("PM: Configuration:")
     print("PM: Data file:            [{}]".format(pm_options.data_file))
     print("PM: Output model:         [{}]".format(pm_options.output_model))
+    print("PM: regularization_range:         [{}]".format(pm_options.regularization_range))
 
     mlops.init()
 
@@ -40,31 +44,33 @@ def main():
 
     # Hyper-parameter search using k-fold cross-validation
     # Applying k_fold cross validation
-    regularization = [0.001, 0.01, 0.1, 1.0, 10, 100]
-    accuracy = np.zeros((len(regularization),))
+    regularization_range = pm_options.regularization_range.split(',')
+    regularization = [float(regularization_var) for regularization_var in regularization_range]
+    tune_parameters = [{'C': regularization}]
 
-    for a in range(0,len(regularization)):
-        # Initialize logistic regression algorithm
-        clf = LogisticRegression(class_weight='balanced', multi_class='multinomial', solver='lbfgs', C = regularization[a])
-        accuracies = cross_val_score(estimator = clf, X = features, y = labels, cv = 10)
-        accuracy[a] = accuracies.mean()
-    print('Accuracy values: \n {0} \n for C values: \n{1}'.format(accuracy, regularization))
+    # Initialize logistic regression algorithm
+    LR = LogisticRegression(class_weight='balanced', multi_class='multinomial', solver='lbfgs')
+    clf = GridSearchCV(LR, tune_parameters, cv=5,
+                       scoring='accuracy')
+    clf.fit(features, labels)
+    print("best parameter = ", clf.best_params_)
+    accuracy = clf.cv_results_['mean_test_score']
+    print('Accuracy values: \n {0} \n for `Regularization values: \n{1}'.format(accuracy, regularization))
 
     ########## Start of ParallelM instrumentation ##############
     # Report Hyper-parameter Table
     tbl = Table().name("Hyper-parameter Search Results").cols(["Mean accuracy from k-fold cross-validation"])
     print("length of regularization",len(regularization))
+    index_max = np.argmax(accuracy)
     for a in range(0,len(regularization)):
         print("adding row", regularization[a])
-        tbl.add_row("C = " + np.str(regularization[a]),[accuracy[a]])
+        if a == index_max:
+            tbl.add_row("[Best] Regularization = " + np.str(regularization[a]),[accuracy[a]])
+        else:
+            tbl.add_row("Regularization = " + np.str(regularization[a]),[accuracy[a]])
     mlops.set_stat(tbl)
     ########## End of ParallelM instrumentation ##############
 
-
-    # Choose the optimal model that should be deployed into production
-    index_max = np.argmax(accuracy)
-    final_model = LogisticRegression(class_weight='balanced', multi_class='multinomial', solver='lbfgs', C = regularization[index_max])
-    final_model.fit(features,labels)
 
     # Label distribution in training
     label_distribution = dataset['label'].value_counts()
@@ -89,7 +95,7 @@ def main():
     # Save the model
     import pickle
     model_file =  open(pm_options.output_model, 'wb')
-    pickle.dump(final_model, model_file)
+    pickle.dump(clf, model_file)
     model_file.close()
     mlops.done()
 
