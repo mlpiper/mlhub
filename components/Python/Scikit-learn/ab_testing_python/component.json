@@ -1,0 +1,99 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "name": "ab_testing_python",
+  "label": "A/B Test Evaluator (Python)",
+  "program": "main.py",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "confidence",
+      "label": "90 or 95 or 99",
+      "type": "int",
+      "description": "90 or 95 or 99",
+      "optional": true
+    },
+    {
+      "key": "uplift",
+      "label": "uplift",
+      "type": "int",
+      "description": "uplift desired",
+      "optional": true
+    },
+    {
+      "key": "samplesA",
+      "label": "Stat storing samples (A)",
+      "type": "str",
+      "description": "Stat storing samples of A pipeline",
+      "optional": true
+    },
+    {
+      "key": "samplesB",
+      "label": "Stat storing samples (B)",
+      "type": "str",
+      "description": "Stat storing samples of B pipeline",
+      "optional": true
+    },
+    {
+      "key": "conversionsA",
+      "label": "Stat storing conversions (A)",
+      "type": "str",
+      "description": "Stat storing conversions of A pipeline",
+      "optional": true
+    },
+    {
+      "key": "conversionsB",
+      "label": "Stat storing conversions (B)",
+      "type": "str",
+      "description": "Stat storing conversions of B pipeline",
+      "optional": true
+    },
+    {
+      "key": "nodeA",
+      "label": "node running pipeline (A)",
+      "type": "str",
+      "description": "node running pipeline (A)",
+      "optional": false
+    },
+    {
+      "key": "nodeB",
+      "label": "node running pipeline (B)",
+      "type": "str",
+      "description": "node running pipeline (B)",
+      "optional": false
+    },
+    {
+      "key": "agentA",
+      "label": "agent running pipeline (A)",
+      "type": "str",
+      "description": "agent running pipeline (A)",
+      "optional": false
+    },
+    {
+      "key": "agentB",
+      "label": "agent running pipeline (B)",
+      "type": "str",
+      "description": "agent running pipeline (B)",
+      "optional": false
+    },
+    {
+      "key": "champion",
+      "label": "champion (A) model name",
+      "type": "str",
+      "description": "champion (A) model name",
+      "optional": true
+    },
+    {
+      "key": "challenger",
+      "label": "challenger (B) model name",
+      "type": "str",
+      "description": "challenger (B) model name",
+      "optional": true
+    }
+  ],
+  "version": 1
+}

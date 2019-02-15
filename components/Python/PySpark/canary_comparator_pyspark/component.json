@@ -1,0 +1,57 @@
+{
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "canary_comparator_pyspark",
+  "label": "Production-Canary Comparator (PySpark)",
+  "program": "main.py",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "predictionHistogramA",
+      "label": "Prediction Histogram (real)",
+      "type": "str",
+      "description": "Name of the statistic that is used to output prediction histograms of real pipeline",
+      "optional": true
+    },
+    {
+      "key": "predictionHistogramB",
+      "label": "Prediction Histogram (Canary)",
+      "type": "str",
+      "description": "Name of the statistic that is used to output prediction histograms of canary pipeline",
+      "optional": true
+    },
+    {
+      "key": "nodeA",
+      "label": "Node Name (Real)",
+      "type": "str",
+      "description": "Name of the node that contains the Real pipeline",
+      "optional": false
+    },
+    {
+      "key": "nodeB",
+      "label": "Node Name (Canary)",
+      "type": "str",
+      "description": "Name of the node that contains the Canary pipeline",
+      "optional": false
+    },
+    {
+      "key": "agentA",
+      "label": "Agent Name (Real)",
+      "type": "str",
+      "description": "Name of the agent that will run the Real pipeline",
+      "optional": false
+    },
+    {
+      "key": "agentB",
+      "label": "Agent Name (Canary)",
+      "type": "str",
+      "description": "Name of the agent that will run the Canary pipeline",
+      "optional": false
+    }
+  ],
+  "version": 1
+}
