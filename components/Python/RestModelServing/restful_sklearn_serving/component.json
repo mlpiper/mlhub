@@ -13,6 +13,19 @@
   "inputInfo": [],
   "outputInfo": [],
   "arguments": [
+    { "key": "ignore-incompatible-model",
+      "label": "Ignore incompatible model",
+      "description": "If True, Ignore an incompatible model provided to component and continue. If False, faile component ",
+      "type": "boolean",
+      "default": false,
+      "optional": true
+    },
+    { "key": "required-python-version",
+      "label": "Required python version",
+      "description": "If provided, fail if python version used is not the same as required (e.g. 2)",
+      "type": "boolean",
+      "optional": true
+    },
     { "key": "input-model-path",
       "label": "Model input file",
       "type": "str",
