@@ -193,7 +193,6 @@ public class H2OPredictor extends MCenterComponent
 
     }
 
-    //private void loadModel() throws Exception {
     public void loadModel() throws Exception {
 
         boolean convertUnknownCategoricalLevelsToNa =
