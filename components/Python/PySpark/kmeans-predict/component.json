@@ -1,0 +1,44 @@
+{
+  "engineType": "PySpark",
+  "language": "Python",
+  "name": "kmeans-predict",
+  "label": "kmeans-predict",
+  "program": "main.py",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "threshold",
+      "label": "Kmeans threshold",
+      "type": "double",
+      "description": "Threshold on distance from nearest cluster",
+      "optional": false
+    },
+    {
+      "key": "input-file",
+      "label": "Input file to process",
+      "type": "str",
+      "description": "File to process for clustering",
+      "optional": false
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    },
+    {
+      "key": "temp-shared-path",
+      "label": "Shared path",
+      "type": "str",
+      "description": "Temporary shared path for model transfer, paths with prefix file:// or hdfs://",
+      "optional": true
+    }
+  ],
+  "version": 1
+}

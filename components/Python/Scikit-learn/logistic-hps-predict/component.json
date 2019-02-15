@@ -1,8 +1,8 @@
 {
   "engineType": "Python",
   "language": "Python",
-  "name": "lr-predict",
-  "label": "Logistic Regression Infer",
+  "name": "logistic-hps-predict",
+  "label": "logistic-hps-predict",
   "program": "LRInfer.py",
   "modelBehavior": "ModelConsumer",
   "useMLOps": true,
