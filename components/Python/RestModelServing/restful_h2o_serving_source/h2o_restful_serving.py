@@ -1,29 +1,26 @@
-from contextlib import closing
 import glob
 import logging
 import os
 import signal
 import socket
-import time
 import subprocess
-
-from py4j.java_gateway import JavaGateway, get_field
-from py4j.java_gateway import GatewayParameters, CallbackServerParameters
-
+import time
+from contextlib import closing
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components.restful.flask_route import FlaskRoute
 from parallelm.components.restful_component import RESTfulComponent
-from parallelm.pipeline.components_desc import ComponentsDesc
 from parallelm.pipeline.component_dir_helper import ComponentDirHelper
+from parallelm.pipeline.components_desc import ComponentsDesc
+from py4j.java_gateway import GatewayParameters, CallbackServerParameters
+from py4j.java_gateway import JavaGateway, get_field
 
 
 class H2oRESTfulServing(RESTfulComponent):
-
     JAVA_COMPONENT_ENTRY_POINT_CLASS = "com.parallelm.mlcomp.ComponentEntryPoint"
     JAVA_COMPONENT_CLASS_NAME = "com.parallelm.components.restful.H2oModelServing"
 
     class Java:
-        implements = ["com.parallelm.mlcomp.MLOps"]
+        implements = ["org.mlpiper.mlops.MLOps"]
 
     def __init__(self, engine):
         super(H2oRESTfulServing, self).__init__(engine)
@@ -138,15 +135,17 @@ class H2oRESTfulServing(RESTfulComponent):
     @FlaskRoute('/predict', raw=True)
     def predict(self, query_string, body_data):
         if self._verbose:
-            self._logger.debug(self._prefix_msg + "predict, query_string: {}, body_data: {}".format(query_string, body_data))
+            self._logger.debug(
+                self._prefix_msg + "predict, query_string: {}, body_data: {}".format(query_string, body_data))
 
         if self._model_loaded:
             result = self._component_via_py4j.predict(query_string, body_data)
             returned_code = get_field(result, "returned_code")
             json = get_field(result, "json")
             if self._verbose:
-                self._logger.debug(self._prefix_msg + "got response ... code: {}, json: {}".format(returned_code, str(json)))
-            return(returned_code, str(json))
+                self._logger.debug(
+                    self._prefix_msg + "got response ... code: {}, json: {}".format(returned_code, str(json)))
+            return (returned_code, str(json))
         else:
             return 404, '{"error": "H2O model was not loaded yet!"}'
 
