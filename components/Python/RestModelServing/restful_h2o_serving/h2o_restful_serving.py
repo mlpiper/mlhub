@@ -23,7 +23,7 @@ class H2oRESTfulServing(RESTfulComponent):
     JAVA_COMPONENT_CLASS_NAME = "com.parallelm.components.restful.H2oModelServing"
 
     class Java:
-        implements = ["com.parallelm.mlcomp.MLOps"]
+        implements = ["org.mlpiper.mlops.MLOps"]
 
     def __init__(self, engine):
         super(H2oRESTfulServing, self).__init__(engine)
