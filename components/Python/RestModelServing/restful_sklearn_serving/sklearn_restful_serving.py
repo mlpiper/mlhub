@@ -80,7 +80,7 @@ class SklearnRESTfulServing(RESTfulComponent):
             result_json["model_load_error"] = self._model_loading_error
 
         if self._model:
-            if not hasattr(self._model, "n_features_"):
+            if hasattr(self._model, "n_features_"):
                 result_json["n_features"] = self._model.n_features_
                 result_json["expected_input_format"] += ", where vector has {} comma separated values".format(self._model.n_features_)
 
