@@ -1,0 +1,49 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "name": "slack-events",
+  "label": "slack-events",
+  "program": "main.py",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "token",
+      "label": "Slack Token",
+      "type": "str",
+      "description": "Slack application token",
+      "optional": false
+    },
+    {
+      "key": "channel-name",
+      "label": "channel name",
+      "type": "str",
+      "description": "channel to write messages to",
+      "optional": false
+    },
+    {
+      "key": "alert",
+      "label": "alert",
+      "type": "string",
+      "description": "show only alerts if set to True",
+      "defaultValue": "True",
+      "uiType": "select",
+      "optional": true,
+      "options": [
+        {
+          "label": "True",
+          "value": "True"
+        },
+        {
+          "label": "False",
+          "value": "False"
+        }
+      ]
+    }
+  ],
+  "version": 1.01
+}
+
