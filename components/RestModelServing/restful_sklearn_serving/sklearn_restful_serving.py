@@ -3,12 +3,25 @@ import numpy as np
 import os
 import pickle
 import pprint
+import random
 import sklearn
 import sys
 import warnings
 
+uwsgi_loaded = False
+try:
+    import uwsgi
+    uwsgi_loaded = True
+except ImportError:
+    pass
+
 from parallelm.components.restful.flask_route import FlaskRoute
 from parallelm.components.restful_component import RESTfulComponent
+
+from parallelm.components.restful.metric.constants import MetricType, MetricRelation
+from parallelm.components.restful.metric.generic_metric import GenericMetric
+from parallelm.components.restful.metric.hidden_metric_per_win_time import HiddenMetricPerWinTime
+from parallelm.components.restful.metric.complex_metric_per_win_time import ComplexMetricPerWinTime
 
 
 class SklearnRESTfulServing(RESTfulComponent):
@@ -20,6 +33,22 @@ class SklearnRESTfulServing(RESTfulComponent):
         self._model_loading_error = None
         self._params = {}
         self._verbose = self._logger.isEnabledFor(logging.DEBUG)
+
+        self._metric1 = HiddenMetricPerWinTime("requests.per.win.time")
+
+        self._metric2 = GenericMetric(
+            name="distance.per.req",
+            title="Avg Distance / time-window [per-reqs]",
+            metric_type=MetricType.COUNTER_PER_WIN_TIME,
+            value_type=float,
+            metric_relation=MetricRelation.AVG_PER_REQUEST)
+
+        self._metric3 = ComplexMetricPerWinTime(
+            name="distance.per.counter",
+            title="Avg Distance / time-window [counter.per.reqs]",
+            value_type=float,
+            metric_relation=MetricRelation.DIVIDE_BY,
+            related_metric=self._metric1)
 
         self.info_json = {
             "sample_keyword": SklearnRESTfulServing.JSON_KEY_NAME,
@@ -118,6 +147,20 @@ class SklearnRESTfulServing(RESTfulComponent):
                 error_json = {"error": "Error performing prediction: {}".format(e)}
                 error_json.update(self.info_json)
                 return 404, error_json
+
+    @FlaskRoute('/metric-test')
+    def metric_test(self, url_params, form_params):
+        try:
+            self._metric1.increase(1)
+
+            confident_num = random.random()
+
+            # The values in the graphs are supposed to be the same
+            self._metric2.increase(confident_num)
+            self._metric3.increase(confident_num)
+            return 200, {"response": "ok"}
+        except Exception as ex:
+            return 404, {"message": str(ex)}
 
 
 if __name__ == '__main__':
