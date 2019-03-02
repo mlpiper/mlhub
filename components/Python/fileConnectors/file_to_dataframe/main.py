@@ -19,9 +19,10 @@ class MCenterComponentAdapter(ConnectableComponent):
         super(self.__class__, self).__init__(engine)
 
     def _materialize(self, parent_data_objs, user_data):
-        file_path = str(parent_data_objs[0])
-        if file_path is None:
-            file_path = self._params.get('file_path')
+        if len(parent_data_objs) is not 0:
+            file_path = str(parent_data_objs[0])
+        else:
+            file_path = self._params.get('file-path')
         return [read_file_to_df(self, file_path)]
 
 
