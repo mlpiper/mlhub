@@ -22,16 +22,16 @@ class MCenterComponentAdapter(ConnectableComponent):
         file_path = str(parent_data_objs[0])
         if file_path is None:
             file_path = self._params.get('file_path')
-        return [read_file_to_df(file_path)]
+        return [read_file_to_df(self, file_path)]
 
 
-def read_file_to_df(filepath):
+def read_file_to_df(self, filepath):
     """
     Read file and return DataFrame
     """
     mlops.init()
     if not os.path.exists(filepath):
-        print("stderr- failed to find {}".format(filepath), file=sys.stderr)
+        self._logger.info("stderr- failed to find {}".format(filepath), file=sys.stderr)
         raise Exception("file path does not exist: {}".format(filepath))
 
     test_data = pandas.read_csv(filepath)
