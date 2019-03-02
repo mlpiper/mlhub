@@ -1,0 +1,32 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "userStandalone": false,
+  "name": "df_label_encoding",
+  "label": "Feature Engineering: Label Encoding DataFrame",
+  "program": "main.py",
+  "componentClass": "MCenterComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [
+    {
+      "description": "Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "outputInfo": [
+    {
+      "description": "Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "group": "FeatureEng",
+  "arguments": [],
+  "version": 1
+}
