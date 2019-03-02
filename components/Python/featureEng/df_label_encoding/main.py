@@ -34,6 +34,7 @@ def do_label_encoding(df_data):
     Cleanup: (Feature Engineering)
         a) simple label encoding, convert string to real values
         b) remove NaN's drop rows with NaN
+        c) using mlops APIs get Data Distribution stats
     """
     for column in df_data.columns:
         if df_data[column].dtype == type(object):
