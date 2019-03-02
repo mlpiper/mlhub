@@ -20,7 +20,7 @@ class MCenterComponentAdapter(ConnectableComponent):
 
     def _materialize(self, parent_data_objs, user_data):
         df_results = parent_data_objs[0]
-        results_path = self._params.get('file_path')
+        results_path = self._params.get('file-path')
         return [df_to_file(df_results, results_path)]
 
 
