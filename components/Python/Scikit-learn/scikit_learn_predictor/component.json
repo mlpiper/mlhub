@@ -1,0 +1,41 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "userStandalone": false,
+  "name": "scikit_learn_predictor",
+  "label": "Scikit Learn Predictor",
+  "program": "main.py",
+  "componentClass": "MCenterComponentAdapter",
+  "modelBehavior": "ModelConsumer",
+  "useMLOps": true,
+  "inputInfo": [
+    {
+      "description": "Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "outputInfo": [
+    {
+      "description": "Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "group": "Algorithms",
+  "arguments": [
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading the model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ],
+  "version": 1
+}
