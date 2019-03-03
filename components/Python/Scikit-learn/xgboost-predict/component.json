@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "engineType": "Python",
+  "language": "Python",
+  "name": "xgboost-predict",
+  "label": "XGBoost Classification Prediction",
+  "description": "Component is responsible for creating prediction from given scikit-learn pickled model",
+  "program": "xgboost_infer.py",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "num_features",
+      "type": "int",
+      "label": "Number of Features",
+      "description": "Number of Features (columns)",
+      "optional": true,
+      "defaultValue": 21
+    },
+    {
+      "key": "num_samples",
+      "type": "int",
+      "label": "Number of Samples",
+      "description": "Number of Samples (rows)",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "auc_threshold",
+      "label": "Least AUC Requirement",
+      "type": "float",
+      "description": "If AUC goes below given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "ks_threshold",
+      "label": "Max KS Threshold Requirement",
+      "type": "float",
+      "description": "If KS goes above given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "psi_threshold",
+      "label": "Least PSI Requirement",
+      "type": "float",
+      "description": "If PSI goes below given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "input_file",
+      "label": "Input Data File",
+      "type": "str",
+      "description": "File to use for inference. If file is provided, then data will not be synthetic.",
+      "optional": true,
+      "defaultValue": ""
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+
