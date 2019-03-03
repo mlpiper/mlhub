@@ -7,15 +7,14 @@ import sys
 
 import numpy as np
 import pandas as pd
+from scipy.stats import ks_2samp
+from sklearn.datasets import make_classification
+
 from parallelm.mlops import StatCategory as st
 from parallelm.mlops import mlops as mlops
 from parallelm.mlops.predefined_stats import PredefinedStats
 from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.table import Table
-from scipy.stats import ks_2samp
-from sklearn.datasets import make_classification
-from sklearn.metrics import accuracy_score, roc_auc_score
-
 
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
@@ -29,26 +28,35 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_samples", help="# Samples")
     parser.add_argument("--num_features", help="# Features")
+    parser.add_argument("--input_file", help="Input Data File")
 
-    parser.add_argument("--auc_threshold", help="AUC Threshold")
     parser.add_argument("--ks_threshold", help="KS Threshold")
     parser.add_argument("--psi_threshold", help="PSI Threshold")
-    parser.add_argument("--input_file", help="Input Data File")
 
     parser.add_argument("--input-model", help="Path of Input Model to Create")
     options = parser.parse_args()
     return options
 
 
-def get_psi(v1, v2, num=10):
+def get_psi(v1_in, v2_in, num=10):
     """
     calculate PSI.
 
-    :param v1: vector 1
-    :param v2: vector 2
+    :param v1_in: vector 1
+    :param v2_in: vector 2
     :param num: number of bins
     :return: PSI Value
     """
+    if len(v1_in) < 2:
+        v1 = v2_in
+        v2 = np.zeros(1)
+    elif len(v2_in) == 0:
+        v1 = v1_in
+        v2 = np.zeros(1)
+    else:
+        v1 = v1_in
+        v2 = v2_in
+
     rank1 = pd.qcut(v1, num, labels=False) + 1
 
     basepop1 = pd.DataFrame({'v1': v1, 'rank1': rank1})
@@ -96,7 +104,6 @@ def main():
     print("PM: # Sample:                    [{}]".format(pm_options.num_samples))
     print("PM: # Features:                  [{}]".format(pm_options.num_features))
 
-    print("PM: # AUC Threshold:             [{}]".format(pm_options.auc_threshold))
     print("PM: # KS Threshold:              [{}]".format(pm_options.ks_threshold))
     print("PM: # PSI Threshold:             [{}]".format(pm_options.psi_threshold))
 
@@ -125,8 +132,7 @@ def main():
         data_file_obj = open(data_filename, 'rb')
         data = np.loadtxt(data_file_obj)
 
-        X = data[:, 1:]  # select columns 1 through end
-        y = data[:, 0]
+        X = data  # select columns 1 through end
 
     except Exception as e:
         print("Generating Synthetic Data Because {}".format(e))
@@ -147,51 +153,32 @@ def main():
         if random.randint(1, 21) / 2 == 0:
             print("Adding Random Noise!")
 
-            noisy_features = np.random.uniform(0, 100) * \
+            noisy_features = np.random.uniform(0, 1) * \
                              np.random.normal(0, 1,
                                               (num_samples, num_features))
             X = X + noisy_features
 
     # Separate into features and labels
     features = X
-    labels = y
 
-    min_auc_requirement = float(pm_options.auc_threshold)
     max_ks_requirement = float(pm_options.ks_threshold)
     min_psi_requirement = float(pm_options.psi_threshold)
 
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data and compare it automatically with the ones
-    # reported during training to generate the similarity score.
     mlops.set_data_distribution_stat(features)
 
     # Output the number of samples being processed using MCenter
     mlops.set_stat(PredefinedStats.PREDICTIONS_COUNT, len(features), st.TIME_SERIES)
 
-    #     Accuracy for the chosen model
+    # Accuracy for the chosen model
     pred_labels = final_model.predict(features)
     pred_probs = final_model.predict_proba(features)
 
-    print("Pred Labels: ", pred_labels)
-    print("Pred Probabilities: ", pred_probs)
+    print("Pred Labels: ", pred_labels)  # Remove printout can be huge
+    print("Pred Probabilities: ", pred_probs)  # Remove printout can be huge
 
-    accuracy = accuracy_score(labels, pred_labels)
-    print("Accuracy values: \n {0}".format(accuracy))
-    #     Output accuracy of the chosen model using MCenter
-    mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
-
-    # Label distribution in training
-    value, counts = np.unique(labels, return_counts=True)
-    label_distribution = np.asarray((value, counts)).T
-    # column_names = value.astype(str).tolist()
-    print("Actual Label distributions: \n {0}".format(label_distribution))
-
-    # Output Label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("Actual Label Distribution").cols((label_distribution[:, 0]).astype(str).tolist()).data(
-        (label_distribution[:, 1]).tolist())
-    mlops.set_stat(bar)
-
-    # Pred Label distribution in training
+    # Pred Label distribution
     pred_value, pred_counts = np.unique(pred_labels, return_counts=True)
     pred_label_distribution = np.asarray((pred_value, pred_counts)).T
     # pred_column_names = pred_value.astype(str).tolist()
@@ -203,31 +190,39 @@ def main():
         (pred_label_distribution[:, 1]).tolist())
     mlops.set_stat(pred_bar)
 
-    #     ROC for the chosen model
-    roc_auc = roc_auc_score(labels, pred_probs[:, 1])
-    print("ROC AUC values: \n {0}".format(roc_auc))
-
-    #     Output ROC of the chosen model using MCenter
-    mlops.set_stat("ROC AUC", roc_auc, st.TIME_SERIES)
-
-    # raising alert if auc goes below required threshold
-    if roc_auc <= min_auc_requirement:
-        mlops.health_alert("[Inference] AUC Violation From Inference Node",
-                           "AUC Went Below {}. Current AUC Is {}".format(min_auc_requirement, roc_auc))
-
+    # Pred Label confidence per label
+    label_number = len(pred_counts)
+    average_confidence = np.zeros(label_number)
     max_pred_probs = pred_probs.max(axis=1)
+    for i in range(0, label_number):
+        index_class = np.where(pred_labels == i)[0]
+        print(" np.sum(confidence[index_class])", np.sum(max_pred_probs[index_class]))
+        print("counts_elements[i] ", pred_counts[i])
+        if pred_counts[i] > 0:
+            average_confidence[i] = np.sum(max_pred_probs[index_class]) / (float(pred_counts[i]))
+        else:
+            average_confidence[i] = 0
 
-    #     KS for the chosen model
-    ks = ks_2samp(max_pred_probs[labels == 1], max_pred_probs[labels == 0])
+    # BarGraph showing confidence per class
+    pred_values1 = [str(i) for i in pred_value]
+    bar = BarGraph().name("Average Confidence Per Class").cols(pred_values1).data(average_confidence.tolist())
+    mlops.set_stat(bar)
+
+    # KS for the chosen model
+    ks = ks_2samp(max_pred_probs[pred_labels == 1], max_pred_probs[pred_labels == 0])
     ks_stat = ks.statistic
     ks_pvalue = ks.pvalue
 
     print("KS values: \n Statistics: {} \n pValue: {}\n".format(ks_stat, ks_pvalue))
 
-    #     Output KS Stat of the chosen model using MCenter
-    mlops.set_stat("KS Stat", ks_stat, st.TIME_SERIES)
+    # Output KS Stat of the chosen model using MCenter
+    if not np.isnan(ks_stat):
+        print("printing KS_stat ")
+        mlops.set_stat("KS Stat", ks_stat, st.TIME_SERIES)
+    else:
+        print("not printing KS_stat ")
 
-    # raising alert if ks-stat goes above required threshold
+    # Raising alert if ks-stat goes above required threshold
     if ks_stat >= max_ks_requirement:
         mlops.health_alert("[Inference] KS Violation From Inference Node",
                            "KS Stat Went Above {}. Current KS Stat Is {}".format(max_ks_requirement, ks_stat))
@@ -237,7 +232,7 @@ def main():
     mlops.set_stat(ks_table)
 
     # Calculating PSI
-    total_psi, psi_table = get_psi(max_pred_probs[labels == 1], max_pred_probs[labels == 0])
+    total_psi, psi_table = get_psi(max_pred_probs[pred_labels == 1], max_pred_probs[pred_labels == 0])
 
     psi_table_stat = Table().name("PSI Stats").cols(
         ["Base Pop", "Curr Pop",
@@ -257,6 +252,7 @@ def main():
     #     Output Total PSI of the chosen model using MCenter
     mlops.set_stat("Total PSI ", total_psi, st.TIME_SERIES)
 
+    # Raising alert if total_psi goes below required threshold
     if total_psi <= min_psi_requirement:
         mlops.health_alert("[Inference] PSI Violation From Inference Node",
                            "PSI Went Below {}. Current PSI Is {}".format(min_psi_requirement, total_psi))

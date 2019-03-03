@@ -29,14 +29,6 @@
       "defaultValue": 50
     },
     {
-      "key": "auc_threshold",
-      "label": "Least AUC Requirement",
-      "type": "float",
-      "description": "If AUC goes below given threshold, raise alert.",
-      "optional": true,
-      "defaultValue": 1
-    },
-    {
       "key": "ks_threshold",
       "label": "Max KS Threshold Requirement",
       "type": "float",

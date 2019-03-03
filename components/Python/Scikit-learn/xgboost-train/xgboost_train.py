@@ -4,15 +4,16 @@ import sys
 
 import numpy as np
 import pandas as pd
+from scipy.stats import ks_2samp
+from sklearn.datasets import make_classification
+from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
+from sklearn.model_selection import train_test_split
+
 from parallelm.mlops import StatCategory as st
 from parallelm.mlops import mlops as mlops
 from parallelm.mlops.stats.bar_graph import BarGraph
+from parallelm.mlops.stats.graph import MultiGraph
 from parallelm.mlops.stats.table import Table
-from scipy.stats import ks_2samp
-from sklearn.datasets import make_classification
-from sklearn.metrics import accuracy_score, roc_auc_score
-from sklearn.model_selection import train_test_split
-
 
 def install(package):
     subprocess.call([sys.executable, "-m", "pip", "install", package])
@@ -26,6 +27,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_features", help="# Features")
     parser.add_argument("--num_samples", help="# Samples")
+    parser.add_argument("--input_file", help="Input Data File")
     parser.add_argument("--validation_split", help="# Validation Split")
 
     parser.add_argument("--n_estimators", help="Number of Estimators")
@@ -43,14 +45,12 @@ def parse_args():
     parser.add_argument("--ks_threshold", help="KS Threshold")
     parser.add_argument("--psi_threshold", help="PSI Threshold")
 
-    parser.add_argument("--input_file", help="Input Data File")
-
     parser.add_argument("--output-model", help="Data File to Save Model")
     options = parser.parse_args()
     return options
 
 
-def get_psi(v1, v2, num=10):
+def get_psi(v1_in, v2_in, num=10):
     """
     calculate PSI.
 
@@ -59,6 +59,17 @@ def get_psi(v1, v2, num=10):
     :param num: number of bins
     :return: PSI Value
     """
+
+    if len(v1_in) < 2:
+        v1 = v2_in
+        v2 = np.zeros(1)
+    elif len(v2_in) == 0:
+        v1 = v1_in
+        v2 = np.zeros(1)
+    else:
+        v1 = v1_in
+        v2 = v2_in
+
     rank1 = pd.qcut(v1, num, labels=False) + 1
 
     basepop1 = pd.DataFrame({'v1': v1, 'rank1': rank1})
@@ -153,13 +164,13 @@ def main():
         # Create synthetic data using scikit learn
         X, y = make_classification(n_samples=num_samples,
                                    n_features=num_features,
-                                   #                                binary classification only!
+                                   # binary classification only!
                                    n_classes=2,
                                    random_state=42)
 
         print("Adding Random Noise!")
 
-        noisy_features = np.random.uniform(0, 100) * \
+        noisy_features = np.random.uniform(0, 1) * \
                          np.random.normal(0, 1,
                                           (num_samples, num_features))
         X = X + noisy_features
@@ -194,7 +205,7 @@ def main():
     # MLOps API to report the distribution statistics of each feature in the data
     mlops.set_data_distribution_stat(X_train)
 
-    #     Accuracy for the chosen model
+    # Accuracy for the chosen model
     pred_labels = final_model.predict(X_test)
     pred_probs = final_model.predict_proba(X_test)
 
@@ -203,7 +214,7 @@ def main():
 
     accuracy = accuracy_score(y_test, pred_labels)
     print("Accuracy values: \n {0}".format(accuracy))
-    #     Output accuracy of the chosen model using MCenter
+    # Output accuracy of the chosen model using MCenter
     mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
 
     # Label distribution in training
@@ -230,7 +241,7 @@ def main():
         (pred_label_distribution[:, 1]).tolist())
     mlops.set_stat(pred_bar)
 
-    #     ROC for the chosen model
+    # ROC for the chosen model
     roc_auc = roc_auc_score(y_test, pred_probs[:, 1])
     print("ROC AUC values: \n {}".format(roc_auc))
 
@@ -241,19 +252,28 @@ def main():
         mlops.health_alert("[Training] AUC Violation From Training Node",
                            "AUC Went Below {}. Current AUC Is {}".format(min_auc_requirement, roc_auc))
 
+    # ROC Curve
+    fpr, tpr, thr = roc_curve(y_test, pred_probs[:, 1])
+    cg = MultiGraph().name("Receiver Operating Characteristic ").set_continuous()
+    cg.add_series(label='Random Curve ''', x=fpr.tolist(), y=fpr.tolist())
+    cg.add_series(label='ROC Curve (Area = {0:0.2f})'''.format(roc_auc), x=fpr.tolist(), y=tpr.tolist())
+    cg.x_title('False Positive Rate')
+    cg.y_title('True Positive Rate')
+    mlops.set_stat(cg)
+
     max_pred_probs = pred_probs.max(axis=1)
 
-    #     KS for the chosen model
+    # KS for the chosen model
     ks = ks_2samp(max_pred_probs[y_test == 1], max_pred_probs[y_test == 0])
     ks_stat = ks.statistic
     ks_pvalue = ks.pvalue
 
     print("KS values: \n Statistics: {} \n pValue: {}\n".format(ks_stat, ks_pvalue))
 
-    #     Output KS Stat of the chosen model using MCenter
+    # Output KS Stat of the chosen model using MCenter
     mlops.set_stat("KS Stat", ks_stat, st.TIME_SERIES)
 
-    # raising alert if ks-stat goes above required threshold
+    # Raising alert if ks-stat goes above required threshold
     if ks_stat >= max_ks_requirement:
         mlops.health_alert("[Training] KS Violation From Training Node",
                            "KS Stat Went Above {}. Current KS Stat Is {}".format(max_ks_requirement, ks_stat))
@@ -279,9 +299,10 @@ def main():
 
     print("Total PSI values: \n {}".format(total_psi))
 
-    #     Output Total PSI of the chosen model using MCenter
+    # Output Total PSI of the chosen model using MCenter
     mlops.set_stat("Total PSI ", total_psi, st.TIME_SERIES)
 
+    # Raising alert if total_psi goes below required threshold
     if total_psi <= min_psi_requirement:
         mlops.health_alert("[Training] PSI Violation From Training Node",
                            "PSI Went Below {}. Current PSI Is {}".format(min_psi_requirement, total_psi))
