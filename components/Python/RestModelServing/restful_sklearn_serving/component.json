@@ -48,6 +48,20 @@
       "description": "Specifies the time span interval at which statistics are collected and reported",
       "optional": true
     },
+    {
+      "key": "num_predictable_classes",
+      "label": "Number of predictable classes/labels [Default: None]",
+      "type": "int",
+      "description": "Specifies the number of possible predictable classes/labels",
+      "optional": true
+    },
+    {
+      "key": "low_confidence_threshold_percent",
+      "label": "Low confidence threshold percentage [Default: None]",
+      "type": "int",
+      "description": "Enables to count the number of predictions below the given threshold percentage",
+      "optional": true
+    },
     { "key": "log_level",
       "label": "Logging level [Default: 'info']",
       "type": "str",
