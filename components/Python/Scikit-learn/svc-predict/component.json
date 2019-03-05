@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "name": "svc-predict",
   "label": "Support Vector Classification Prediction",

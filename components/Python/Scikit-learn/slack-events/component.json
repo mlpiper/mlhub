@@ -1,5 +1,5 @@
 {
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "name": "slack-events",
   "label": "slack-events",

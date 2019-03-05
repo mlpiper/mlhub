@@ -1,5 +1,5 @@
 {
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "name": "logistic-hps-train",
   "label": "logistic-hps-train",

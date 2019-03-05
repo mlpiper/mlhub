@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "R",
   "name": "lr-predict",
   "label": "Linear Regression Inference",

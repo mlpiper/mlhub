@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Java",
   "userStandalone": false,
   "name": "h2o_predictor",

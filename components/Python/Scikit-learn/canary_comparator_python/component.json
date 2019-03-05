@@ -1,5 +1,5 @@
 {
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "name": "canary_comparator_python",
   "label": "Production-Canary Comparator (Python)",

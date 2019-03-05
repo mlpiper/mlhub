@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "group": "ModelConnectors",
   "name": "model_connector_h2o_open",
