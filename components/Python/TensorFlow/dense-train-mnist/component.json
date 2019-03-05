@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "engineType": "Python",
+    "engineType": "Generic",
     "language": "Python",
     "name": "dense-train-mnist",
     "label": "Dense Train mnist",

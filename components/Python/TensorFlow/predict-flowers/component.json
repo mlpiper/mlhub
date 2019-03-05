@@ -1,5 +1,6 @@
 {
-  "engineType": "Tensorflow",
+  "engineType": "Generic",
+  "language": "Python",
   "name": "predict-flowers",
   "label": "Image Inference",
   "program": "predict.py",

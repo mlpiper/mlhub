@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Tensorflow",
+  "engineType": "Generic",
   "name": "lr-predict",
   "label": "Logistic Regression Inference",
   "description": "Component is responsible for creating prediction from tensorflow saved model",

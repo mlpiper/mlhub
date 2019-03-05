@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Tensorflow",
+  "engineType": "Generic",
   "name": "lr-train",
   "label": "Logistic Regression Train",
   "description": "Component is responsible for running logistic regression training on synthetic data which is created by using scikit's make_classification method",

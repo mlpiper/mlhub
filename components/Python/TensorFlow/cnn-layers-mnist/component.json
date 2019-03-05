@@ -1,5 +1,6 @@
 {
-  "engineType": "Tensorflow",
+  "engineType": "Generic",
+  "language": "Python",
   "name": "cnn-layers-mnist",
   "label": "CNN Layers",
   "program": "cnn_mnist.py",
