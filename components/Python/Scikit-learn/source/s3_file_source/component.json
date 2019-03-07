@@ -13,7 +13,7 @@
   "outputInfo": [
     {
         "description": "File name",
-        "label": "File-Name",
+        "label": "filename",
         "defaultComponent": "",
         "type": "str",
         "group": "data"
@@ -29,7 +29,7 @@
     },
     {
       "key": "aws_secret_access_key",
-      "label": "AWS secret access key",
+      "label": "AWS Secret Access Key",
       "description": "AWS secret access key",
       "type": "str",
       "optional": false
@@ -43,7 +43,7 @@
     },
     {
       "key": "bucket",
-      "label": "S3 bucket name",
+      "label": "S3 Bucket Name",
       "description": "S3 bucket name",
       "type": "str",
       "optional": false
@@ -57,7 +57,7 @@
     },
     {
       "key": "get_file_size",
-      "label": "Get File Size MB",
+      "label": "Get File Size (MB)",
       "description": "Report S3 file size in MB",
       "type": "boolean",
       "defaultValue": 1,
@@ -65,7 +65,7 @@
     },
     {
       "key": "get_fetch_time",
-      "label": "Get fetch time",
+      "label": "Get Fetch Time",
       "description": "Report fetch latency (msec)",
       "type": "boolean",
       "defaultValue": 1,
@@ -73,7 +73,7 @@
     },
     {
       "key": "get_line_count",
-      "label": "Get fetch time",
+      "label": "Get Line Count",
       "description": "Report line count",
       "type": "boolean",
       "defaultValue": 1,
