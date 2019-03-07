@@ -50,7 +50,6 @@ class S3FileSource(ConnectableComponent):
         # should help keep prediction latency NOT be IO-bound
         if self._params["get_line_count"]:
             line_count = len(open(file_path).readlines())
-            if not self._params["get_rand_n_samples"]:
-                mlops.set_stat("s3.inputFileLineCount", line_count)
+            mlops.set_stat("s3.inputFileLineCount", line_count)
 
         return file_path
