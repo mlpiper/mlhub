@@ -26,7 +26,7 @@
       "label": "Number of Samples",
       "description": "Number of Samples (rows).",
       "optional": true,
-      "defaultValue": 50
+      "defaultValue": 1500
     },
     {
       "key": "validation_split",
