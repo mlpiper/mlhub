@@ -21,42 +21,42 @@
   ],
   "arguments": [
     {
-      "key": "aws_access_key_id",
+      "key": "src_aws_access_key_id",
       "label": "AWS Access Key",
       "description": "AWS Access Key",
       "type": "str",
       "optional": false
     },
     {
-      "key": "aws_secret_access_key",
+      "key": "src_aws_secret_access_key",
       "label": "AWS Secret Access Key",
       "description": "AWS secret access key",
       "type": "str",
       "optional": false
     },
     {
-      "key": "region",
+      "key": "src_region",
       "label": "AWS Region",
       "description": "AWS Region",
       "type": "str",
       "optional": false
     },
     {
-      "key": "bucket",
+      "key": "src_bucket",
       "label": "S3 Bucket Name",
       "description": "S3 bucket name",
       "type": "str",
       "optional": false
     },
     {
-      "key": "key",
+      "key": "src_key",
       "label": "S3 Key",
       "description": "S3 Key",
       "type": "str",
       "optional": false
     },
     {
-      "key": "get_file_size",
+      "key": "src_get_file_size",
       "label": "Get File Size (MB)",
       "description": "Report S3 file size in MB",
       "type": "boolean",
@@ -64,7 +64,7 @@
       "optional": true
     },
     {
-      "key": "get_fetch_time",
+      "key": "src_get_fetch_time",
       "label": "Get Fetch Time",
       "description": "Report fetch latency (msec)",
       "type": "boolean",
@@ -72,7 +72,7 @@
       "optional": true
     },
     {
-      "key": "get_line_count",
+      "key": "src_get_line_count",
       "label": "Get Line Count",
       "description": "Report line count",
       "type": "boolean",
