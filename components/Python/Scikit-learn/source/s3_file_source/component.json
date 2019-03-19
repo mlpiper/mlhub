@@ -1,5 +1,5 @@
 {
-  "engineType": "Python",
+  "engineType": "Generic",
   "userStandalone": false,
   "language": "Python",
   "name": "s3_file_source",
