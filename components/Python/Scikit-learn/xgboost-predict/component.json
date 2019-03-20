@@ -10,6 +10,10 @@
   "group": "Algorithms",
   "useMLOps": true,
   "inputInfo": [],
+  "deps": [
+    "xgboost",
+    "scikit-learn"
+  ],
   "outputInfo": [],
   "arguments": [
     {

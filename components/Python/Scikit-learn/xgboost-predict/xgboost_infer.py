@@ -7,6 +7,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+
 from scipy.stats import ks_2samp
 from sklearn.datasets import make_classification
 
@@ -15,9 +16,6 @@ from parallelm.mlops import mlops as mlops
 from parallelm.mlops.predefined_stats import PredefinedStats
 from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.table import Table
-
-def install(package):
-    subprocess.call([sys.executable, "-m", "pip", "install", package])
 
 
 def parse_args():
