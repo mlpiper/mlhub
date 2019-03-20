@@ -4,6 +4,7 @@ import sys
 
 import numpy as np
 import pandas as pd
+
 from scipy.stats import ks_2samp
 from sklearn.datasets import make_classification
 from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
@@ -14,9 +15,6 @@ from parallelm.mlops import mlops as mlops
 from parallelm.mlops.stats.bar_graph import BarGraph
 from parallelm.mlops.stats.graph import MultiGraph
 from parallelm.mlops.stats.table import Table
-
-def install(package):
-    subprocess.call([sys.executable, "-m", "pip", "install", package])
 
 
 def parse_args():
@@ -178,7 +176,6 @@ def main():
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=float(pm_options.validation_split),
                                                         random_state=42)
 
-    install("xgboost")
     import xgboost as xgb
 
     # Create a model that should be deployed into production
