@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "engineType": "Generic",
+  "language": "Python",
+  "name": "loan-infer-comp",
+  "label": "Loan Analysis Inference",
+  "description": "Component is responsible for inferring the loan data with the provided SKlearn model ",
+  "program": "loan-analysis-inference.py",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "userStandalone": true,
+  "deps": ["scikitlearn", "xgboost", "sklearn-pandas"],
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "ks_threshold",
+      "label": "Max KS Threshold Requirement",
+      "type": "float",
+      "description": "If KS goes above given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 0.4
+    },
+    {
+      "key": "psi_threshold",
+      "label": "Least PSI Requirement",
+      "type": "float",
+      "description": "If PSI goes above given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 1.0
+    },
+    {
+      "key": "input_file",
+      "label": "Input Data File",
+      "type": "str",
+      "description": "File to use for inference. If file is provided, then data will not be synthetic.",
+      "optional": true,
+      "defaultValue": ""
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+

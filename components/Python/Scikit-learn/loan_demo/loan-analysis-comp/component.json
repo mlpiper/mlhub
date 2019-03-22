@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "engineType": "Generic",
+  "language": "Python",
+  "name": "loan-analysis-comp",
+  "label": "Loan Analysis Train",
+  "description": "Component is responsible for creating XGBoost training on loan data ",
+  "program": "loan-analysis-final.py",
+  "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
+  "userStandalone": true,
+  "deps": ["scikitlearn", "xgboost", "sklearn-pandas"],
+  "inputInfo": [],
+  "outputInfo": [],
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "validation_split",
+      "label": "Validation Split Portion",
+      "type": "float",
+      "description": "Validation Split Portion.",
+      "optional": true,
+      "defaultValue": 0.3
+    },
+    {
+      "key": "auc_threshold",
+      "label": "Least AUC Requirement",
+      "type": "float",
+      "description": "If AUC goes below given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 0.5
+    },
+    {
+      "key": "ks_threshold",
+      "label": "Max KS Threshold Requirement",
+      "type": "float",
+      "description": "If KS goes above given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 0.3
+    },
+    {
+      "key": "psi_threshold",
+      "label": "Least PSI Requirement",
+      "type": "float",
+      "description": "If PSI goes below given threshold, raise alert.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "n_estimators",
+      "type": "int",
+      "label": "Number of Estimators",
+      "description": "Number of boosted trees to fit.",
+      "optional": true,
+      "defaultValue": 300
+    },
+    {
+      "key": "max_depth",
+      "label": "Max Depth",
+      "type": "float",
+      "description": "Maximum tree depth for base learners.",
+      "optional": true,
+      "defaultValue": 7
+    },
+    {
+      "key": "learning_rate",
+      "label": "Learning Rate",
+      "type": "float",
+      "description": "Boosting learning rate (xgb’s “eta”).",
+      "optional": true,
+      "defaultValue": 0.1
+    },
+    {
+      "key": "min_child_weight",
+      "label": "Min Child Weight",
+      "type": "int",
+      "description": "Minimum sum of instance weight(hessian) needed in a child.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "objective",
+      "label": "Objective",
+      "type": "str",
+      "description": "Specify the learning task and the corresponding learning objective.",
+      "optional": true,
+      "defaultValue": "binary:logistic"
+    },
+    {
+      "key": "gamma",
+      "label": "Gamma",
+      "type": "float",
+      "description": "Minimum loss reduction required to make a further partition on a leaf node of the tree.",
+      "optional": true,
+      "defaultValue": 0
+    },
+    {
+      "key": "max_delta_step",
+      "label": "Max Delta Step",
+      "type": "float",
+      "description": "Maximum delta step we allow each tree’s weight estimation to be.",
+      "optional": true,
+      "defaultValue": 0
+    },
+    {
+      "key": "subsample",
+      "label": "Subsample",
+      "type": "float",
+      "description": "Subsample ratio of the training instance.",
+      "optional": true,
+      "defaultValue": 1
+    },
+    {
+      "key": "reg_alpha",
+      "label": "Reg Alpha",
+      "type": "float",
+      "description": "L1 regularization term on weights.",
+      "optional": true,
+      "defaultValue": 0
+    },
+    {
+      "key": "reg_lambda",
+      "label": "Reg Lambda",
+      "type": "float",
+      "description": "L2 regularization term on weights.",
+      "optional": true,
+      "defaultValue": 0
+    },
+    {
+      "key": "scale_pos_weight",
+      "label": "Scale Pos Weight",
+      "type": "float",
+      "description": "Balancing of positive and negative weights.",
+      "optional": true,
+      "defaultValue": 4.2
+    },
+    {
+      "key": "input_file",
+      "label": "Input Data File",
+      "type": "str",
+      "description": "File to use for inference. If file is provided, then data will not be synthetic.",
+      "optional": true,
+      "defaultValue": ""
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ]
+}

@@ -7,6 +7,8 @@ import pprint
 import sklearn
 import sys
 import warnings
+import pandas as pd
+from collections import OrderedDict
 
 from parallelm.components.restful.flask_route import FlaskRoute
 from parallelm.components.restful_component import RESTfulComponent
@@ -196,7 +198,11 @@ class SklearnRESTfulServing(RESTfulComponent):
             return 404, error_json
         else:
             try:
-                two_dim_array = np.array([form_params[SklearnRESTfulServing.JSON_KEY_NAME]])
+                entry = form_params[SklearnRESTfulServing.JSON_KEY_NAME]
+                if isinstance(entry, list):
+                    two_dim_array = np.array([entry])
+                else:
+                    two_dim_array = pd.DataFrame.from_dict([OrderedDict(entry)])
                 pred_probs = None
                 try:
                     pred_probs = self._model.predict_proba(two_dim_array)[0]
