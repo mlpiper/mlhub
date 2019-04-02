@@ -9,7 +9,6 @@ from contextlib import closing
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components.restful.flask_route import FlaskRoute
 from parallelm.components.restful_component import RESTfulComponent
-from parallelm.pipeline.component_dir_helper import ComponentDirHelper
 from parallelm.pipeline.components_desc import ComponentsDesc
 from py4j.java_gateway import GatewayParameters, CallbackServerParameters
 from py4j.java_gateway import JavaGateway, get_field
@@ -41,17 +40,7 @@ class H2oRESTfulServing(RESTfulComponent):
         self._setup_py4j_client_connection()
 
     def _run_java_server_entry_point(self):
-        comp_realpath = os.path.realpath(__file__)
-        comp_filename = os.path.basename(comp_realpath)
-        comp_dirname = os.path.basename(os.path.dirname(comp_realpath))
-        comp_module_name = "{}.{}.{}".format(
-            ComponentsDesc.CODE_COMPONETS_MODULE_NAME,
-            comp_dirname,
-            os.path.splitext(comp_filename)[0])
-        if self._verbose:
-            self._logger.debug("comp_module_name: {}".format(comp_module_name))
-        comp_helper = ComponentDirHelper(comp_module_name, comp_filename)
-        comp_dir = comp_helper.extract_component_out_of_egg()
+        comp_dir = os.path.dirname(os.path.realpath(__file__))
         if self._verbose:
             self._logger.debug(self._prefix_msg + "comp_dir: {}".format(comp_dir))
 
