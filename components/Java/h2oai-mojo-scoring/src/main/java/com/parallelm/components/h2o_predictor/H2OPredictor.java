@@ -25,16 +25,15 @@ import org.apache.log4j.PatternLayout;
 import static java.lang.System.out;
 
 
-public class H2OPredictor extends MCenterComponent
-{
-   private Path modelFilePath;
-   private Path inputSamplesFilePath;
-   private Path outputPredictionsFilePath;
-   MojoModel mojoModel;
-   EasyPredictModelWrapper h2oModel;
-   private static Logger logger = Logger.getLogger(H2OPredictor.class);
+public class H2OPredictor extends MCenterComponent {
+    private Path modelFilePath;
+    private Path inputSamplesFilePath;
+    private Path outputPredictionsFilePath;
+    MojoModel mojoModel;
+    EasyPredictModelWrapper h2oModel;
+    private static Logger logger = Logger.getLogger(H2OPredictor.class);
 
-   private final String tmpDir = "/tmp";
+    private final String tmpDir = "/tmp";
 
     private void checkArgs(List<Object> parentDataObjects) throws Exception {
 
@@ -97,7 +96,7 @@ public class H2OPredictor extends MCenterComponent
         modelFilePath = Paths.get((String) params.get("input_model"));
 
         mojoModel = MojoModel.load(modelFilePath.toString());
-        EasyPredictModelWrapper.Config config =  new EasyPredictModelWrapper.Config()
+        EasyPredictModelWrapper.Config config = new EasyPredictModelWrapper.Config()
                 .setModel(mojoModel)
                 .setConvertUnknownCategoricalLevelsToNa(convertUnknownCategoricalLevelsToNa)
                 .setConvertInvalidNumbersToNa(convertInvalidNumbersToNa);
@@ -109,10 +108,10 @@ public class H2OPredictor extends MCenterComponent
     private static ArrayList<String> fixHeader(Map<String, Integer> header) {
         ArrayList<String> header2 = new ArrayList<String>();
         header2.ensureCapacity(header.size());
-        for (int idx=0 ; idx < header.size() ; idx++) {
+        for (int idx = 0; idx < header.size(); idx++) {
             header2.add("aa");
         }
-        for (Map.Entry<String, Integer> entry: header.entrySet()) {
+        for (Map.Entry<String, Integer> entry : header.entrySet()) {
             header2.set(entry.getValue(), entry.getKey());
         }
         return header2;
@@ -144,7 +143,7 @@ public class H2OPredictor extends MCenterComponent
         RowData sample;
         int sampleIndex = 0;
         logger.info("H2O predictor - Starting predict loop");
-        while((sample = sampleReader.nextSample()) != null) {
+        while ((sample = sampleReader.nextSample()) != null) {
             BinomialModelPrediction prediction = h2oModel.predictBinomial(sample);
 
             if (verbose) {
@@ -163,7 +162,7 @@ public class H2OPredictor extends MCenterComponent
         }
     }
 
-    public static void main(String[] args ) throws Exception {
+    public static void main(String[] args) throws Exception {
         ConsoleAppender console = new ConsoleAppender(); //create appender
         //configure the appender
         String PATTERN = "%d [%p|%c|%C{1}] %m%n";
@@ -176,11 +175,11 @@ public class H2OPredictor extends MCenterComponent
 
         H2OPredictor middleComponent = new H2OPredictor();
         ArgumentParser parser = ArgumentParsers.newFor("Checksum").build()
-                                               .defaultHelp(true)
-                                               .description("Calculate checksum of given files.");
+                .defaultHelp(true)
+                .description("Calculate checksum of given files.");
 
         parser.addArgument("--input-model")
-              .help("Path to input model to consume");
+                .help("Path to input model to consume");
 
         parser.addArgument("--samples-file")
                 .help("Path to samples to predict");
@@ -189,14 +188,14 @@ public class H2OPredictor extends MCenterComponent
                 .help("Path to record the predictions made");
 
         parser.addArgument("--convert-unknown-categorical-levels-to-na")
-              .type(Boolean.class)
-              .setDefault(false)
-              .help("Set the convert_unknown_categorical_levels_to_na property of the Mojo model predictor");
+                .type(Boolean.class)
+                .setDefault(false)
+                .help("Set the convert_unknown_categorical_levels_to_na property of the Mojo model predictor");
 
         parser.addArgument("--convert-invalid-numbers-to-na")
-              .type(Boolean.class)
-              .setDefault(false)
-              .help("Set the convert-invalid-numbers-to-na property of the Mojo model predictor");
+                .type(Boolean.class)
+                .setDefault(false)
+                .help("Set the convert-invalid-numbers-to-na property of the Mojo model predictor");
 
         Namespace options = null;
         try {
@@ -207,13 +206,13 @@ public class H2OPredictor extends MCenterComponent
         }
         System.out.println(options);
 
-        out.println("options:  "+ options);
+        out.println("options:  " + options);
 
         middleComponent.configure(options.getAttrs());
         List<Object> parentObjs = new ArrayList<Object>();
         parentObjs.add(options.get("samples_file"));
         List<Object> outputs = middleComponent.materialize(parentObjs);
-        for (Object obj: outputs) {
+        for (Object obj : outputs) {
             System.out.println("Output: " + obj.toString());
         }
     }

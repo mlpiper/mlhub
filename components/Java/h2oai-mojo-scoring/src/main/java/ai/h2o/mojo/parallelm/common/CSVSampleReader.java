@@ -15,7 +15,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 
-public class CSVSampleReader extends SampleReader{
+public class CSVSampleReader extends SampleReader {
 
     CSVParser csvParser;
     Iterator<CSVRecord> csvRecordIterator;
@@ -49,7 +49,7 @@ public class CSVSampleReader extends SampleReader{
 
         CSVRecord csvRecord = csvRecordIterator.next();
 
-        for (Map.Entry<String,Integer> entry : headerMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : headerMap.entrySet()) {
             Integer idx = entry.getValue();
             sample.put(entry.getKey(), csvRecord.get(idx));
         }

@@ -20,6 +20,7 @@ public class CSVPredictionWriter extends PredictionWriter {
     public void writeHeader(ArrayList<String> header) throws Exception {
         csvPrinter.printRecord(header);
     }
+
     @Override
     public void writePrediction(ArrayList<Object> record) throws Exception {
         csvPrinter.printRecord(record);
