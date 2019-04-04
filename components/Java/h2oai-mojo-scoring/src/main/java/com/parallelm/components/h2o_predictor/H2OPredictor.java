@@ -1,9 +1,6 @@
 package com.parallelm.components.h2o_predictor;
 
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
+import ai.h2o.mojo.parallelm.common.*;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Logger;
@@ -15,12 +12,9 @@ import net.sourceforge.argparse4j.inf.ArgumentParser;
 import net.sourceforge.argparse4j.inf.ArgumentParserException;
 import net.sourceforge.argparse4j.inf.Namespace;
 
-import java.io.*;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-
 
 import hex.genmodel.easy.RowData;
 import hex.genmodel.easy.EasyPredictModelWrapper;
@@ -30,106 +24,6 @@ import org.apache.log4j.PatternLayout;
 
 import static java.lang.System.out;
 
-abstract class SampleReader {
-
-    abstract public RowData nextSample() throws Exception;
-}
-
-class CSVSampleReader extends  SampleReader {
-    CSVParser csvParser;
-    Iterator<CSVRecord> csvRecordIterator;
-    Map<String, Integer> headerMap;
-
-    public CSVSampleReader(Path csvSampleFilePath) throws Exception {
-
-        // TODO: add header as an option
-        new BufferedReader(new FileReader(csvSampleFilePath.toString()));
-        Reader reader = Files.newBufferedReader(Paths.get(csvSampleFilePath.toString()));
-        csvParser = new CSVParser(reader, CSVFormat.DEFAULT
-                .withFirstRecordAsHeader()
-                .withIgnoreHeaderCase()
-                .withTrim());
-        csvRecordIterator = csvParser.iterator();
-        headerMap = csvParser.getHeaderMap();
-    }
-
-    public Map<String, Integer> getHeader() {
-        return headerMap;
-    }
-
-    @Override
-    public RowData nextSample() throws Exception {
-
-        RowData sample = new RowData();
-
-        if (!csvRecordIterator.hasNext()) {
-            return null;
-        }
-
-        CSVRecord csvRecord = csvRecordIterator.next();
-
-        for (Map.Entry<String,Integer> entry : headerMap.entrySet()) {
-            Integer idx = entry.getValue();
-            sample.put(entry.getKey(), csvRecord.get(idx));
-        }
-        return sample;
-    }
-}
-
-abstract class PredictionWriter {
-    abstract public void writeHeader(ArrayList<String> header) throws Exception;
-    abstract public void writePrediction(ArrayList<Object> record) throws Exception;
-    abstract public void close() throws Exception;
-}
-
-class CSVPredictionWriter extends PredictionWriter {
-    private Path predictionFilePath;
-    private CSVPrinter csvPrinter;
-
-    public CSVPredictionWriter(Path predictionFilePath) throws Exception {
-        this.predictionFilePath = predictionFilePath;
-        csvPrinter = new CSVPrinter(new FileWriter(predictionFilePath.toString()), CSVFormat.DEFAULT);
-    }
-
-    @Override
-    public void writeHeader(ArrayList<String> header) throws Exception {
-        csvPrinter.printRecord(header);
-    }
-    @Override
-    public void writePrediction(ArrayList<Object> record) throws Exception {
-        csvPrinter.printRecord(record);
-    }
-
-    @Override
-    public void close() throws Exception {
-        csvPrinter.close();
-    }
-}
-
-class PrettyPrintingMap<K, V> {
-    private Map<K, V> map;
-
-    public PrettyPrintingMap(Map<K, V> map) {
-        this.map = map;
-    }
-
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        Iterator<Map.Entry<K, V>> iter = map.entrySet().iterator();
-        while (iter.hasNext()) {
-            Map.Entry<K, V> entry = iter.next();
-            sb.append(entry.getKey());
-            sb.append('=').append('"');
-            sb.append(entry.getValue());
-            sb.append('"');
-            if (iter.hasNext()) {
-                sb.append(',').append('\n');
-            }
-        }
-        return sb.toString();
-
-    }
-}
 
 public class H2OPredictor extends MCenterComponent
 {
