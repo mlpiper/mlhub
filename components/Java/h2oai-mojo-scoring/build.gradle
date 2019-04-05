@@ -11,18 +11,17 @@ apply plugin: 'java'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'maven'
 
-group = 'com.parallelm.components.h2o_predictor'
-version = '1.0'
-
 description = """h2o_predictor"""
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
+    flatDir {
+        dirs 'dependencies'
+    }
     jcenter()
     mavenCentral()
-    maven { url "http://repo.maven.apache.org/maven2" }
 }
 
 dependencies {
@@ -38,7 +37,7 @@ dependencies {
 shadowJar {
     manifest {
         attributes('Implementation-Title': 'H2O.ai and ParallelM Scorer',
-                'Implementation-Version': '0.0.1')
+                   'Implementation-Version': '0.0.1')
     }
     shadowJar.archiveName('h2oai-dai-parallelm-scorer.jar')
     mergeServiceFiles()
