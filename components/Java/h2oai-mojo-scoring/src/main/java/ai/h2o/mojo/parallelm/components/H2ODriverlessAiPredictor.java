@@ -89,8 +89,8 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
         String inputSamplesFileStr;
         // From params
         String modelPathStr = (String) params.get("input_model");
-        String licensePathStr = (String) params.get("license-file");
-        System.out.println("param =input_model:  " + modelPathStr);
+        String licensePathStr = (String) params.get("license_file");
+        System.out.println("param - input_model:  " + modelPathStr);
         String outputPredictionsFileStr = (String) params.getOrDefault("output_file", null);
         System.out.println("param - output_file:  " + outputPredictionsFileStr);
 
@@ -146,10 +146,13 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
 
     private boolean checkForHeader(String[] colNames, String[] firstRow) {
         for(int i = 0; i < colNames.length; i++) {
-            if (!colNames[i].trim().equalsIgnoreCase(firstRow[i].trim())) {
+            logger.info(String.format("String 1: [%s]", colNames[i]));
+            logger.info(String.format("String 2: [%s]", firstRow[i]));
+            if (!colNames[i].trim().equals(firstRow[i].trim())) {
                 return true;
             }
         }
+        logger.info("First Row Doesn't Look Like A Header");
         return false;
     }
 
@@ -189,11 +192,11 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
                 MojoFrameBuilder mojoFrameBuilder = mojoPipeline.getInputFrameBuilder();
                 MojoRowBuilder mojoRowBuilder = mojoFrameBuilder.getMojoRowBuilder();
                 if (sampleIndex == 0) {
-                    if (checkForHeader(mojoFrameMeta.getColumnNames(), nextLine.split(","))) {
+                    if (!checkForHeader(mojoFrameMeta.getColumnNames(), nextLine.split(","))) {
                         logger.info("Skipping First Row in CSV File:");
                         logger.info(String.format("[%s] matches [%s] from Mojo Metadata",
-                                nextLine.split(",").toString(),
-                                mojoFrameMeta.getColumnNames().toString()));
+                                Arrays.toString(nextLine.split(",")),
+                                Arrays.toString(mojoFrameMeta.getColumnNames())));
                     } else {
                         mojoRowBuilder = constructInputMojoRow(mojoRowBuilder, nextLine, sampleIndex);
                     }
