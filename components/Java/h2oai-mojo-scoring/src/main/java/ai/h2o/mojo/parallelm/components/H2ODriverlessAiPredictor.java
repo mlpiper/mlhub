@@ -33,8 +33,8 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
     private Path inputSamplesFilePath;
     private Path outputPredictionsFilePath;
     private Path licenseFilePath;
-    MojoPipeline mojoPipeline;
-    MojoFrameMeta mojoFrameMeta;
+    private MojoPipeline mojoPipeline;
+    private MojoFrameMeta mojoFrameMeta;
 
     private static Logger logger = Logger.getLogger(H2ODriverlessAiPredictor.class);
 
