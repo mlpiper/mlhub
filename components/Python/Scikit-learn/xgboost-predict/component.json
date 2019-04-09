@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "engineType": "Python",
+  "engineType": "Generic",
   "language": "Python",
   "name": "xgboost-predict",
   "label": "XGBoost Classification Prediction",
