@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import ai.h2o.mojo.parallelm.common.CSVPredictionWriter;
 import ai.h2o.mojo.parallelm.common.PredictionWriter;
@@ -182,12 +183,14 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
     private void predict() throws Exception {
         String nextLine;
         int sampleIndex = 0;
+        long pstartTime, pendTime, msec_ptotalTime;
         PredictionWriter predictionWriter = new CSVPredictionWriter(outputPredictionsFilePath);
         ArrayList<String> predictionHeader = new ArrayList<>();
         predictionHeader.add("index");
         predictionHeader.addAll(Arrays.asList(mojoPipeline.getOutputMeta().getColumnNames()));
         predictionWriter.writeHeader(predictionHeader);
         try (BufferedReader br = new BufferedReader(new FileReader(inputSamplesFilePath.toFile()))) {
+            pstartTime = System.nanoTime();
             while ((nextLine = br.readLine()) != null) {
                 MojoFrameBuilder mojoFrameBuilder = mojoPipeline.getInputFrameBuilder();
                 MojoRowBuilder mojoRowBuilder = mojoFrameBuilder.getMojoRowBuilder();
@@ -214,8 +217,12 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
                 }
                 sampleIndex++;
             }
+            pendTime = System.nanoTime();
+            msec_ptotalTime = TimeUnit.NANOSECONDS.toMillis(pendTime - pstartTime);
+
             if (mlops != null) {
                 mlops.setStat("pipelinestat.count", sampleIndex);
+                mlops.setStat("pipelinestat.predicttimemsec", msec_ptotalTime);
             }
         } finally {
             predictionWriter.close();
@@ -226,11 +233,20 @@ public class H2ODriverlessAiPredictor extends MCenterComponent {
     public List<Object> materialize(List<Object> parentDataObjects) throws Exception {
         logger.info("H2O.ai Driverless AI Predictor - materialize");
         logger.info(new PrettyPrintingMap<>(params));
+        long mstartTime = System.nanoTime();
+
         checkArgs(parentDataObjects);
         loadModel();
         predict();
+
         List<Object> outputs = new ArrayList<>();
         outputs.add(outputPredictionsFilePath.toString());
+
+        long mendTime = System.nanoTime();
+        long msec_mtotalTime = TimeUnit.NANOSECONDS.toMillis(mendTime - mstartTime);
+        if (mlops != null) {
+            mlops.setStat("pipelinestat.runtimemsec", msec_mtotalTime);
+        }
         return outputs;
     }
 }
