@@ -1,7 +1,10 @@
 import argparse
 
 import numpy as np
+import sklearn
 from parallelm.mlops import mlops as mlops
+# use below import if user wants to user ClassificationMetrics predefined metrics names.
+# from parallelm.mlops.metrics_constants import ClassificationMetrics
 from parallelm.mlops.stats.bar_graph import BarGraph
 from sklearn.datasets import make_classification
 from sklearn.svm import SVC
@@ -84,7 +87,8 @@ def main():
     print("Label distributions: \n {0}".format(label_distribution))
 
     # Output label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("Label Distribution").cols((label_distribution[:, 0]).astype(str).tolist()).data(
+    bar = BarGraph().name("User Defined: Label Distribution").cols(
+        (label_distribution[:, 0]).astype(str).tolist()).data(
         (label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
 
@@ -100,14 +104,14 @@ def main():
     #################### Start: Output Accuracy ####################
     ################################################################
 
-    #################### OLD WAY ####################
-    # First Way
     # Accuracy for the chosen model
     # accuracy = final_model.score(features, labels)
-    # print("Accuracy values: \n {0}".format(accuracy))
+
+    #################### OLD WAY ####################
+    # First Way
     #
     # # Output accuracy of the chosen model using MCenter
-    # mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
+    # mlops.set_stat("User Defined: Accuracy", accuracy, st.TIME_SERIES)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
@@ -122,6 +126,32 @@ def main():
     #################### End: Output Accuracy ####################
     ##############################################################
 
+    ################################################################
+    #################### Start: Output AUC ####################
+    ################################################################
+
+    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_pred, pos_label=2)
+    # auc = sklearn.metrics.auc(fpr, tpr)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output auc of the chosen model using MCenter
+    # mlops.set_stat("User Defined: AUC", auc)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    # mlops.set_stat(ClassificationMetrics.AUC, auc)
+
+    # Third Way
+    mlops.metrics.auc(x=fpr, y=tpr)
+    #################### DONE NEW WAY ####################
+
+    ##############################################################
+    #################### End: Output AUC ####################
+    ##############################################################
+
     ########################################################################
     #################### Start: Output Confusion Matrix ####################
     ########################################################################
@@ -131,7 +161,7 @@ def main():
     #################### OLD WAY ####################
     # First Way
     # labels_string = [str(i) for i in labels_ordered]
-    # cm_matrix = Table().name("User Given Confusion Matrix").cols(labels_string)
+    # cm_matrix = Table().name("User Defined: Confusion Matrix").cols(labels_string)
     # 
     # for index in range(len(cm)):
     #     cm_matrix.add_row(labels_string[index], list(cm[index]))
