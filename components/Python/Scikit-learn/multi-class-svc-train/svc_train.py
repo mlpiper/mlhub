@@ -1,12 +1,9 @@
 import argparse
 
 import numpy as np
-from parallelm.mlops import StatCategory as st
 from parallelm.mlops import mlops as mlops
 from parallelm.mlops.stats.bar_graph import BarGraph
-from parallelm.mlops.stats.table import Table
 from sklearn.datasets import make_classification
-from sklearn.metrics import confusion_matrix
 from sklearn.svm import SVC
 
 
@@ -80,10 +77,6 @@ def main():
 
     final_model.fit(features, labels)
 
-    # Accuracy for the chosen model
-    accuracy = final_model.score(features, labels)
-    print("Accuracy values: \n {0}".format(accuracy))
-
     # Label distribution in training
     value, counts = np.unique(labels, return_counts=True)
     label_distribution = np.asarray((value, counts)).T
@@ -95,9 +88,6 @@ def main():
         (label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
 
-    # Output accuracy of the chosen model using MCenter
-    mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
-
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data
     mlops.set_data_distribution_stat(features)
@@ -105,28 +95,61 @@ def main():
     labels_pred = final_model.predict(features)
 
     labels_ordered = sorted(set(labels))
-    cm = confusion_matrix(labels, labels_pred, labels=labels_ordered)
 
-    #################### FIRST WAY ####################
-    # Output Confusion Matrix
-    labels_string = [str(i) for i in labels_ordered]
-    cm_matrix = Table().name("User Given Confusion Matrix").cols(labels_string)
+    ################################################################
+    #################### Start: Output Accuracy ####################
+    ################################################################
 
-    for index in range(len(cm)):
-        cm_matrix.add_row(labels_string[index], list(cm[index]))
+    #################### OLD WAY ####################
+    # First Way
+    # Accuracy for the chosen model
+    # accuracy = final_model.score(features, labels)
+    # print("Accuracy values: \n {0}".format(accuracy))
+    #
+    # # Output accuracy of the chosen model using MCenter
+    # mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
+    #################### DONE OLD WAY ####################
 
-    mlops.set_stat(cm_matrix)
-    #################### DONE FIRST WAY ####################
+    #################### NEW WAY ####################
+    # Second Way
+    # mlops.set_stat(ClassificationMetrics.ACCURACY_SCORE, accuracy)
+
+    # Third Way
+    mlops.metrics.accuracy_score(y_true=labels, y_pred=labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ##############################################################
+    #################### End: Output Accuracy ####################
+    ##############################################################
+
+    ########################################################################
+    #################### Start: Output Confusion Matrix ####################
+    ########################################################################
+
+    #  cm = confusion_matrix(labels, labels_pred, labels=labels_ordered)
+
+    #################### OLD WAY ####################
+    # First Way
+    # labels_string = [str(i) for i in labels_ordered]
+    # cm_matrix = Table().name("User Given Confusion Matrix").cols(labels_string)
+    # 
+    # for index in range(len(cm)):
+    #     cm_matrix.add_row(labels_string[index], list(cm[index]))
+    # 
+    # mlops.set_stat(cm_matrix)
+    #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
     # Second Way
     # mlops.set_stat(ClassificationMetrics.CONFUSION_MATRIX, cm, labels=labels_ordered)
 
-    # OR
-
     # Third Way
     mlops.metrics.confusion_matrix(y_true=labels, y_pred=labels_pred, labels=labels_ordered)
     #################### DONE NEW WAY ####################
+
+    ######################################################################
+    #################### End: Output Confusion Matrix ####################
+    ######################################################################
 
     # Save the model
     import pickle
