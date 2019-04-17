@@ -21,6 +21,14 @@
       "defaultValue": 21
     },
     {
+      "key": "num_classes",
+      "type": "int",
+      "label": "Number of Classes",
+      "description": "Number of Classes (labels)",
+      "optional": true,
+      "defaultValue": 2
+    },
+    {
       "key": "num_samples",
       "type": "int",
       "label": "Number of Samples",
