@@ -4,7 +4,7 @@ import numpy as np
 import sklearn
 from parallelm.mlops import mlops as mlops
 # use below import if user wants to user ClassificationMetrics predefined metrics names.
-# from parallelm.mlops.metrics_constants import ClassificationMetrics
+from parallelm.mlops.metrics_constants import ClassificationMetrics
 from parallelm.mlops.stats.bar_graph import BarGraph
 from sklearn.datasets import make_classification
 from sklearn.svm import SVC
@@ -18,6 +18,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_samples", help="# samples")
     parser.add_argument("--num_features", help="# features")
+    parser.add_argument("--num_classes", help="# samples")
+
     parser.add_argument("--C", help="C Parameter")
     parser.add_argument("--kernel", help="Kernel")
     parser.add_argument("--degree", help="Degree")
@@ -36,6 +38,7 @@ def main():
     print("PM: Configuration:")
     print("PM: # Sample:                    [{}]".format(pm_options.num_samples))
     print("PM: # Features:                  [{}]".format(pm_options.num_features))
+    print("PM: # Classes:                   [{}]".format(pm_options.num_classes))
 
     print("PM: C:                           [{}]".format(pm_options.C))
     print("PM: Kernel:                      [{}]".format(pm_options.kernel))
@@ -51,12 +54,14 @@ def main():
 
     num_samples = int(pm_options.num_samples)
     num_features = int(pm_options.num_features)
+    num_classes = int(pm_options.num_classes)
+
     # Create synthetic data using scikit learn
     X, y = make_classification(n_samples=num_samples,
                                n_features=num_features,
                                n_informative=2,
                                n_redundant=1,
-                               n_classes=3,
+                               n_classes=num_classes,
                                n_clusters_per_class=1,
                                random_state=42)
 
@@ -104,8 +109,7 @@ def main():
     #################### Start: Output Accuracy ####################
     ################################################################
 
-    # Accuracy for the chosen model
-    # accuracy = final_model.score(features, labels)
+    accuracy = final_model.score(features, labels)
 
     #################### OLD WAY ####################
     # First Way
@@ -116,7 +120,9 @@ def main():
 
     #################### NEW WAY ####################
     # Second Way
-    # mlops.set_stat(ClassificationMetrics.ACCURACY_SCORE, accuracy)
+    mlops.set_stat(ClassificationMetrics.ACCURACY_SCORE, accuracy)
+
+    # OR
 
     # Third Way
     mlops.metrics.accuracy_score(y_true=labels, y_pred=labels_pred)
@@ -130,8 +136,8 @@ def main():
     #################### Start: Output AUC ####################
     ################################################################
 
-    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_pred, pos_label=2)
-    # auc = sklearn.metrics.auc(fpr, tpr)
+    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_pred, pos_label=1)
+    auc = sklearn.metrics.auc(fpr, tpr)
 
     #################### OLD WAY ####################
     # First Way
@@ -142,10 +148,40 @@ def main():
 
     #################### NEW WAY ####################
     # Second Way
-    # mlops.set_stat(ClassificationMetrics.AUC, auc)
+    mlops.set_stat(ClassificationMetrics.AUC, auc)
+
+    # OR
 
     # Third Way
     mlops.metrics.auc(x=fpr, y=tpr)
+    #################### DONE NEW WAY ####################
+
+    ##############################################################
+    #################### End: Output AUC ####################
+    ##############################################################
+
+    ################################################################
+    #################### Start: Output AUC ####################
+    ################################################################
+
+    labels_decision_score = final_model.decision_function(features)
+    aps = sklearn.metrics.average_precision_score(labels, labels_decision_score)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output aps of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Average Precision Score", aps)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.AVERAGE_PRECISION_SCORE, aps)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.average_precision_score(y_true=labels, y_score=labels_decision_score)
     #################### DONE NEW WAY ####################
 
     ##############################################################
@@ -156,22 +192,24 @@ def main():
     #################### Start: Output Confusion Matrix ####################
     ########################################################################
 
-    #  cm = confusion_matrix(labels, labels_pred, labels=labels_ordered)
+    cm = sklearn.metrics.confusion_matrix(labels, labels_pred, labels=labels_ordered)
 
     #################### OLD WAY ####################
     # First Way
     # labels_string = [str(i) for i in labels_ordered]
     # cm_matrix = Table().name("User Defined: Confusion Matrix").cols(labels_string)
-    # 
+    #
     # for index in range(len(cm)):
     #     cm_matrix.add_row(labels_string[index], list(cm[index]))
-    # 
+    #
     # mlops.set_stat(cm_matrix)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
     # Second Way
-    # mlops.set_stat(ClassificationMetrics.CONFUSION_MATRIX, cm, labels=labels_ordered)
+    mlops.set_stat(ClassificationMetrics.CONFUSION_MATRIX, cm, labels=labels_ordered)
+
+    # OR
 
     # Third Way
     mlops.metrics.confusion_matrix(y_true=labels, y_pred=labels_pred, labels=labels_ordered)
