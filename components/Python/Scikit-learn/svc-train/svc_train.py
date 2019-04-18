@@ -233,7 +233,7 @@ def main():
     #################### OLD WAY ####################
     # First Way
     #
-    # # Output bas of the chosen model using MCenter
+    # # Output bsl of the chosen model using MCenter
     # mlops.set_stat("User Defined: Brier Score Loss", bsl)
     #################### DONE OLD WAY ####################
 
@@ -251,6 +251,48 @@ def main():
     #################### End: Output Brier Score Loss ####################
     ######################################################################
 
+    #############################################################################
+    #################### Start: Output Classification Report ####################
+    #############################################################################
+    cr = sklearn.metrics.classification_report(labels, labels_pred)
+    print("Classification Report\n{}".format(cr))
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # from parallelm.mlops.stats.table import Table
+    #
+    # arrayReport = list()
+    # for row in cr.split("\n"):
+    #     parsed_row = [x for x in row.split("  ") if len(x) > 0]
+    #     if len(parsed_row) > 0:
+    #         arrayReport.append(parsed_row)
+    #
+    # header = arrayReport[0]
+    # cr_table = Table().name("User Defined: Classification Report").cols(header)
+    #
+    # for index in range(1, len(arrayReport)):
+    #     row_title = arrayReport[index][0]
+    #     row_value = arrayReport[index][:-1]
+    #     cr_table.add_row(row_title, row_value)
+    #
+    # # output classification report using MCenter
+    # mlops.set_stat(cr_table)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.CLASSIFICATION_REPORT, data=cr)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.classification_report(labels, labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ###########################################################################
+    #################### End: Output Classification Report ####################
+    ###########################################################################
+
     ########################################################################
     #################### Start: Output Confusion Matrix ####################
     ########################################################################
@@ -259,6 +301,8 @@ def main():
 
     #################### OLD WAY ####################
     # First Way
+    # from parallelm.mlops.stats.table import Table
+
     # labels_string = [str(i) for i in labels_ordered]
     # cm_matrix = Table().name("User Defined: Confusion Matrix").cols(labels_string)
     #
