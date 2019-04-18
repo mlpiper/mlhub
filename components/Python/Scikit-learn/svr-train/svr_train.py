@@ -190,10 +190,19 @@ def main():
     msle = sklearn.metrics.mean_squared_log_error(y_true, y_pred)
 
     #################### OLD WAY ####################
-    mlops.set_stat("User Defined: Mean Squared Log Error", msle)
+    # First Way
+    # mlops.set_stat("User Defined: Mean Squared Log Error", msle)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(RegressionMetrics.MEAN_SQUARED_LOG_ERROR, msle)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.mean_squared_log_error(y_true=labels, y_pred=labels_pred)
+
     #################### DONE NEW WAY ####################
 
     ############################################################################
