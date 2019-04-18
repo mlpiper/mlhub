@@ -194,6 +194,33 @@ def main():
     #################### End: Output AUC ####################
     ##############################################################
 
+    #########################################################################
+    #################### Start: Output Balanced Accuracy ####################
+    #########################################################################
+
+    bas = sklearn.metrics.balanced_accuracy_score(labels, labels_pred)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output bas of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Balanced Accuracy Score", bas)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.BALANCED_ACCURACY_SCORE, data=bas)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.balanced_accuracy_score(y_true=labels, y_pred=labels_pred)
+    #################### DONE NEW WAY ####################
+
+    #######################################################################
+    #################### End: Output Balanced Accuracy ####################
+    #######################################################################
+
     ########################################################################
     #################### Start: Output Confusion Matrix ####################
     ########################################################################
