@@ -216,10 +216,18 @@ def main():
     median_ae = sklearn.metrics.median_absolute_error(y_true, y_pred)
 
     #################### OLD WAY ####################
-    mlops.set_stat("User Defined: Median Abs Error", median_ae)
+    # First Way
+    # mlops.set_stat("User Defined: Median Abs Error", median_ae)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(RegressionMetrics.MEDIAN_ABSOLUTE_ERROR, median_ae)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.median_absolute_error(y_true=labels, y_pred=labels_pred)
     #################### DONE NEW WAY ####################
 
     ######################################################################
