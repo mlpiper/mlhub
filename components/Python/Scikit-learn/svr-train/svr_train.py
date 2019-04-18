@@ -241,10 +241,18 @@ def main():
     r2_s = sklearn.metrics.r2_score(y_true, y_pred)
 
     #################### OLD WAY ####################
-    mlops.set_stat("User Defined: R2 Score", r2_s)
+    # First Way
+    # mlops.set_stat("User Defined: R2 Score", r2_s)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(RegressionMetrics.R2_SCORE, r2_s)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.r2_score(y_true=labels, y_pred=labels_pred)
     #################### DONE NEW WAY ####################
 
     ##############################################################
