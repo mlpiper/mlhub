@@ -77,6 +77,7 @@ def main():
 
     # Create a model that should be deployed into production
     final_model = SVC(C=float(pm_options.C),
+                      probability=True,
                       kernel=pm_options.kernel,
                       degree=int(pm_options.degree),
                       gamma=str(pm_options.gamma),
@@ -220,6 +221,35 @@ def main():
     #######################################################################
     #################### End: Output Balanced Accuracy ####################
     #######################################################################
+
+    ########################################################################
+    #################### Start: Output Brier Score Loss ####################
+    ########################################################################
+
+    labels_prob = final_model.predict_proba(features)
+    label_pos_class_prob = list(map(lambda x: x[1], labels_prob))
+    bsl = sklearn.metrics.brier_score_loss(labels, label_pos_class_prob, pos_label=1)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output bas of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Brier Score Loss", bsl)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.BRIER_SCORE_LOSS, data=bsl)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.brier_score_loss(y_true=labels, y_prob=label_pos_class_prob, pos_label=1)
+    #################### DONE NEW WAY ####################
+
+    ######################################################################
+    #################### End: Output Brier Score Loss ####################
+    ######################################################################
 
     ########################################################################
     #################### Start: Output Confusion Matrix ####################
