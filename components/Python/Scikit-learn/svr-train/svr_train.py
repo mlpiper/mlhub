@@ -140,10 +140,18 @@ def main():
     mae = sklearn.metrics.mean_absolute_error(y_true, y_pred)
 
     #################### OLD WAY ####################
-    mlops.set_stat("User Defined: Mean Abs Error", mae)
+    # First Way
+    # mlops.set_stat("User Defined: Mean Abs Error", mae)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(RegressionMetrics.MEAN_ABSOLUTE_ERROR, mae)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.mean_absolute_error(y_true=labels, y_pred=labels_pred)
     #################### DONE NEW WAY ####################
 
     ####################################################################
