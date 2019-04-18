@@ -165,10 +165,18 @@ def main():
     mse = sklearn.metrics.mean_squared_error(y_true, y_pred)
 
     #################### OLD WAY ####################
-    mlops.set_stat("User Defined: Mean Squared Error", mse)
+    # First Way
+    # mlops.set_stat("User Defined: Mean Squared Error", mse)
     #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(RegressionMetrics.MEAN_SQUARED_ERROR, mse)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.mean_squared_error(y_true=labels, y_pred=labels_pred)
     #################### DONE NEW WAY ####################
 
     ########################################################################
