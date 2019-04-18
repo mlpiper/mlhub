@@ -73,8 +73,9 @@ def main():
     print("Label distributions: \n {0}".format(label_distribution))
 
     # Output label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("Label Distribution").cols((label_distribution[:, 0]).astype(str).tolist()).data(
-        (label_distribution[:, 1]).tolist())
+    bar = BarGraph().name("User Defined: Prediction Label Distribution") \
+        .cols((label_distribution[:, 0]).astype(str).tolist()) \
+        .data((label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
 
     # Terminate MLOPs

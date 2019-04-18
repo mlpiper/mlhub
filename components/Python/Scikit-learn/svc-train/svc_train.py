@@ -85,23 +85,29 @@ def main():
 
     final_model.fit(features, labels)
 
-    # Label distribution in training
     value, counts = np.unique(labels, return_counts=True)
     label_distribution = np.asarray((value, counts)).T
-    column_names = value.astype(str).tolist()
-    print("Label distributions: \n {0}".format(label_distribution))
 
-    # Output label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("User Defined: Label Distribution").cols(
-        (label_distribution[:, 0]).astype(str).tolist()).data(
-        (label_distribution[:, 1]).tolist())
+    # Output actual label distribution as a BarGraph using MCenter
+    bar = BarGraph().name("User Defined: Actual Label Distribution") \
+        .cols((label_distribution[:, 0]).astype(str).tolist()) \
+        .data((label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
+
+    labels_pred = final_model.predict(features)
+
+    value_pred, counts_pred = np.unique(labels_pred, return_counts=True)
+    label_distribution_pred = np.asarray((value_pred, counts_pred)).T
+
+    # Output prediction label distribution as a BarGraph using MCenter
+    bar_pred = BarGraph().name("User Defined: Prediction Label Distribution") \
+        .cols((label_distribution_pred[:, 0]).astype(str).tolist()) \
+        .data((label_distribution_pred[:, 1]).tolist())
+    mlops.set_stat(bar_pred)
 
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data
     mlops.set_data_distribution_stat(features)
-
-    labels_pred = final_model.predict(features)
 
     labels_ordered = sorted(set(labels))
 
