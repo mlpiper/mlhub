@@ -18,7 +18,7 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--num_samples", help="# samples")
     parser.add_argument("--num_features", help="# features")
-    parser.add_argument("--num_classes", help="# samples")
+    parser.add_argument("--num_classes", help="# classes")
 
     parser.add_argument("--C", help="C Parameter")
     parser.add_argument("--kernel", help="Kernel")
