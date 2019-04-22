@@ -407,6 +407,33 @@ def main():
     #################### End: Output FBeta Score ####################
     #################################################################
 
+    ####################################################################
+    #################### Start: Output Hamming Loss ####################
+    ####################################################################
+
+    hamming_loss = sklearn.metrics.hamming_loss(labels, labels_pred)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output hamming loss of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Hamming Loss", hamming_loss)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.HAMMING_LOSS, data=hamming_loss)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.hamming_loss(labels, labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ##################################################################
+    #################### End: Output Hamming Loss ####################
+    ##################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
