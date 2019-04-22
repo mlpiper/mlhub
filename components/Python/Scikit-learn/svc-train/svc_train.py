@@ -460,6 +460,34 @@ def main():
     ################################################################
     #################### End: Output Hinge Loss ####################
     ################################################################
+
+    ##############################################################################
+    #################### Start: Output Jaccard Similarity Score ####################
+    ##############################################################################
+
+    jaccard_sim_score = sklearn.metrics.jaccard_similarity_score(labels, labels_pred)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output jaccard similarity score of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Jaccard Similarity Score", jaccard_sim_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.JACCARD_SIMILARITY_SCORE, data=jaccard_sim_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.jaccard_similarity_score(labels, labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ############################################################################
+    #################### End: Output Jaccard Similary Score ####################
+    ############################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
