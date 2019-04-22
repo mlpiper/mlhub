@@ -362,7 +362,7 @@ def main():
     #################### OLD WAY ####################
     # First Way
     #
-    # # Output cks of the chosen model using MCenter
+    # # Output f1 score of the chosen model using MCenter
     # mlops.set_stat("User Defined: F1 Score", f1)
     #################### DONE OLD WAY ####################
 
@@ -379,6 +379,33 @@ def main():
     ##############################################################
     #################### End: Output F1 Score ####################
     ##############################################################
+
+    ################################################################
+    #################### Start: Output FBeta Score ####################
+    ################################################################
+
+    fbeta = sklearn.metrics.fbeta_score(labels, labels_pred, beta=0.5)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output fbeta score of the chosen model using MCenter
+    # mlops.set_stat("User Defined: F-beta Score", fbeta)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.FBETA_SCORE, data=fbeta)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.fbeta_score(labels, labels_pred, pos_label=1, beta=0.5)
+    #################### DONE NEW WAY ####################
+
+    #################################################################
+    #################### End: Output FBeta Score ####################
+    #################################################################
 
     # Save the model
     import pickle
