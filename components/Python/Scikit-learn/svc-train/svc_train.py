@@ -434,6 +434,32 @@ def main():
     #################### End: Output Hamming Loss ####################
     ##################################################################
 
+    ##################################################################
+    #################### Start: Output Hinge Loss ####################
+    ##################################################################
+
+    hinge_loss = sklearn.metrics.hinge_loss(labels, labels_decision_score)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output hinge loss of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Hinge Loss", hinge_loss)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.HINGE_LOSS, data=hinge_loss)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.hinge_loss(labels, labels_decision_score)
+    #################### DONE NEW WAY ####################
+
+    ################################################################
+    #################### End: Output Hinge Loss ####################
+    ################################################################
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
