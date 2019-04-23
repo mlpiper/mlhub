@@ -514,6 +514,34 @@ def main():
     ##############################################################
     #################### End: Output Log Loss ####################
     ##############################################################
+
+    ########################################################################################
+    #################### Start: Output Matthews Correlation Coefficient ####################
+    ########################################################################################
+
+    mcc = sklearn.metrics.matthews_corrcoef(labels, labels_pred)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output mcc of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Matthews Correlation Coefficient", mcc)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.MATTHEWS_CORRELATION_COEFFICIENT, data=mcc)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.matthews_corrcoef(labels, labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ######################################################################################
+    #################### End: Output Matthews Correlation Coefficient ####################
+    ######################################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
