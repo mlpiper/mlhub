@@ -542,6 +542,45 @@ def main():
     #################### End: Output Matthews Correlation Coefficient ####################
     ######################################################################################
 
+    ##############################################################################
+    #################### Start: Output Precision Recall Curve ####################
+    ##############################################################################
+
+    precision, recall, thresholds = sklearn.metrics.precision_recall_curve(labels, labels_decision_score, pos_label=1)
+    classes = len(np.unique(labels))
+    average_precision = sklearn.metrics.average_precision_score(labels, labels_decision_score, average="macro")
+
+    graph_label_str = "{}-class Precision Recall Curve -- AP: {}".format(classes, average_precision)
+
+    #################### OLD WAY ####################
+    # First Way
+    # from parallelm.mlops.stats.graph import Graph
+    #
+    # p_r_curve = Graph() \
+    #     .name("User Defined: Precision Recall Curve") \
+    #     .set_x_series(list(recall)) \
+    #     .add_y_series(label=graph_label_str, data=list(precision))
+    #
+    # p_r_curve.x_title("Recall")
+    # p_r_curve.y_title("Precision")
+    # mlops.set_stat(p_r_curve)
+
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.PRECISION_RECALL_CURVE, [precision, recall], legend=graph_label_str)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.precision_recall_curve(y_true=labels, probas_pred=labels_decision_score, pos_label=1, average="macro")
+
+    #################### DONE NEW WAY ####################
+
+    ############################################################################
+    #################### End: Output Precision Recall Curve ####################
+    ############################################################################
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
