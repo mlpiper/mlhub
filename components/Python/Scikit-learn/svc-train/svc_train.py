@@ -488,6 +488,32 @@ def main():
     #################### End: Output Jaccard Similary Score ####################
     ############################################################################
 
+    ################################################################
+    #################### Start: Output Log Loss ####################
+    ################################################################
+
+    log_loss = sklearn.metrics.log_loss(labels, labels_prob)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output log loss of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Log Loss", log_loss)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.LOG_LOSS, data=log_loss)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.log_loss(labels, labels_prob)
+    #################### DONE NEW WAY ####################
+
+    ##############################################################
+    #################### End: Output Log Loss ####################
+    ##############################################################
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
