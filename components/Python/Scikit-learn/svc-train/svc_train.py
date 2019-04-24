@@ -609,6 +609,33 @@ def main():
     #################### End: Output Precision Score ###########################
     ############################################################################
 
+    ####################################################################
+    #################### Start: Output Recall Score ####################
+    ####################################################################
+
+    recall_score = sklearn.metrics.recall_score(labels, labels_pred, pos_label=1)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output recall score of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Recall Score", recall_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.RECALL_SCORE, data=recall_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.recall_score(labels, labels_pred, pos_label=1)
+    #################### DONE NEW WAY ####################
+
+    #########################################################################
+    #################### End: Output Recall Score ###########################
+    #########################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
