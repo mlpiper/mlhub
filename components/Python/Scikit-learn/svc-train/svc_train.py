@@ -581,6 +581,34 @@ def main():
     ############################################################################
     #################### End: Output Precision Recall Curve ####################
     ############################################################################
+
+    #######################################################################
+    #################### Start: Output Precision Score ####################
+    #######################################################################
+
+    precision_score = sklearn.metrics.precision_score(labels, labels_pred, pos_label=1)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output precision score of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Precision Score", precision_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.PRECISION_SCORE, data=precision_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.precision_score(labels, labels_pred, pos_label=1)
+    #################### DONE NEW WAY ####################
+
+    ############################################################################
+    #################### End: Output Precision Score ###########################
+    ############################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
