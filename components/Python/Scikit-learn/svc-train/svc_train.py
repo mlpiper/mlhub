@@ -558,7 +558,7 @@ def main():
     if len(labels_ordered) <= 2:
         precision, recall, thresholds = sklearn.metrics.precision_recall_curve(labels, labels_decision_score,
                                                                                pos_label=pos_label)
-        classes = len(np.unique(labels))
+        classes = len(labels_ordered)
         average_precision = sklearn.metrics.average_precision_score(labels, labels_decision_score, average="macro")
 
         graph_label_str = "{}-class Precision Recall Curve -- AP: {}".format(classes, average_precision)
@@ -570,12 +570,11 @@ def main():
         # p_r_curve = Graph() \
         #     .name("User Defined: Precision Recall Curve") \
         #     .set_x_series(list(recall)) \
-        #     .add_y_series(label=graph_label_str, data=list(precision))
+        #     .add_y_series(label="User Defined: {}".format(graph_label_str), data=list(precision))
         #
         # p_r_curve.x_title("Recall")
         # p_r_curve.y_title("Precision")
         # mlops.set_stat(p_r_curve)
-
         #################### DONE OLD WAY ####################
 
         #################### NEW WAY ####################
@@ -676,6 +675,48 @@ def main():
     ###################################################################
     #################### End: Output ROC AUC Score ####################
     ###################################################################
+
+    #################################################################
+    #################### Start: Output ROC Curve ####################
+    #################################################################
+
+    # roc_auc_score is not supported for multiclass
+    if len(labels_ordered) <= 2:
+        fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_decision_score,
+                                                         pos_label=pos_label)
+
+        roc_auc_score = sklearn.metrics.roc_auc_score(labels, labels_decision_score)
+
+        graph_label_str = "ROC Curve, AUC: {}".format(roc_auc_score)
+
+        #################### OLD WAY ####################
+        # First Way
+        # from parallelm.mlops.stats.graph import Graph
+        #
+        # roc_curve = Graph() \
+        #     .name("User Defined: ROC Curve") \
+        #     .set_x_series(list(fpr)) \
+        #     .add_y_series(label="User Defined: {}".format(graph_label_str), data=list(tpr))
+        #
+        # roc_curve.x_title("False Positive Rate")
+        # roc_curve.y_title("True Positive Rate")
+        #
+        # mlops.set_stat(roc_curve)
+        #################### DONE OLD WAY ####################
+
+        #################### NEW WAY ####################
+        mlops.set_stat(ClassificationMetrics.ROC_CURVE, [tpr, fpr], legend=graph_label_str)
+
+        # OR
+
+        # Third Way
+        mlops.metrics.roc_curve(y_true=labels, y_score=labels_decision_score,
+                                pos_label=pos_label)
+        #################### DONE NEW WAY ####################
+
+    ###############################################################
+    #################### End: Output ROC Curve ####################
+    ###############################################################
 
     # Save the model
     import pickle
