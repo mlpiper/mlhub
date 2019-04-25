@@ -95,7 +95,18 @@ def main():
         .data((label_distribution[:, 1]).tolist())
     mlops.set_stat(bar)
 
+    pos_label = 1
+
+    # calculate classification prediction
     labels_pred = final_model.predict(features)
+    # calculate decision scores [n_sample, n_class]
+    labels_decision_score = final_model.decision_function(features)
+    # calculate classification probabilities [n_sample, n_class]
+    labels_prob = final_model.predict_proba(features)
+    # calculate classification probabilities of positive labels
+    label_pos_class_prob = list(map(lambda x: x[pos_label], labels_prob))
+    # list of sorted labels. i.e. [0, 1, 2, ..]
+    labels_ordered = sorted(set(labels))
 
     value_pred, counts_pred = np.unique(labels_pred, return_counts=True)
     label_distribution_pred = np.asarray((value_pred, counts_pred)).T
@@ -109,8 +120,6 @@ def main():
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data
     mlops.set_data_distribution_stat(features)
-
-    labels_ordered = sorted(set(labels))
 
     ################################################################
     #################### Start: Output Accuracy ####################
@@ -143,7 +152,7 @@ def main():
     #################### Start: Output AUC ####################
     ################################################################
 
-    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_pred, pos_label=1)
+    fpr, tpr, thresholds = sklearn.metrics.roc_curve(labels, labels_pred, pos_label=pos_label)
     auc = sklearn.metrics.auc(fpr, tpr)
 
     #################### OLD WAY ####################
@@ -167,33 +176,34 @@ def main():
     #################### End: Output AUC ####################
     ##############################################################
 
-    ################################################################
-    #################### Start: Output AUC ####################
-    ################################################################
+    ###############################################################################
+    #################### Start: Output Average Precision Score ####################
+    ###############################################################################
 
-    labels_decision_score = final_model.decision_function(features)
-    aps = sklearn.metrics.average_precision_score(labels, labels_decision_score)
+    # average precision is not supported for multiclass
+    if len(labels_ordered) <= 2:
+        aps = sklearn.metrics.average_precision_score(labels, labels_decision_score)
 
-    #################### OLD WAY ####################
-    # First Way
-    #
-    # # Output aps of the chosen model using MCenter
-    # mlops.set_stat("User Defined: Average Precision Score", aps)
-    #################### DONE OLD WAY ####################
+        #################### OLD WAY ####################
+        # First Way
+        #
+        # # Output aps of the chosen model using MCenter
+        # mlops.set_stat("User Defined: Average Precision Score", aps)
+        #################### DONE OLD WAY ####################
 
-    #################### NEW WAY ####################
-    # Second Way
-    mlops.set_stat(ClassificationMetrics.AVERAGE_PRECISION_SCORE, aps)
+        #################### NEW WAY ####################
+        # Second Way
+        mlops.set_stat(ClassificationMetrics.AVERAGE_PRECISION_SCORE, aps)
 
-    # OR
+        # OR
 
-    # Third Way
-    mlops.metrics.average_precision_score(y_true=labels, y_score=labels_decision_score)
-    #################### DONE NEW WAY ####################
+        # Third Way
+        mlops.metrics.average_precision_score(y_true=labels, y_score=labels_decision_score)
+        #################### DONE NEW WAY ####################
 
-    ##############################################################
-    #################### End: Output AUC ####################
-    ##############################################################
+    #############################################################################
+    #################### End: Output Average Precision Score ####################
+    #############################################################################
 
     #########################################################################
     #################### Start: Output Balanced Accuracy ####################
@@ -226,9 +236,7 @@ def main():
     #################### Start: Output Brier Score Loss ####################
     ########################################################################
 
-    labels_prob = final_model.predict_proba(features)
-    label_pos_class_prob = list(map(lambda x: x[1], labels_prob))
-    bsl = sklearn.metrics.brier_score_loss(labels, label_pos_class_prob, pos_label=1)
+    bsl = sklearn.metrics.brier_score_loss(labels, label_pos_class_prob, pos_label=pos_label)
 
     #################### OLD WAY ####################
     # First Way
@@ -244,7 +252,7 @@ def main():
     # OR
 
     # Third Way
-    mlops.metrics.brier_score_loss(y_true=labels, y_prob=label_pos_class_prob, pos_label=1)
+    mlops.metrics.brier_score_loss(y_true=labels, y_prob=label_pos_class_prob, pos_label=pos_label)
     #################### DONE NEW WAY ####################
 
     ######################################################################
@@ -357,7 +365,7 @@ def main():
     #################### Start: Output F1 Score ####################
     ################################################################
 
-    f1 = sklearn.metrics.f1_score(labels, labels_pred)
+    f1 = sklearn.metrics.f1_score(labels, labels_pred, pos_label=pos_label, average=None)
 
     #################### OLD WAY ####################
     # First Way
@@ -373,7 +381,7 @@ def main():
     # OR
 
     # Third Way
-    mlops.metrics.f1_score(labels, labels_pred, pos_label=1)
+    mlops.metrics.f1_score(labels, labels_pred, pos_label=pos_label, average=None)
     #################### DONE NEW WAY ####################
 
     ##############################################################
@@ -384,7 +392,7 @@ def main():
     #################### Start: Output FBeta Score ####################
     ################################################################
 
-    fbeta = sklearn.metrics.fbeta_score(labels, labels_pred, beta=0.5)
+    fbeta = sklearn.metrics.fbeta_score(labels, labels_pred, beta=0.5, average=None)
 
     #################### OLD WAY ####################
     # First Way
@@ -400,7 +408,7 @@ def main():
     # OR
 
     # Third Way
-    mlops.metrics.fbeta_score(labels, labels_pred, pos_label=1, beta=0.5)
+    mlops.metrics.fbeta_score(labels, labels_pred, pos_label=pos_label, beta=0.5, average=None)
     #################### DONE NEW WAY ####################
 
     #################################################################
@@ -546,37 +554,41 @@ def main():
     #################### Start: Output Precision Recall Curve ####################
     ##############################################################################
 
-    precision, recall, thresholds = sklearn.metrics.precision_recall_curve(labels, labels_decision_score, pos_label=1)
-    classes = len(np.unique(labels))
-    average_precision = sklearn.metrics.average_precision_score(labels, labels_decision_score, average="macro")
+    # precision_recall_curve is not supported for multiclass
+    if len(labels_ordered) <= 2:
+        precision, recall, thresholds = sklearn.metrics.precision_recall_curve(labels, labels_decision_score,
+                                                                               pos_label=pos_label)
+        classes = len(np.unique(labels))
+        average_precision = sklearn.metrics.average_precision_score(labels, labels_decision_score, average="macro")
 
-    graph_label_str = "{}-class Precision Recall Curve -- AP: {}".format(classes, average_precision)
+        graph_label_str = "{}-class Precision Recall Curve -- AP: {}".format(classes, average_precision)
 
-    #################### OLD WAY ####################
-    # First Way
-    # from parallelm.mlops.stats.graph import Graph
-    #
-    # p_r_curve = Graph() \
-    #     .name("User Defined: Precision Recall Curve") \
-    #     .set_x_series(list(recall)) \
-    #     .add_y_series(label=graph_label_str, data=list(precision))
-    #
-    # p_r_curve.x_title("Recall")
-    # p_r_curve.y_title("Precision")
-    # mlops.set_stat(p_r_curve)
+        #################### OLD WAY ####################
+        # First Way
+        # from parallelm.mlops.stats.graph import Graph
+        #
+        # p_r_curve = Graph() \
+        #     .name("User Defined: Precision Recall Curve") \
+        #     .set_x_series(list(recall)) \
+        #     .add_y_series(label=graph_label_str, data=list(precision))
+        #
+        # p_r_curve.x_title("Recall")
+        # p_r_curve.y_title("Precision")
+        # mlops.set_stat(p_r_curve)
 
-    #################### DONE OLD WAY ####################
+        #################### DONE OLD WAY ####################
 
-    #################### NEW WAY ####################
-    # Second Way
-    mlops.set_stat(ClassificationMetrics.PRECISION_RECALL_CURVE, [precision, recall], legend=graph_label_str)
+        #################### NEW WAY ####################
+        # Second Way
+        mlops.set_stat(ClassificationMetrics.PRECISION_RECALL_CURVE, [precision, recall], legend=graph_label_str)
 
-    # OR
+        # OR
 
-    # Third Way
-    mlops.metrics.precision_recall_curve(y_true=labels, probas_pred=labels_decision_score, pos_label=1, average="macro")
+        # Third Way
+        mlops.metrics.precision_recall_curve(y_true=labels, probas_pred=labels_decision_score, pos_label=pos_label,
+                                             average="macro")
 
-    #################### DONE NEW WAY ####################
+        #################### DONE NEW WAY ####################
 
     ############################################################################
     #################### End: Output Precision Recall Curve ####################
@@ -586,7 +598,7 @@ def main():
     #################### Start: Output Precision Score ####################
     #######################################################################
 
-    precision_score = sklearn.metrics.precision_score(labels, labels_pred, pos_label=1)
+    precision_score = sklearn.metrics.precision_score(labels, labels_pred, pos_label=pos_label, average=None)
 
     #################### OLD WAY ####################
     # First Way
@@ -602,7 +614,7 @@ def main():
     # OR
 
     # Third Way
-    mlops.metrics.precision_score(labels, labels_pred, pos_label=1)
+    mlops.metrics.precision_score(labels, labels_pred, pos_label=pos_label, average=None)
     #################### DONE NEW WAY ####################
 
     ############################################################################
@@ -613,7 +625,7 @@ def main():
     #################### Start: Output Recall Score ####################
     ####################################################################
 
-    recall_score = sklearn.metrics.recall_score(labels, labels_pred, pos_label=1)
+    recall_score = sklearn.metrics.recall_score(labels, labels_pred, pos_label=pos_label, average=None)
 
     #################### OLD WAY ####################
     # First Way
@@ -629,7 +641,7 @@ def main():
     # OR
 
     # Third Way
-    mlops.metrics.recall_score(labels, labels_pred, pos_label=1)
+    mlops.metrics.recall_score(labels, labels_pred, pos_label=pos_label, average=None)
     #################### DONE NEW WAY ####################
 
     #########################################################################
@@ -640,24 +652,26 @@ def main():
     #################### Start: Output ROC AUC Score ####################
     #####################################################################
 
-    roc_auc_score = sklearn.metrics.roc_auc_score(labels, labels_decision_score)
+    # roc_auc_score is not supported for multiclass
+    if len(labels_ordered) <= 2:
+        roc_auc_score = sklearn.metrics.roc_auc_score(labels, labels_decision_score)
 
-    #################### OLD WAY ####################
-    # First Way
-    #
-    # # Output roc auc score of the chosen model using MCenter
-    # mlops.set_stat("User Defined: ROC AUC Score", roc_auc_score)
-    #################### DONE OLD WAY ####################
+        #################### OLD WAY ####################
+        # First Way
+        #
+        # # Output roc auc score of the chosen model using MCenter
+        # mlops.set_stat("User Defined: ROC AUC Score", roc_auc_score)
+        #################### DONE OLD WAY ####################
 
-    #################### NEW WAY ####################
-    # Second Way
-    mlops.set_stat(ClassificationMetrics.ROC_AUC_SCORE, data=roc_auc_score)
+        #################### NEW WAY ####################
+        # Second Way
+        mlops.set_stat(ClassificationMetrics.ROC_AUC_SCORE, data=roc_auc_score)
 
-    # OR
+        # OR
 
-    # Third Way
-    mlops.metrics.roc_auc_score(labels, labels_decision_score)
-    #################### DONE NEW WAY ####################
+        # Third Way
+        mlops.metrics.roc_auc_score(labels, labels_decision_score)
+        #################### DONE NEW WAY ####################
 
     ###################################################################
     #################### End: Output ROC AUC Score ####################
