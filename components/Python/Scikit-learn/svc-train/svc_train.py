@@ -718,6 +718,33 @@ def main():
     #################### End: Output ROC Curve ####################
     ###############################################################
 
+    #####################################################################
+    #################### Start: Output Zero One Loss ####################
+    #####################################################################
+
+    zol = sklearn.metrics.zero_one_loss(labels, labels_pred)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output zol of the chosen model using MCenter
+    # mlops.set_stat("User Defined: Zero One Loss", zol)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.ZERO_ONE_LOSS, data=zol)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.zero_one_loss(labels, labels_pred)
+    #################### DONE NEW WAY ####################
+
+    ###################################################################
+    #################### End: Output Zero One Loss ####################
+    ###################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
