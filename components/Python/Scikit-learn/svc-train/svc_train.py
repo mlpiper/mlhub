@@ -636,6 +636,33 @@ def main():
     #################### End: Output Recall Score ###########################
     #########################################################################
 
+    #####################################################################
+    #################### Start: Output ROC AUC Score ####################
+    #####################################################################
+
+    roc_auc_score = sklearn.metrics.roc_auc_score(labels, labels_decision_score)
+
+    #################### OLD WAY ####################
+    # First Way
+    #
+    # # Output roc auc score of the chosen model using MCenter
+    # mlops.set_stat("User Defined: ROC AUC Score", roc_auc_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClassificationMetrics.ROC_AUC_SCORE, data=roc_auc_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.roc_auc_score(labels, labels_decision_score)
+    #################### DONE NEW WAY ####################
+
+    ###################################################################
+    #################### End: Output ROC AUC Score ####################
+    ###################################################################
+
     # Save the model
     import pickle
     model_file = open(pm_options.output_model, 'wb')
