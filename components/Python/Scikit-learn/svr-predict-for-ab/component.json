@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "engineType": "Generic",
+  "language": "Python",
+  "name": "svr-predict-for-ab",
+  "label": "Support Vector Regression Prediction For AB",
+  "description": "Component is responsible for creating prediction from given scikit-learn pickled model",
+  "program": "svr_infer.py",
+  "modelBehavior": "ModelConsumer",
+  "group": "Algorithms",
+  "useMLOps": true,
+  "inputInfo": [],
+  "outputInfo": [],
+  "arguments": [
+    {
+      "key": "num_features",
+      "type": "int",
+      "label": "Number of Features",
+      "description": "Number of Features (columns)",
+      "optional": true,
+      "defaultValue": 21
+    },
+    {
+      "key": "num_samples",
+      "type": "int",
+      "label": "Number of Samples",
+      "description": "Number of Samples (rows)",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "threshold",
+      "type": "float",
+      "label": "Conversion Threshold",
+      "description": "MAE conversion threshold. If samples MAE is below threshold means its success.",
+      "optional": true,
+      "defaultValue": 180.0
+    },
+    {
+      "key": "input-model",
+      "label": "Model input file",
+      "type": "str",
+      "description": "File to use for loading model",
+      "optional": true,
+      "tag": "input_model_path"
+    }
+  ]
+}
+
