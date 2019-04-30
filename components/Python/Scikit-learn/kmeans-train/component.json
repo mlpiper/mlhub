@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "engineType": "Generic",
+  "language": "Python",
+  "name": "kmeans-train",
+  "label": "KMeans Clustering Train",
+  "description": "Component is responsible for running kmeans training on synthetic data which is created by using scikit's make_classification method. Data creation is inclusive inside the component itself.",
+  "program": "kmeans_train.py",
+  "modelBehavior": "ModelProducer",
+  "group": "Algorithms",
+  "inputInfo": [],
+  "outputInfo": [],
+  "useMLOps": true,
+  "arguments": [
+    {
+      "key": "num_features",
+      "type": "int",
+      "label": "Number of Features",
+      "description": "Number of Features (columns)",
+      "optional": true,
+      "defaultValue": 21
+    },
+    {
+      "key": "num_cluster",
+      "type": "int",
+      "label": "Number of Cluster",
+      "description": "Number of Cluster (labels)",
+      "optional": true,
+      "defaultValue": 2
+    },
+    {
+      "key": "num_samples",
+      "type": "int",
+      "label": "Number of Samples",
+      "description": "Number of Samples (rows)",
+      "optional": true,
+      "defaultValue": 50
+    },
+    {
+      "key": "init",
+      "label": "Method for Initialization",
+      "type": "str",
+      "description": "Method for initialization",
+      "optional": true,
+      "defaultValue": "k-means++"
+    },
+    {
+      "key": "n_init",
+      "type": "int",
+      "label": "Number of Init",
+      "description": "Number of time the k-means algorithm will be run with different centroid seeds. The final results will be the best output of n_init consecutive runs in terms of inertia.",
+      "optional": true,
+      "defaultValue": 10
+    },
+    {
+      "key": "tol",
+      "label": "Tolerance for stopping criterion",
+      "type": "float",
+      "description": "Tolerance for stopping criterion.",
+      "optional": true,
+      "defaultValue": 0.001
+    },
+    {
+      "key": "max_iter",
+      "label": "Maximum number of iterations",
+      "type": "int",
+      "description": "Maximum number of iterations taken for the algorithm to converge",
+      "optional": true,
+      "defaultValue": 100
+    },
+    {
+      "key": "precompute_distances",
+      "label": "Precompute Distance",
+      "type": "str",
+      "description": "Precompute distances (faster but takes more memory)",
+      "optional": true,
+      "defaultValue": "auto"
+    },
+    {
+      "key": "algorithm",
+      "label": "Algorithm",
+      "type": "str",
+      "description": "K-means algorithm to use. The classical EM-style algorithm is \"full\". The \"elkan\" variation is more efficient by using the triangle inequality, but currently doesn't support sparse data. \"auto\" chooses \"elkan\" for dense data and \"full\" for sparse data.",
+      "optional": true,
+      "defaultValue": "auto"
+    },
+    {
+      "key": "output-model",
+      "label": "Model output file",
+      "type": "str",
+      "description": "File to use for saving the trained model",
+      "optional": true,
+      "tag": "model_dir"
+    }
+  ]
+}
+
