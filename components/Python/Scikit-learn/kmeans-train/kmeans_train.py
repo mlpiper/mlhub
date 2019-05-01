@@ -135,7 +135,7 @@ def main():
     #################### OLD WAY ####################
     # First Way
     # mlops.set_stat("User Defined: Adjusted Mutual Info Score", adjusted_mutual_info_score)
-    #################### DONE: OLD WAY ####################
+    #################### DONE OLD WAY ####################
 
     #################### NEW WAY ####################
     # Second Way
@@ -159,7 +159,22 @@ def main():
     adjusted_rand_score = sklearn.metrics \
         .adjusted_rand_score(labels_true=labels_true,
                              labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Adjusted Rand Score", adjusted_rand_score)
+
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Adjusted Rand Score", adjusted_rand_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.ADJUSTED_RAND_SCORE, adjusted_rand_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.adjusted_rand_score(labels_true=labels_true,
+                                      labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     ##################################################################
     #################### End: Adjusted Rand Score ####################
