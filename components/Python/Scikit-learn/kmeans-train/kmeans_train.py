@@ -200,6 +200,7 @@ def main():
     # Third Way
     mlops.metrics.calinski_harabaz_score(X=features, labels=labels_pred)
     #################### DONE NEW WAY ####################
+
     #####################################################################
     #################### End: Calinski Harabaz Score ####################
     #####################################################################
@@ -210,7 +211,20 @@ def main():
 
     completeness_score = sklearn.metrics \
         .completeness_score(labels_true=labels_true, labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Completeness Score", completeness_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Completeness Score", completeness_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.COMPLETENESS_SCORE, completeness_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.completeness_score(labels_true=labels_true, labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     #################################################################
     #################### End: Completeness Score ####################
