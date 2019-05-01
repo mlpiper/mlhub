@@ -3,6 +3,7 @@ import argparse
 import numpy as np
 import sklearn
 from parallelm.mlops import mlops as mlops
+from parallelm.mlops.metrics_constants import ClusteringMetrics
 from parallelm.mlops.stats.bar_graph import BarGraph
 from sklearn.cluster import KMeans
 from sklearn.datasets import make_classification
@@ -130,7 +131,22 @@ def main():
     adjusted_mutual_info_score = sklearn.metrics \
         .adjusted_mutual_info_score(labels_true=labels_true,
                                     labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Adjusted Mutual Info Score", adjusted_mutual_info_score)
+
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Adjusted Mutual Info Score", adjusted_mutual_info_score)
+    #################### DONE: OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.ADJUSTED_MUTUAL_INFO_SCORE, adjusted_mutual_info_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.adjusted_mutual_info_score(labels_true=labels_true,
+                                             labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     #########################################################################
     #################### End: Adjusted Mutual Info Score ####################
