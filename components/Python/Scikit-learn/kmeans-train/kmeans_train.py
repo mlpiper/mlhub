@@ -186,8 +186,20 @@ def main():
 
     calinski_harabaz_score = sklearn.metrics \
         .calinski_harabaz_score(X=features, labels=labels_pred)
-    mlops.set_stat("User Defined: Calinski Harabaz Score", calinski_harabaz_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Calinski Harabaz Score", calinski_harabaz_score)
+    #################### DONE OLD WAY ####################
 
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.CALINSKI_HARABAZ_SCORE, calinski_harabaz_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.calinski_harabaz_score(X=features, labels=labels_pred)
+    #################### DONE NEW WAY ####################
     #####################################################################
     #################### End: Calinski Harabaz Score ####################
     #####################################################################
