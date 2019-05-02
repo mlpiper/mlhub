@@ -276,10 +276,26 @@ def main():
     #################### Start: Fowlkes Mallows Score ####################
     ######################################################################
 
-    fowlkes_mallows_score = sklearn.metrics.fowlkes_mallows_score(labels_true=labels_true, labels_pred=labels_pred,
-                                                                  sparse=False)
-    mlops.set_stat("User Defined: Fowlkes Mallows Score", fowlkes_mallows_score)
+    fowlkes_mallows_score = \
+        sklearn.metrics.fowlkes_mallows_score(labels_true=labels_true,
+                                              labels_pred=labels_pred,
+                                              sparse=False)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Fowlkes Mallows Score", fowlkes_mallows_score)
+    #################### DONE OLD WAY ####################
 
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.FOWLKES_MALLOWS_SCORE, fowlkes_mallows_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics.fowlkes_mallows_score(labels_true=labels_true,
+                                        labels_pred=labels_pred,
+                                        sparse=False)
+    #################### DONE NEW WAY ####################
     ####################################################################
     #################### End: Fowlkes Mallows Score ####################
     ####################################################################
