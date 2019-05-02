@@ -380,6 +380,7 @@ def main():
     mlops.metrics \
         .mutual_info_score(labels_true=labels_true, labels_pred=labels_pred, contingency=None)
     #################### DONE NEW WAY ####################
+
     ################################################################
     #################### End: Mutual Info Score ####################
     ################################################################
@@ -391,7 +392,22 @@ def main():
     normalized_mutual_info_score = sklearn.metrics \
         .normalized_mutual_info_score(labels_true=labels_true,
                                       labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Normalized Mutual Info Score", normalized_mutual_info_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Normalized Mutual Info Score", normalized_mutual_info_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.NORMALIZED_MUTUAL_INFO_SCORE, normalized_mutual_info_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .normalized_mutual_info_score(labels_true=labels_true,
+                                      labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     ###########################################################################
     #################### End:  Normalized Mutual Info Score ####################
