@@ -419,7 +419,22 @@ def main():
 
     silhouette_score = sklearn.metrics \
         .silhouette_score(X=features, labels=labels_pred, metric="euclidean", sample_size=None, random_state=None)
-    mlops.set_stat("User Defined: Silhouette Score", silhouette_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Silhouette Score", silhouette_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.SILHOUETTE_SCORE, silhouette_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .silhouette_score(X=features, labels=labels_pred, metric="euclidean", sample_size=None, random_state=None)
+
+    #################### DONE NEW WAY ####################
 
     ###############################################################
     #################### End: Silhouette Score ####################
