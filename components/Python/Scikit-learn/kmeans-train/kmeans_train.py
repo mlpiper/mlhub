@@ -365,8 +365,21 @@ def main():
 
     mutual_info_score = sklearn.metrics \
         .mutual_info_score(labels_true=labels_true, labels_pred=labels_pred, contingency=None)
-    mlops.set_stat("User Defined: Mutual Info Score", mutual_info_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Mutual Info Score", mutual_info_score)
+    #################### DONE OLD WAY ####################
 
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.MUTUAL_INFO_SCORE, mutual_info_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .mutual_info_score(labels_true=labels_true, labels_pred=labels_pred, contingency=None)
+    #################### DONE NEW WAY ####################
     ################################################################
     #################### End: Mutual Info Score ####################
     ################################################################
