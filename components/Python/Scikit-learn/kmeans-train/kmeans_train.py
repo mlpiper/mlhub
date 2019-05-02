@@ -235,23 +235,38 @@ def main():
     ###################################################################
 
     contingency_matrix = sklearn.metrics.cluster \
-        .contingency_matrix(labels_true, labels_pred, eps=None)
-
-    from parallelm.mlops.stats.table import Table
+        .contingency_matrix(labels_true, labels_pred)
 
     # list of sorted labels. i.e. [0, 1, 2, ..]
-    cm_cols_ordered = sorted(set(labels_pred))
-    cm_rows_ordered = sorted(set(labels_true))
+    pred_labels_list = sorted(set(labels_pred))
+    true_labels_list = sorted(set(labels_true))
 
-    cm_cols_ordered_string = [str(i) for i in cm_cols_ordered]
-    cm_rows_ordered_string = [str(i) for i in cm_rows_ordered]
+    #################### OLD WAY ####################
+    # First Way
+    # from parallelm.mlops.stats.table import Table
+    #
+    # cm_cols_ordered_string = [str(i) for i in pred_labels_list]
+    # cm_rows_ordered_string = [str(i) for i in true_labels_list]
+    # cm_matrix = Table().name("User Defined: Contingency Matrix").cols(cm_cols_ordered_string)
+    #
+    # for index in range(len(contingency_matrix)):
+    #     cm_matrix.add_row(cm_rows_ordered_string[index], list(contingency_matrix[index]))
+    #
+    # mlops.set_stat(cm_matrix)
+    #################### DONE OLD WAY ####################
 
-    cm_matrix = Table().name("User Defined: Contingency Matrix").cols(cm_cols_ordered_string)
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.CONTINGENCY_MATRIX,
+                   data=contingency_matrix,
+                   true_labels=true_labels_list,
+                   pred_labels=pred_labels_list)
 
-    for index in range(len(contingency_matrix)):
-        cm_matrix.add_row(cm_rows_ordered_string[index], list(contingency_matrix[index]))
+    # OR
 
-    mlops.set_stat(cm_matrix)
+    # Third Way
+    mlops.metrics.cluster.contingency_matrix(labels_true, labels_pred)
+    #################### DONE NEW WAY ####################
 
     #################################################################
     #################### End: Contingency Matrix ####################
