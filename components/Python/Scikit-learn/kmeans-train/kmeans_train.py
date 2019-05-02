@@ -296,6 +296,7 @@ def main():
                                         labels_pred=labels_pred,
                                         sparse=False)
     #################### DONE NEW WAY ####################
+
     ####################################################################
     #################### End: Fowlkes Mallows Score ####################
     ####################################################################
@@ -306,9 +307,27 @@ def main():
 
     homogeneity, completeness, v_measure = sklearn.metrics \
         .homogeneity_completeness_v_measure(labels_true=labels_true, labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Homogeneity", homogeneity)
-    mlops.set_stat("User Defined: Completeness", completeness)
-    mlops.set_stat("User Defined: V Measure", v_measure)
+    #################### OLD WAY ####################
+    # First Way
+    # multiline_object = MultiLineGraph() \
+    #     .name("User Defined: Homogeneity - Completeness - V Measure") \
+    #     .labels(["Homogeneity", "Completeness", "V Measure"])
+    #
+    # multiline_object.data([homogeneity, completeness, v_measure])
+    #
+    # mlops.set_stat(multiline_object)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.HOMOGENEITY_COMPLETENESS_V_MEASURE, data=[homogeneity, completeness, v_measure])
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .homogeneity_completeness_v_measure(labels_true=labels_true, labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     ###################################################################################
     #################### End: Homogeneity, Completeness, V Measure ####################
