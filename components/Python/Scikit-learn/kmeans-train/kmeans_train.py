@@ -433,7 +433,6 @@ def main():
     # Third Way
     mlops.metrics \
         .silhouette_score(X=features, labels=labels_pred, metric="euclidean", sample_size=None, random_state=None)
-
     #################### DONE NEW WAY ####################
 
     ###############################################################
@@ -445,7 +444,21 @@ def main():
     ################################################################
 
     v_measure_score = sklearn.metrics.v_measure_score(labels_true=labels_true, labels_pred=labels_pred)
-    mlops.set_stat("User Defined: V Measure Score", v_measure_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: V Measure Score", v_measure_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.V_MEASURE_SCORE, v_measure_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .v_measure_score(labels_true=labels_true, labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     ##############################################################
     #################### End: V Measure Score ####################
