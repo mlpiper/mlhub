@@ -339,7 +339,21 @@ def main():
 
     homogeneity_score = sklearn.metrics \
         .homogeneity_score(labels_true=labels_true, labels_pred=labels_pred)
-    mlops.set_stat("User Defined: Homogeneity Score", homogeneity_score)
+    #################### OLD WAY ####################
+    # First Way
+    # mlops.set_stat("User Defined: Homogeneity Score", homogeneity_score)
+    #################### DONE OLD WAY ####################
+
+    #################### NEW WAY ####################
+    # Second Way
+    mlops.set_stat(ClusteringMetrics.HOMOGENEITY_SCORE, homogeneity_score)
+
+    # OR
+
+    # Third Way
+    mlops.metrics \
+        .homogeneity_score(labels_true=labels_true, labels_pred=labels_pred)
+    #################### DONE NEW WAY ####################
 
     ################################################################
     #################### End: Homogeneity Score ####################
