@@ -1,0 +1,33 @@
+{
+    "engineType": "SageMaker",
+    "userStandalone": false,
+    "language": "Python",
+    "modelBehavior": "Auxiliary",
+    "name": "aws_s3_file_downloader",
+    "label": "AWS S3 File Downloader",
+    "program": "aws_s3_file_downloader.py",
+    "componentClass": "AwsS3FileDownloader",
+    "group": "Sinks",
+    "includeGlobPatterns" : "__init__.py | component.json | common/** | aws_s3*",
+    "useMLOps": true,
+    "inputInfo": [
+        {
+            "description": "S3 url filepath",
+            "label": "S3 url filepath",
+            "defaultComponent": "",
+            "type": "str",
+            "group": "data"
+        }
+    ],
+    "outputInfo": [],
+    "arguments": [
+        {
+            "key": "local_filepath",
+            "label": "Local filepath",
+            "type": "str",
+            "description": "The file path to save the file on the local file system",
+            "optional": false
+        }
+    ],
+    "version": 1
+}
