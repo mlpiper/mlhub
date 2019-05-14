@@ -33,7 +33,7 @@ def add_parameters(parser):
                         help='Whether SavedModel should be binary or text')
 
 
-def main(args):
+def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
     add_parameters(parser)
@@ -208,4 +208,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    tf.app.run()
+    main()
