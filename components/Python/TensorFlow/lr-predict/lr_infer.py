@@ -21,7 +21,7 @@ def add_parameters(parser):
                         default="/tmp/tf_log")
 
 
-def main(args):
+def main():
     # Parse arguments
     parser = argparse.ArgumentParser()
     add_parameters(parser)
@@ -92,4 +92,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    tf.app.run()
+    main()
