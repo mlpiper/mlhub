@@ -28,9 +28,6 @@ class JobMonitorEstimator(JobMonitorBase):
             for index, row in metrics_df.iterrows():
                 Report.job_metric(row.get(SMApiConstants.Estimator.DF_METRIC_NAME, "Unknown"),
                                   row.get(SMApiConstants.Estimator.DF_METRIC_VALUE, 0))
-        else:
-            for metric_name in self._metric_names_for_training_job():
-                Report.job_metric(metric_name, 0)
 
     def _report_final_metrics(self, describe_response):
         for metric in describe_response[SMApiConstants.Estimator.FINAL_METRIC_DATA_LIST]:
