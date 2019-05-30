@@ -1,7 +1,7 @@
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
 
-from common.aws_helper import AwsHelper
+from parallelm.extra.aws_helper import AwsHelper
 
 
 class AwsS3FileDownloader(ConnectableComponent):

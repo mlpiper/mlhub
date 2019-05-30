@@ -1,7 +1,7 @@
 from parallelm.components import ConnectableComponent
 from sagemaker.session import Session
 
-from common.aws_helper import AwsHelper
+from parallelm.extra.aws_helper import AwsHelper
 
 
 class AwsS3FileUploader(ConnectableComponent):

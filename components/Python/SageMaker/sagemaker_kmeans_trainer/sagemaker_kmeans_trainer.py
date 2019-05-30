@@ -7,11 +7,11 @@ from sagemaker.session import Session
 from sagemaker.amazon.amazon_estimator import get_image_uri
 from sagemaker.amazon.common import write_numpy_to_dense_tensor
 
-from monitor.job_monitor_estimator import JobMonitorEstimator
+from parallelm.extra.sagemaker.monitor.job_monitor_estimator import JobMonitorEstimator
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
 
-from common.aws_helper import AwsHelper
+from parallelm.extra.aws_helper import AwsHelper
 
 
 class SageMakerKMeansTrainer(ConnectableComponent):

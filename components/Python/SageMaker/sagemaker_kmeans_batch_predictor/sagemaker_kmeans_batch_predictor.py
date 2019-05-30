@@ -3,12 +3,13 @@ from time import gmtime, strftime
 
 import boto3
 from sagemaker.session import Session
+from sagemaker.amazon.amazon_estimator import get_image_uri
 
-from monitor.job_monitor_transformer import JobMonitorTransformer
+from parallelm.extra.sagemaker.monitor.job_monitor_transformer import JobMonitorTransformer
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
 
-from common.aws_helper import AwsHelper
+from parallelm.extra.aws_helper import AwsHelper
 
 
 class SageMakerKMeansBatchPredictor(ConnectableComponent):
@@ -74,7 +75,7 @@ class SageMakerKMeansBatchPredictor(ConnectableComponent):
         self._logger.info("Creating SageMaker KMeans model ... {}".format(self._model_name))
 
         primary_container = {
-            'Image': self._aws_helper.kmeans_image_uri(),
+            'Image': get_image_uri(self._sagemaker_session.boto_region_name, 'kmeans'),
             'ModelDataUrl': self._model_s3_filepath
         }
 

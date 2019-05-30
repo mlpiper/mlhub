@@ -6,7 +6,7 @@ import time
 
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
-from common import os_util
+from parallelm.common import os_util
 
 
 class DatasetDownloader(ConnectableComponent):
