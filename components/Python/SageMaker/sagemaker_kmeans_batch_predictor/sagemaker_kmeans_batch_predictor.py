@@ -21,6 +21,8 @@ class SageMakerKMeansBatchPredictor(ConnectableComponent):
         self._results_s3_location = None
         self._model_name = None
         self._job_name = None
+        self._instance_type = None
+        self._instance_count = None
 
         self._sagemaker_session = Session()
         self._sagemaker_client = boto3.client('sagemaker')
@@ -60,6 +62,9 @@ class SageMakerKMeansBatchPredictor(ConnectableComponent):
             self._results_s3_location = "s3://{}/prediction/results".format(bucket_name)
 
         self._skip_s3_model_uploading = self._params.get('skip_s3_model_uploading', "false").lower() == "true"
+
+        self._instance_type = self._params.get('instance_type', 'ml.m4.xlarge')
+        self._instance_count = self._params.get('instance_count', 1)
 
         return True
 
@@ -111,8 +116,8 @@ class SageMakerKMeansBatchPredictor(ConnectableComponent):
                 "CompressionType": "None"
             },
             "TransformResources": {
-                "InstanceType": "ml.m4.xlarge",
-                "InstanceCount": 1
+                "InstanceType": self._instance_type,
+                "InstanceCount": self._instance_count
             }
         }
 

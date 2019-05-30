@@ -64,6 +64,22 @@
             "type": "bool",
             "description": "If true, then assume the model was already uploaded and exists under 'model_s3_url'",
             "optional": true
+        },
+        {
+            "key": "instance_count",
+            "type": "int",
+            "label": "Number of compute instances",
+            "description": "The number of ML compute instances to use in the transform job. For distributed transform, provide a value greater than 1",
+            "defaultValue": 1,
+            "optional": true
+        },
+        {
+            "key": "instance_type",
+            "type": "str",
+            "label": "Compute instance type",
+            "description": "The ML compute instance type. For using built-in algorithms to transform moderately sized datasets, ml.m4.xlarge or ml.m5.large should suffice",
+            "defaultValue": "ml.m4.xlarge",
+            "optional": true
         }
     ],
     "version": 1
