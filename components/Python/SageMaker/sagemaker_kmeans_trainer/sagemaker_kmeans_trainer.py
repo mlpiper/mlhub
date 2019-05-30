@@ -76,7 +76,7 @@ class SageMakerKMeansTrainer(ConnectableComponent):
 
         self._skip_s3_dataset_uploading = self._params.get('skip_s3_dataset_uploading', 'false').lower() == 'true'
 
-        self._instance_count = self._params.get('instance_count', 2)
+        self._instance_count = self._params.get('instance_count', 1)
         self._instance_type = self._params.get('instance_type', 'ml.c4.xlarge')
         self._volume_size_in_gb = self._params.get('volume_size_in_gb', 50)
         self._hyper_parameter_k = self._params.get('hyper_parameter_k', 10)

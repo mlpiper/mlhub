@@ -37,8 +37,9 @@
         {
             "key": "dataset_url",
             "type": "str",
-            "label": "Dataset URL [Default: http://deeplearning.net/data/mnist/mnist.pkl.gz]",
+            "label": "Dataset URL",
             "description": "A url link to a given dataset, which includes train-set, valid-set and test-set",
+            "defaultValue": "http://deeplearning.net/data/mnist/mnist.pkl.gz",
             "optional": true
         },
         {

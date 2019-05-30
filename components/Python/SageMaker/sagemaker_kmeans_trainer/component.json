@@ -46,8 +46,8 @@
         {
             "key": "bucket_name",
             "type": "str",
-            "label": "Bucket name [Default: Session().default_bucket()]",
-            "description": "AWS bucket name",
+            "label": "Bucket name",
+            "description": "AWS bucket name [Default: Session().default_bucket()]",
             "optional": true
         },
         {
@@ -74,50 +74,57 @@
         {
             "key": "instance_count",
             "type": "int",
-            "label": "Number of compute instances [Default: 2]",
+            "label": "Number of compute instances",
             "description": "The number of ML compute instances to use. For distributed training, provide a value greater than 1",
+            "defaultValue": 1,
             "optional": true
         },
         {
             "key": "instance_type",
             "type": "str",
-            "label": "Compute instance type [Default: ml.c4.xlarge]",
+            "label": "Compute instance type",
             "description": "The ML compute instance type (https://docs.aws.amazon.com/sagemaker/latest/dg/API_ResourceConfig.html)",
+            "defaultValue": "ml.c4.xlarge",
             "optional": true
         },
         {
             "key": "volume_size_in_gb",
             "type": "int",
-            "label": "Volume size in GB [Default: 50]",
+            "label": "Volume size in GB",
             "description": "The size of the ML storage volume that you want to provision",
+            "defaultValue": 50,
             "optional": true
         },
         {
             "key": "hyper_parameter_k",
             "type": "int",
-            "label": "Number of required clusters [Default: 10]",
+            "label": "Number of required clusters",
             "description": "The number of required clusters",
+            "defaultValue": 10,
             "optional": true
         },
         {
             "key": "epochs",
             "type": "int",
-            "label": "epochs [Default: 1]",
+            "label": "epochs",
             "description": "The number of passes done over the training data",
+            "defaultValue": 1,
             "optional": true
         },
         {
             "key": "mini_batch_size",
             "type": "int",
-            "label": "Mini batch size [Default: 500]",
+            "label": "Mini batch size",
             "description": "The number of observations per mini-batch for the data iterator",
+            "defaultValue": 500,
             "optional": true
         },
         {
             "key": "max_runtime_in_seconds",
             "type": "int",
-            "label": "Max runtime in seconds [Default: 86400]",
+            "label": "Max runtime in seconds",
             "description": "The maximum length of time, in seconds, that the training job can run.",
+            "defaultValue": 86400,
             "optional": true
         }
     ],
