@@ -47,6 +47,7 @@
             "label": "Skip file uploading (Test)",
             "type": "str",
             "description": "If set, then assume the file was already uploaded and exists at the target!",
+            "defaultValue": false,
             "optional": true
         }
     ],

@@ -69,6 +69,7 @@
             "label": "Skip dataset upload (Test)",
             "type": "bool",
             "description": "If true, then assume the dataset was already converted and uploaded and exists under 'model_s3_url'",
+            "defaultValue": false,
             "optional": true
         },
         {

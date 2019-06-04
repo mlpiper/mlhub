@@ -63,6 +63,7 @@
             "label": "Skip model upload (Test)",
             "type": "bool",
             "description": "If true, then assume the model was already uploaded and exists under 'model_s3_url'",
+            "defaultValue": false,
             "optional": true
         },
         {
