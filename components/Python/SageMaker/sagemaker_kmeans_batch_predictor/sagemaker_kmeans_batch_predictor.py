@@ -5,10 +5,12 @@ import boto3
 from sagemaker.session import Session
 from sagemaker.amazon.amazon_estimator import get_image_uri
 
+from parallelm.components.parameter import str2bool
+from parallelm.extra.sagemaker.monitor.job_monitor_transformer import JobMonitorTransformer
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
+
 from parallelm.extra.aws_helper import AwsHelper
-from parallelm.extra.sagemaker.monitor.job_monitor_transformer import JobMonitorTransformer
 
 
 class SageMakerKMeansBatchPredictor(ConnectableComponent):
@@ -61,7 +63,7 @@ class SageMakerKMeansBatchPredictor(ConnectableComponent):
             bucket_name, input_rltv_path = AwsHelper.s3_url_parse(self._dataset_s3_url)
             self._results_s3_location = "s3://{}/prediction/results".format(bucket_name)
 
-        self._skip_s3_model_uploading = self._params.get('skip_s3_model_uploading', "false").lower() == "true"
+        self._skip_s3_model_uploading = str2bool(self._params.get('skip_s3_model_uploading'))
 
         self._instance_type = self._params.get('instance_type', 'ml.m4.xlarge')
         self._instance_count = self._params.get('instance_count', 1)

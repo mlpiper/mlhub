@@ -7,10 +7,12 @@ from sagemaker.session import Session
 from sagemaker.amazon.amazon_estimator import get_image_uri
 from sagemaker.amazon.common import write_numpy_to_dense_tensor
 
+from parallelm.components.parameter import str2bool
+from parallelm.extra.sagemaker.monitor.job_monitor_estimator import JobMonitorEstimator
 from parallelm.common.mlcomp_exception import MLCompException
 from parallelm.components import ConnectableComponent
+
 from parallelm.extra.aws_helper import AwsHelper
-from parallelm.extra.sagemaker.monitor.job_monitor_estimator import JobMonitorEstimator
 
 
 class SageMakerKMeansTrainer(ConnectableComponent):
@@ -74,7 +76,7 @@ class SageMakerKMeansTrainer(ConnectableComponent):
         else:
             self._output_location = 's3://{}/{}'.format(self._bucket_name, self._output_location)
 
-        self._skip_s3_dataset_uploading = self._params.get('skip_s3_dataset_uploading', 'false').lower() == 'true'
+        self._skip_s3_dataset_uploading = str2bool(self._params.get('skip_s3_dataset_uploading'))
 
         self._instance_count = self._params.get('instance_count', 1)
         self._instance_type = self._params.get('instance_type', 'ml.c4.xlarge')

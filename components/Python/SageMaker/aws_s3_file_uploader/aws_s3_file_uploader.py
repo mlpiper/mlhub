@@ -1,6 +1,7 @@
+from parallelm.components import ConnectableComponent
 from sagemaker.session import Session
 
-from parallelm.components import ConnectableComponent
+from parallelm.components.parameter import str2bool
 from parallelm.extra.aws_helper import AwsHelper
 
 
@@ -18,7 +19,7 @@ class AwsS3FileUploader(ConnectableComponent):
 
         remote_filepath = self._params.get('remote_filepath')
 
-        skip_uploading = self._params.get('skip_uploading', 'false').lower() == 'true'
+        skip_uploading = str2bool(self._params.get('skip_uploading'))
         dataset_s3_url = AwsHelper(self._logger).upload_file(local_filepath, bucket_name, remote_filepath,
                                                              skip_uploading)
 
