@@ -1,8 +1,9 @@
-from abc import ABCMeta, abstractmethod
+import abc
+from future.utils import with_metaclass
 import subprocess
 
 
-class Model(object):
+class Model(with_metaclass(abc.ABCMeta, object)):
     def __init__(self, model_dir, signature_def):
         self._model_dir = model_dir
         self._signature_def = signature_def
@@ -11,7 +12,7 @@ class Model(object):
         self._output_shape = ""
         self.parse_sig()
 
-    @abstractmethod
+    @abc.abstractmethod
     def infer(self, sample, label):
         """Should return sample, label, inference."""
         pass
