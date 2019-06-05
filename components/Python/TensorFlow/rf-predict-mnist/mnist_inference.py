@@ -172,6 +172,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # TF serving client API currently only supports python 2.7
-    assert sys.version_info >= (2, 7) and sys.version_info < (2, 8)
     main()
