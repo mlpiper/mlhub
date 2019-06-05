@@ -64,7 +64,8 @@ def main():
     if os.path.isdir(args.model_dir):
         print("Found model_dir")
     else:
-        raise ValueError("model dir is not found")
+        print("model dir is not found")
+        exit(0)
 
     input = MnistStreamInput(args.input_dir, args.total_records, args.random)
 
@@ -75,6 +76,8 @@ def main():
             args.conf_percent)
 
     elif args.model_kind == 'tf_serving':
+        # TF serving client API currently only supports python 2.7
+        assert sys.version_info >= (2, 7) and sys.version_info <= (2, 8)
         from tensorflow_serving_model import TfServingModel
         model = TfServingModel(output, args.model_dir, args.sig_name, args.stats_interval, args.stats_type,
                                args.conf_thresh, args.conf_percent, sargs.host_port, args.concurrency)
@@ -90,6 +93,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # TF serving client API currently only supports python 2.7
-    assert sys.version_info >= (2, 7) and sys.version_info <= (2, 8)
     main()
