@@ -33,7 +33,7 @@ class Model(with_metaclass(abc.ABCMeta, object)):
         result = subprocess.check_output(['saved_model_cli', 'show', '--dir', self._model_dir, '--all'])
         desired_sig = "signature_def['{}']:".format(self._signature_def)
         sig = 'signature_def'
-        lines = result.split('\n')
+        lines = result.decode().split('\n')
         i = 0
         found = False
 

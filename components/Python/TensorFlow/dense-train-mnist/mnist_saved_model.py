@@ -26,6 +26,7 @@ tensorflow_model_server.
 Usage: mnist_saved_model.py [--training_iteration=x] [--save_dir export_dir]
 """
 
+import argparse
 import os
 import sys
 
@@ -41,25 +42,36 @@ from parallelm.mlops.stats_category import StatCategory
 from parallelm.mlops.stats.table import Table
 ## MLOps end
 
-tf.app.flags.DEFINE_integer('training_iteration', 1000, 'number of training iterations.')
-tf.app.flags.DEFINE_integer('display_step', 100, 'How often to display stats')
-tf.app.flags.DEFINE_string('input_cache_dir', '/tmp/mnist_data', 'Input is cached here.')
-tf.app.flags.DEFINE_string('save_dir', '/tmp/tf_model', 'Model save base directory.')
 
-FLAGS = tf.app.flags.FLAGS
+def add_parameters(parser):
+    # input arguments
+    parser.add_argument("--training_iteration", type=int, dest="training_iteration", default=1000, required=False)
+    parser.add_argument("--input_cache_dir",
+                        dest="input_cache_dir",
+                        type=str,
+                        required=False,
+                        help='Directory for caching input data',
+                        default="/tmp/mnist_data")
+    parser.add_argument("--save_dir",
+                        dest="save_dir",
+                        type=str,
+                        required=True,
+                        help='Model save base directory.',
+                        default="/tmp/tf_model")
+    parser.add_argument("--display_step", type=int, dest="display_step", default=100, required=False)
 
 
-def main(_):
-  if len(sys.argv) < 2 or sys.argv[-1].startswith('-'):
-    print('Usage: mnist_export.py [--training_iteration=x] '
-          '[--save_dir export_dir] [--display_step=y]')
-    sys.exit(-1)
-  if FLAGS.training_iteration <= 0:
+def main():
+  parser = argparse.ArgumentParser()
+  add_parameters(parser)
+  args = parser.parse_args()
+
+  if args.training_iteration <= 0:
     print('Please specify a positive value for training iteration.')
     sys.exit(-1)
 
   # Read the train and test data sets
-  mnist = mnist_input_data.read_data_sets(FLAGS.input_cache_dir, one_hot=True)
+  mnist = mnist_input_data.read_data_sets(args.input_cache_dir, one_hot=True)
 
   ## MLOps start
   # Initialize the mlops library
@@ -99,12 +111,12 @@ def main(_):
 
   # Train the model
   print('Training model...')
-  for i in range(FLAGS.training_iteration):
+  for i in range(args.training_iteration):
     batch = mnist.train.next_batch(50)
     _, train_cost, train_acc = sess.run([train_step, cross_entropy, accuracy], feed_dict={x: batch[0], y_: batch[1]})
 
     # Display stats
-    if (i + 1) % FLAGS.display_step == 0 or i + 1 == FLAGS.training_iteration:
+    if (i + 1) % args.display_step == 0 or i + 1 == args.training_iteration:
       # Report training accuracy and cost
 
       print("Training. step={}, accuracy={}, cost={}".format(i + 1, train_acc,train_cost))
@@ -123,7 +135,7 @@ def main(_):
 
   ## MLOps start
   acc_table = Table().name("Test Accuracy").cols(["Accuracy"])
-  acc_table.add_row("Total iterations: {}".format(FLAGS.training_iteration), [test_acc])
+  acc_table.add_row("Total iterations: {}".format(args.training_iteration), [test_acc])
   mlops.set_stat(acc_table)
 
   # Release mlops resources
@@ -134,7 +146,7 @@ def main(_):
   # WARNING(break-tutorial-inline-code): The following code snippet is
   # in-lined in tutorials, please update tutorial documents accordingly
   # whenever code changes.
-  export_path = FLAGS.save_dir
+  export_path = args.save_dir
   print('Exporting trained model to', export_path)
   builder = tf.saved_model.builder.SavedModelBuilder(export_path)
 
@@ -185,4 +197,4 @@ def main(_):
 
 
 if __name__ == '__main__':
-  tf.app.run()
+  main()
