@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "engineType": "Generic",
+  "language": "Python",
+  "userStandalone": false,
+  "name": "dataframe_stats",
+  "label": "DataFrame Statistics",
+  "description": "Generate statistics on the input dataframe.",
+  "program": "dataframe_stats.py",
+  "componentClass": "MCenterStatsComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [
+    {
+      "description": "In Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "outputInfo": [
+    {
+      "description": "Out Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "group": "FeatureEng",
+  "arguments": [
+    {
+      "key": "dataframe_is",
+      "label": "Dataframe Is",
+      "description": "What is this dataframe represents",
+      "type": "string",
+      "uiType": "select",
+      "options": [
+        {
+          "label": "Input Data",
+          "value": "input_data"
+        },
+        {
+          "label": "Categorical Predictions Probabilities",
+          "value": "categorical_predictions_probabilities"
+        },
+        {
+          "label": "Other",
+          "value": "other"
+        }
+      ],
+      "defaultValue": "input_data",
+      "optional": false
+    }
+  ]
+}
