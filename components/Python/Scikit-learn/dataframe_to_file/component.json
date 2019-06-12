@@ -29,7 +29,7 @@
   "group": "Sinks",
   "arguments": [
     {
-      "key": "sinkfilename",
+      "key": "filename",
       "label": "save to file",
       "type": "str",
       "description": "File used to save DataFrame contents",
