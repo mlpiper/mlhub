@@ -19,20 +19,19 @@ class MCenterWriteDFComponentAdapter(ConnectableComponent):
     def _materialize(self, parent_data_objs, user_data):
         file_path = self._params["sinkfilename"]
         df_data = parent_data_objs[0]
-        return [write_df_to_file(df_data, file_path)]
+        return [self._write_df_to_file(df_data, file_path)]
 
+    def _write_df_to_file(self, df_data, filepath):
+        """
+        Save DataFrame to file
+        """
+        suffix_time_stamp = str(int(time.time()))
+        save_file = str(filepath) + '.' + suffix_time_stamp
+        with open(save_file, 'w+', encoding='utf-8') as sfile:
+            pandas.DataFrame(df_data).to_csv(path_or_buf=sfile)
 
-def write_df_to_file(df_data, filepath):
-    """
-    Save DataFrame to file
-    """
-    suffix_time_stamp = str(int(time.time()))
-    save_file = str(filepath) + '.' + suffix_time_stamp
-    sfile = open(save_file, 'w+')
-    pandas.DataFrame(df_data).to_csv(path_or_buf=sfile, encoding='utf-8')
-    sfile.close()
-    if not os.path.exists(save_file):
-        self._logger.info("stderr- failed to write {}".format(save_file), file=sys.stderr)
-        raise Exception("failed writing to file: {}".format(save_file))
-    return save_file
+        if not os.path.exists(save_file):
+            self._logger.error("stderr- failed to write {}".format(save_file), file=sys.stderr)
+            raise Exception("failed writing to file: {}".format(save_file))
+        return save_file
 
