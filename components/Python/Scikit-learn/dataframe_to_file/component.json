@@ -1,0 +1,40 @@
+{
+  "engineType": "Generic",
+  "language": "Python",
+  "userStandalone": false,
+  "name": "dataframe_to_file",
+  "label": "Sink DataFrame to File",
+  "program": "dataframe_to_file.py",
+  "componentClass": "MCenterWriteDFComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [
+    {
+      "description": "Input Pandas DataFrame",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "outputInfo": [
+    {
+      "description": "File used to write Dataframe contents",
+      "label": "filename",
+      "defaultComponent": "",
+      "type": "str",
+      "group": "data"
+    }
+  ],
+  "group": "Sinks",
+  "arguments": [
+    {
+      "key": "sinkfilename",
+      "label": "save to file",
+      "type": "str",
+      "description": "File used to save DataFrame contents",
+      "optional": true
+    }
+  ],
+  "version": 1
+}
