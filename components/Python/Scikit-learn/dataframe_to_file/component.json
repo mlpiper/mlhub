@@ -1,4 +1,6 @@
 {
+  "version": 1,
+  "group": "Sinks",
   "engineType": "Generic",
   "language": "Python",
   "userStandalone": false,
@@ -27,7 +29,6 @@
       "group": "data"
     }
   ],
-  "group": "Sinks",
   "arguments": [
     {
       "key": "filename",
@@ -36,6 +37,5 @@
       "description": "File used to save DataFrame contents",
       "optional": true
     }
-  ],
-  "version": 1
+  ]
 }
