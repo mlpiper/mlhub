@@ -29,7 +29,7 @@ def write_df_to_file(df_data, filepath):
     suffix_time_stamp = str(int(time.time()))
     save_file = str(filepath) + '.' + suffix_time_stamp
     sfile = open(save_file, 'w+')
-    pandas.DataFrame(df_data).to_csv(path_or_buf=save_file)
+    pandas.DataFrame(df_data).to_csv(path_or_buf=sfile, encoding='utf-8')
     sfile.close()
     if not os.path.exists(save_file):
         self._logger.info("stderr- failed to write {}".format(save_file), file=sys.stderr)
