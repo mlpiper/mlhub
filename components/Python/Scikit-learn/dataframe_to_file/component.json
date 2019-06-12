@@ -4,6 +4,7 @@
   "userStandalone": false,
   "name": "dataframe_to_file",
   "label": "Sink DataFrame to File",
+  "description": "Saves DataFrame to file provided, and passes the file-name to the next component",
   "program": "dataframe_to_file.py",
   "componentClass": "MCenterWriteDFComponentAdapter",
   "modelBehavior": "Auxiliary",
