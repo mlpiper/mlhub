@@ -19,7 +19,7 @@ class MCenterWriteDFComponentAdapter(ConnectableComponent):
     def _materialize(self, parent_data_objs, user_data):
         file_path = self._params["sinkfilename"]
         df_data = parent_data_objs[0]
-        return[write_df_to_file(df_data, file_path)]
+        return [write_df_to_file(df_data, file_path)]
 
 
 def write_df_to_file(df_data, filepath):
@@ -29,7 +29,7 @@ def write_df_to_file(df_data, filepath):
     suffix_time_stamp = str(int(time.time()))
     save_file = str(filepath) + '.' + suffix_time_stamp
     sfile = open(save_file, 'w+')
-    pandas.DataFrame(df_data).to_csv(save_file)
+    pandas.DataFrame(df_data).to_csv(path_or_buf=save_file)
     sfile.close()
     if not os.path.exists(save_file):
         self._logger.info("stderr- failed to write {}".format(save_file), file=sys.stderr)
