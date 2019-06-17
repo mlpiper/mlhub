@@ -218,7 +218,8 @@ class SklearnRESTfulServing(RESTfulComponent):
                                        .format(pred_probs,  pred_index, prediction, prediction_confidence))
 
                     # Total confidence
-                    self._total_confidence_metric.increase(prediction_confidence)
+                    if self._total_confidence_metric:
+                        self._total_confidence_metric.increase(prediction_confidence)
 
                     if self._num_predictable_classes:
                         # Prediction confidence per class
