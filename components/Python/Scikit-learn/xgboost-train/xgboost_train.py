@@ -10,11 +10,11 @@ from sklearn.datasets import make_classification
 from sklearn.metrics import accuracy_score, roc_auc_score, roc_curve
 from sklearn.model_selection import train_test_split
 
-from parallelm.mlops import StatCategory as st
-from parallelm.mlops import mlops as mlops
-from parallelm.mlops.stats.bar_graph import BarGraph
-from parallelm.mlops.stats.graph import MultiGraph
-from parallelm.mlops.stats.table import Table
+#from parallelm.mlops import StatCategory as st
+#from parallelm.mlops import mlops as mlops
+#from parallelm.mlops.stats.bar_graph import BarGraph
+#from parallelm.mlops.stats.graph import MultiGraph
+#from parallelm.mlops.stats.table import Table
 
 
 def parse_args():
@@ -23,27 +23,27 @@ def parse_args():
     :return: Parsed arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("--num_features", help="# Features")
-    parser.add_argument("--num_samples", help="# Samples")
+    parser.add_argument("--num_features", help="# Features", default=21)
+    parser.add_argument("--num_samples", help="# Samples", default=1500)
     parser.add_argument("--input_file", help="Input Data File")
-    parser.add_argument("--validation_split", help="# Validation Split")
+    parser.add_argument("--validation_split", help="# Validation Split", default=0.33)
 
-    parser.add_argument("--n_estimators", help="Number of Estimators")
-    parser.add_argument("--max_depth", help="Max Depth")
-    parser.add_argument("--learning_rate", help="Learning Rate")
-    parser.add_argument("--min_child_weight", help="Min Child Weight")
-    parser.add_argument("--objective", help="Objective")
-    parser.add_argument("--gamma", help="Gamma")
-    parser.add_argument("--max_delta_step", help="Max Delta Step")
-    parser.add_argument("--subsample", help="Subsample")
-    parser.add_argument("--reg_alpha", help="Reg Alpha")
-    parser.add_argument("--reg_lambda", help="Reg Lambda")
-    parser.add_argument("--scale_pos_weight", help="Scale Pos Weight")
-    parser.add_argument("--auc_threshold", help="AUC Threshold")
-    parser.add_argument("--ks_threshold", help="KS Threshold")
-    parser.add_argument("--psi_threshold", help="PSI Threshold")
+    parser.add_argument("--n_estimators", help="Number of Estimators", default=500)
+    parser.add_argument("--max_depth", help="Max Depth", default=7)
+    parser.add_argument("--learning_rate", help="Learning Rate", default=0.1)
+    parser.add_argument("--min_child_weight", help="Min Child Weight", default=1)
+    parser.add_argument("--objective", help="Objective", default="binary:logistic")
+    parser.add_argument("--gamma", help="Gamma", default=0)
+    parser.add_argument("--max_delta_step", help="Max Delta Step", default=0)
+    parser.add_argument("--subsample", help="Subsample", default=1)
+    parser.add_argument("--reg_alpha", help="Reg Alpha", default=0)
+    parser.add_argument("--reg_lambda", help="Reg Lambda", default=0)
+    parser.add_argument("--scale_pos_weight", help="Scale Pos Weight", default=1)
+    parser.add_argument("--auc_threshold", help="AUC Threshold", default=1)
+    parser.add_argument("--ks_threshold", help="KS Threshold", default=1)
+    parser.add_argument("--psi_threshold", help="PSI Threshold", default=1)
 
-    parser.add_argument("--output-model", help="Data File to Save Model")
+    parser.add_argument("--output-model", help="Data File to Save Model", default="/tmp/f")
     options = parser.parse_args()
     return options
 
@@ -142,7 +142,7 @@ def main():
     min_psi_requirement = float(pm_options.psi_threshold)
 
     # Initialize MLOps Library
-    mlops.init()
+    #mlops.init()
 
     try:
         data_filename = pm_options.input_file
@@ -200,7 +200,7 @@ def main():
 
     # Output Health Statistics to MCenter
     # MLOps API to report the distribution statistics of each feature in the data
-    mlops.set_data_distribution_stat(X_train)
+    #mlops.set_data_distribution_stat(X_train)
 
     # Accuracy for the chosen model
     pred_labels = final_model.predict(X_test)
@@ -212,7 +212,7 @@ def main():
     accuracy = accuracy_score(y_test, pred_labels)
     print("Accuracy values: \n {0}".format(accuracy))
     # Output accuracy of the chosen model using MCenter
-    mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
+    #mlops.set_stat("Accuracy", accuracy, st.TIME_SERIES)
 
     # Label distribution in training
     value, counts = np.unique(y_test, return_counts=True)
@@ -221,10 +221,10 @@ def main():
     print("Validation Actual Label distributions: \n {0}".format(label_distribution))
 
     # Output Label distribution as a BarGraph using MCenter
-    bar = BarGraph().name("Validation Actual Label Distribution").cols(
-        (label_distribution[:, 0]).astype(str).tolist()).data(
-        (label_distribution[:, 1]).tolist())
-    mlops.set_stat(bar)
+    #bar = BarGraph().name("Validation Actual Label Distribution").cols(
+    #    (label_distribution[:, 0]).astype(str).tolist()).data(
+    #    (label_distribution[:, 1]).tolist())
+    #mlops.set_stat(bar)
 
     # Pred Label distribution in training
     pred_value, pred_counts = np.unique(pred_labels, return_counts=True)
@@ -233,30 +233,30 @@ def main():
     print("Validation Prediction Label Distributions: \n {0}".format(pred_label_distribution))
 
     # Output Pred label distribution as a BarGraph using MCenter
-    pred_bar = BarGraph().name("Validation Prediction Label Distributions").cols(
-        (pred_label_distribution[:, 0]).astype(str).tolist()).data(
-        (pred_label_distribution[:, 1]).tolist())
-    mlops.set_stat(pred_bar)
+    #pred_bar = BarGraph().name("Validation Prediction Label Distributions").cols(
+    #    (pred_label_distribution[:, 0]).astype(str).tolist()).data(
+    #    (pred_label_distribution[:, 1]).tolist())
+    #mlops.set_stat(pred_bar)
 
     # ROC for the chosen model
     roc_auc = roc_auc_score(y_test, pred_probs[:, 1])
     print("ROC AUC values: \n {}".format(roc_auc))
 
     #     Output ROC of the chosen model using MCenter
-    mlops.set_stat("ROC AUC", roc_auc, st.TIME_SERIES)
+    #mlops.set_stat("ROC AUC", roc_auc, st.TIME_SERIES)
 
-    if roc_auc <= min_auc_requirement:
-        mlops.health_alert("[Training] AUC Violation From Training Node",
-                           "AUC Went Below {}. Current AUC Is {}".format(min_auc_requirement, roc_auc))
+    #if roc_auc <= min_auc_requirement:
+        #mlops.health_alert("[Training] AUC Violation From Training Node",
+        #                   "AUC Went Below {}. Current AUC Is {}".format(min_auc_requirement, roc_auc))
 
     # ROC Curve
     fpr, tpr, thr = roc_curve(y_test, pred_probs[:, 1])
-    cg = MultiGraph().name("Receiver Operating Characteristic ").set_continuous()
-    cg.add_series(label='Random Curve ''', x=fpr.tolist(), y=fpr.tolist())
-    cg.add_series(label='ROC Curve (Area = {0:0.2f})'''.format(roc_auc), x=fpr.tolist(), y=tpr.tolist())
-    cg.x_title('False Positive Rate')
-    cg.y_title('True Positive Rate')
-    mlops.set_stat(cg)
+    #cg = MultiGraph().name("Receiver Operating Characteristic ").set_continuous()
+    #cg.add_series(label='Random Curve ''', x=fpr.tolist(), y=fpr.tolist())
+    #cg.add_series(label='ROC Curve (Area = {0:0.2f})'''.format(roc_auc), x=fpr.tolist(), y=tpr.tolist())
+    #cg.x_title('False Positive Rate')
+    #cg.y_title('True Positive Rate')
+    #mlops.set_stat(cg)
 
     max_pred_probs = pred_probs.max(axis=1)
 
@@ -268,41 +268,41 @@ def main():
     print("KS values: \n Statistics: {} \n pValue: {}\n".format(ks_stat, ks_pvalue))
 
     # Output KS Stat of the chosen model using MCenter
-    mlops.set_stat("KS Stat", ks_stat, st.TIME_SERIES)
+    #mlops.set_stat("KS Stat", ks_stat, st.TIME_SERIES)
 
     # Raising alert if ks-stat goes above required threshold
-    if ks_stat >= max_ks_requirement:
-        mlops.health_alert("[Training] KS Violation From Training Node",
-                           "KS Stat Went Above {}. Current KS Stat Is {}".format(max_ks_requirement, ks_stat))
+    #if ks_stat >= max_ks_requirement:
+    #    mlops.health_alert("[Training] KS Violation From Training Node",
+    #                       "KS Stat Went Above {}. Current KS Stat Is {}".format(max_ks_requirement, ks_stat))
 
-    ks_table = Table().name("KS Stats").cols(["Statistic", "pValue"])
-    ks_table.add_row([ks_stat, ks_pvalue])
-    mlops.set_stat(ks_table)
+    #ks_table = Table().name("KS Stats").cols(["Statistic", "pValue"])
+    #ks_table.add_row([ks_stat, ks_pvalue])
+    #mlops.set_stat(ks_table)
 
     # Calculating PSI
     total_psi, psi_table = get_psi(max_pred_probs[y_test == 1], max_pred_probs[y_test == 0])
 
-    psi_table_stat = Table().name("PSI Stats").cols(
-        ["Base Pop", "Curr Pop", "Lower Bound", "Upper Bound", "Base Percent", "Curr Percent",
-         "Segment PSI"])
+    #psi_table_stat = Table().name("PSI Stats").cols(
+    #    ["Base Pop", "Curr Pop", "Lower Bound", "Upper Bound", "Base Percent", "Curr Percent",
+    #     "Segment PSI"])
 
     row_num = 1
-    for each_value in psi_table.values:
-        str_values = [str(i) for i in each_value]
-        psi_table_stat.add_row(str(row_num), str_values)
-        row_num += 1
+    #for each_value in psi_table.values:
+    #    str_values = [str(i) for i in each_value]
+    #    psi_table_stat.add_row(str(row_num), str_values)
+    #    row_num += 1
 
-    mlops.set_stat(psi_table_stat)
+    #mlops.set_stat(psi_table_stat)
 
     print("Total PSI values: \n {}".format(total_psi))
 
     # Output Total PSI of the chosen model using MCenter
-    mlops.set_stat("Total PSI ", total_psi, st.TIME_SERIES)
+    #mlops.set_stat("Total PSI ", total_psi, st.TIME_SERIES)
 
     # Raising alert if total_psi goes below required threshold
-    if total_psi <= min_psi_requirement:
-        mlops.health_alert("[Training] PSI Violation From Training Node",
-                           "PSI Went Below {}. Current PSI Is {}".format(min_psi_requirement, total_psi))
+    #if total_psi <= min_psi_requirement:
+    #    mlops.health_alert("[Training] PSI Violation From Training Node",
+    #                       "PSI Went Below {}. Current PSI Is {}".format(min_psi_requirement, total_psi))
 
     # Save the model
     import pickle
@@ -310,7 +310,7 @@ def main():
     pickle.dump(final_model, model_file)
     model_file.close()
     # Terminate MLOPs
-    mlops.done()
+    #mlops.done()
 
 
 if __name__ == "__main__":
