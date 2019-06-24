@@ -34,7 +34,7 @@ def get_channel_id(sc, name):
     chid = None
     try:
         for ch in ret['channels']:
-            if ch['name'] == 'testapp':
+            if ch['name'] == name:
                 print(ch)
                 chid = ch['id']
     except Exception:
@@ -148,21 +148,43 @@ def main():
         else:
             alert_message = ":ok_hand:"
 
-        text_message =\
-                       "*MLApp Name*: {}\n"\
-                       "*Description*: {}\n"\
-                       "*Event Type*: {}\n"\
-                       "*Message Type*: {}\n"\
-                       "*Alert*: {}\n"\
-                       "*Created At* :clock12: : {}\n"\
-                       "*Host*: {}\n".format(
-                               jsons['ionName'],
-                               jsons['description'],
-                               jsons['eventType'],
-                               jsons['msgType'],
-                               alert_message,
-                               datetime.utcfromtimestamp(jsons['created']/1000),
-                               jsons['host'])
+        text_message = ""
+
+        if jsons['eventType'] == "GenericEvent" and jsons['name'] == "ModelReview":
+            text_message = \
+                "*MLApp Name*: {}\n" \
+                "*Description*: {}\n" \
+                "*Event Type*: {}\n" \
+                "*Model Id*: {}\n" \
+                "*Reviewed By*: {}\n" \
+                "*Alert*: {}\n" \
+                "*Created At* :clock12: : {}\n" \
+                "*Host*: {}\n".format(
+                    jsons['ionName'],
+                    jsons['stateDescription'],
+                    "ModelUpdated",
+                    jsons['modelId'],
+                    jsons['reviewedBy'],
+                    alert_message,
+                    datetime.utcfromtimestamp(jsons['created']/1000),
+                    jsons['host'])
+        else:
+            text_message =\
+                           "*MLApp Name*: {}\n"\
+                           "*Description*: {}\n"\
+                           "*Event Type*: {}\n"\
+                           "*Message Type*: {}\n"\
+                           "*Alert*: {}\n"\
+                           "*Created At* :clock12: : {}\n"\
+                           "*Host*: {}\n".format(
+                                   jsons['ionName'],
+                                   jsons['description'],
+                                   jsons['eventType'],
+                                   jsons['msgType'],
+                                   alert_message,
+                                   datetime.utcfromtimestamp(jsons['created']/1000),
+                                   jsons['host'])
+
         if jsons['eventType'] == "ModelAccepted":
             text_message = text_message +\
                             "*Model ID*: {}\n".format(jsons['modelId'])
