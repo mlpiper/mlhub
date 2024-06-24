@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML version="4.3" xmlns="http://www.dmg.org/PMML-4_3">
+    <Header>
+        <Application name="JPMML-SparkML" version="1.2.6"/>
+        <Timestamp>2017-11-06T18:28:11Z</Timestamp>
+    </Header>
+    <DataDictionary>
+        <DataField name="c4" optype="continuous" dataType="double"/>
+        <DataField name="c5" optype="continuous" dataType="double"/>
+        <DataField name="c6" optype="continuous" dataType="double"/>
+        <DataField name="c7" optype="continuous" dataType="double"/>
+        <DataField name="c11" optype="continuous" dataType="double"/>
+        <DataField name="c12" optype="continuous" dataType="double"/>
+        <DataField name="c13" optype="continuous" dataType="double"/>
+        <DataField name="c23" optype="continuous" dataType="double"/>
+        <DataField name="c24" optype="continuous" dataType="double"/>
+        <DataField name="c0" optype="categorical" dataType="integer">
+            <Value value="0"/>
+            <Value value="1"/>
+        </DataField>
+    </DataDictionary>
+    <MiningModel functionName="classification">
+        <MiningSchema>
+            <MiningField name="c0" usageType="target"/>
+            <MiningField name="c13"/>
+            <MiningField name="c24"/>
+            <MiningField name="c23"/>
+            <MiningField name="c11"/>
+            <MiningField name="c12"/>
+            <MiningField name="c4"/>
+            <MiningField name="c6"/>
+            <MiningField name="c7"/>
+            <MiningField name="c5"/>
+        </MiningSchema>
+        <Output>
+            <OutputField name="pmml(prediction)" optype="categorical" dataType="integer" feature="predictedValue"/>
+            <OutputField name="prediction" optype="categorical" dataType="double" feature="transformedValue">
+                <MapValues outputColumn="output">
+                    <FieldColumnPair field="pmml(prediction)" column="input"/>
+                    <InlineTable>
+                        <row>
+                            <input xmlns="" xmlns:ns2="http://www.dmg.org/PMML-4_3">0</input>
+                            <output xmlns="" xmlns:ns2="http://www.dmg.org/PMML-4_3">0</output>
+                        </row>
+                        <row>
+                            <input xmlns="" xmlns:ns2="http://www.dmg.org/PMML-4_3">1</input>
+                            <output xmlns="" xmlns:ns2="http://www.dmg.org/PMML-4_3">1</output>
+                        </row>
+                    </InlineTable>
+                </MapValues>
+            </OutputField>
+            <OutputField name="probability(0)" optype="continuous" dataType="double" feature="probability" value="0"/>
+            <OutputField name="probability(1)" optype="continuous" dataType="double" feature="probability" value="1"/>
+        </Output>
+        <Segmentation multipleModelMethod="average">
+            <Segment id="1">
+                <True/>
+                <TreeModel functionName="classification" splitCharacteristic="binarySplit">
+                    <MiningSchema>
+                        <MiningField name="c5"/>
+                        <MiningField name="c6"/>
+                        <MiningField name="c23"/>
+                        <MiningField name="c24"/>
+                    </MiningSchema>
+                    <Node score="0" recordCount="977.0">
+                        <True/>
+                        <ScoreDistribution value="0" recordCount="789.0"/>
+                        <ScoreDistribution value="1" recordCount="188.0"/>
+                        <Node score="0" recordCount="638.0">
+                            <SimplePredicate field="c24" operator="lessOrEqual" value="0.2439895691968709"/>
+                            <ScoreDistribution value="0" recordCount="636.0"/>
+                            <ScoreDistribution value="1" recordCount="2.0"/>
+                            <Node score="0" recordCount="323.0">
+                                <SimplePredicate field="c5" operator="lessOrEqual" value="0.3582487621504182"/>
+                                <ScoreDistribution value="0" recordCount="321.0"/>
+                                <ScoreDistribution value="1" recordCount="2.0"/>
+                                <Node score="0" recordCount="258.0">
+                                    <SimplePredicate field="c23" operator="lessOrEqual" value="0.09090908999081727"/>
+                                    <ScoreDistribution value="0" recordCount="257.0"/>
+                                    <ScoreDistribution value="1" recordCount="1.0"/>
+                                </Node>
+                                <Node score="0" recordCount="65.0">
+                                    <SimplePredicate field="c23" operator="greaterThan" value="0.09090908999081727"/>
+                                    <ScoreDistribution value="0" recordCount="64.0"/>
+                                    <ScoreDistribution value="1" recordCount="1.0"/>
+                                </Node>
+                            </Node>
+                            <Node score="0" recordCount="315.0">
+                                <SimplePredicate field="c5" operator="greaterThan" value="0.3582487621504182"/>
+                                <ScoreDistribution value="0" recordCount="315.0"/>
+                            </Node>
+                        </Node>
+                        <Node score="1" recordCount="339.0">
+                            <SimplePredicate field="c24" operator="greaterThan" value="0.2439895691968709"/>
+                            <ScoreDistribution value="0" recordCount="153.0"/>
+                            <ScoreDistribution value="1" recordCount="186.0"/>
+                            <Node score="0" recordCount="180.0">
+                                <SimplePredicate field="c23" operator="lessOrEqual" value="0.09090908999081727"/>
+                                <ScoreDistribution value="0" recordCount="94.0"/>
+                                <ScoreDistribution value="1" recordCount="86.0"/>
+                                <Node score="0" recordCount="25.0">
+                                    <SimplePredicate field="c6" operator="lessOrEqual" value="0.09613453694610269"/>
+                                    <ScoreDistribution value="0" recordCount="25.0"/>
+                                </Node>
+                                <Node score="1" recordCount="155.0">
+                                    <SimplePredicate field="c6" operator="greaterThan" value="0.09613453694610269"/>
+                                    <ScoreDistribution value="0" recordCount="69.0"/>
+                                    <ScoreDistribution value="1" recordCount="86.0"/>
+                                </Node>
+                            </Node>
+                            <Node score="1" recordCount="159.0">
+                                <SimplePredicate field="c23" operator="greaterThan" value="0.09090908999081727"/>
+                                <ScoreDistribution value="0" recordCount="59.0"/>
+                                <ScoreDistribution value="1" recordCount="100.0"/>
+                            </Node>
+                        </Node>
+                    </Node>
+                </TreeModel>
+            </Segment>
+            <Segment id="2">
+                <True/>
+                <TreeModel functionName="classification" splitCharacteristic="binarySplit">
+                    <MiningSchema>
+                        <MiningField name="c6"/>
+                        <MiningField name="c7"/>
+                        <MiningField name="c11"/>
+                        <MiningField name="c12"/>
+                        <MiningField name="c23"/>
+                    </MiningSchema>
+                    <Node score="0" recordCount="1001.0">
+                        <True/>
+                        <ScoreDistribution value="0" recordCount="810.0"/>
+                        <ScoreDistribution value="1" recordCount="191.0"/>
+                        <Node score="0" recordCount="659.0">
+                            <SimplePredicate field="c12" operator="lessOrEqual" value="3.8208279780058423E-4"/>
+                            <ScoreDistribution value="0" recordCount="604.0"/>
+                            <ScoreDistribution value="1" recordCount="55.0"/>
+                            <Node score="0" recordCount="525.0">
+                                <SimplePredicate field="c7" operator="lessOrEqual" value="0.2835820366451424"/>
+                                <ScoreDistribution value="0" recordCount="522.0"/>
+                                <ScoreDistribution value="1" recordCount="3.0"/>
+                                <Node score="0" recordCount="248.0">
+                                    <SimplePredicate field="c6" operator="lessOrEqual" value="0.09613453694610269"/>
+                                    <ScoreDistribution value="0" recordCount="245.0"/>
+                                    <ScoreDistribution value="1" recordCount="3.0"/>
+                                </Node>
+                                <Node score="0" recordCount="277.0">
+                                    <SimplePredicate field="c6" operator="greaterThan" value="0.09613453694610269"/>
+                                    <ScoreDistribution value="0" recordCount="277.0"/>
+                                </Node>
+                            </Node>
+                            <Node score="0" recordCount="134.0">
+                                <SimplePredicate field="c7" operator="greaterThan" value="0.2835820366451424"/>
+                                <ScoreDistribution value="0" recordCount="82.0"/>
+                                <ScoreDistribution value="1" recordCount="52.0"/>
+                                <Node score="0" recordCount="54.0">
+                                    <SimplePredicate field="c6" operator="lessOrEqual" value="0.1221134522827127"/>
+                                    <ScoreDistribution value="0" recordCount="44.0"/>
+                                    <ScoreDistribution value="1" recordCount="10.0"/>
+                                </Node>
+                                <Node score="1" recordCount="80.0">
+                                    <SimplePredicate field="c6" operator="greaterThan" value="0.1221134522827127"/>
+                                    <ScoreDistribution value="0" recordCount="38.0"/>
+                                    <ScoreDistribution value="1" recordCount="42.0"/>
+                                </Node>
+                            </Node>
+                        </Node>
+                        <Node score="0" recordCount="342.0">
+                            <SimplePredicate field="c12" operator="greaterThan" value="3.8208279780058423E-4"/>
+                            <ScoreDistribution value="0" recordCount="206.0"/>
+                            <ScoreDistribution value="1" recordCount="136.0"/>
+                            <Node score="0" recordCount="138.0">
+                                <SimplePredicate field="c11" operator="lessOrEqual" value="0.24506029462454865"/>
+                                <ScoreDistribution value="0" recordCount="138.0"/>
+                            </Node>
+                            <Node score="1" recordCount="204.0">
+                                <SimplePredicate field="c11" operator="greaterThan" value="0.24506029462454865"/>
+                                <ScoreDistribution value="0" recordCount="68.0"/>
+                                <ScoreDistribution value="1" recordCount="136.0"/>
+                                <Node score="0" recordCount="32.0">
+                                    <SimplePredicate field="c23" operator="lessOrEqual" value="0"/>
+                                    <ScoreDistribution value="0" recordCount="17.0"/>
+                                    <ScoreDistribution value="1" recordCount="15.0"/>
+                                </Node>
+                                <Node score="1" recordCount="172.0">
+                                    <SimplePredicate field="c23" operator="greaterThan" value="0"/>
+                                    <ScoreDistribution value="0" recordCount="51.0"/>
+                                    <ScoreDistribution value="1" recordCount="121.0"/>
+                                </Node>
+                            </Node>
+                        </Node>
+                    </Node>
+                </TreeModel>
+            </Segment>
+            <Segment id="3">
+                <True/>
+                <TreeModel functionName="classification" splitCharacteristic="binarySplit">
+                    <MiningSchema>
+                        <MiningField name="c6"/>
+                        <MiningField name="c12"/>
+                        <MiningField name="c13"/>
+                        <MiningField name="c24"/>
+                    </MiningSchema>
+                    <Node score="0" recordCount="1019.0">
+                        <True/>
+                        <ScoreDistribution value="0" recordCount="838.0"/>
+                        <ScoreDistribution value="1" recordCount="181.0"/>
+                        <Node score="0" recordCount="702.0">
+                            <SimplePredicate field="c24" operator="lessOrEqual" value="0.2439895691968709"/>
+                            <ScoreDistribution value="0" recordCount="699.0"/>
+                            <ScoreDistribution value="1" recordCount="3.0"/>
+                            <Node score="0" recordCount="322.0">
+                                <SimplePredicate field="c12" operator="lessOrEqual" value="1.349695077944921E-4"/>
+                                <ScoreDistribution value="0" recordCount="319.0"/>
+                                <ScoreDistribution value="1" recordCount="3.0"/>
+                                <Node score="0" recordCount="182.0">
+                                    <SimplePredicate field="c13" operator="lessOrEqual" value="0.18031620263047704"/>
+                                    <ScoreDistribution value="0" recordCount="179.0"/>
+                                    <ScoreDistribution value="1" recordCount="3.0"/>
+                                </Node>
+                                <Node score="0" recordCount="140.0">
+                                    <SimplePredicate field="c13" operator="greaterThan" value="0.18031620263047704"/>
+                                    <ScoreDistribution value="0" recordCount="140.0"/>
+                                </Node>
+                            </Node>
+                            <Node score="0" recordCount="380.0">
+                                <SimplePredicate field="c12" operator="greaterThan" value="1.349695077944921E-4"/>
+                                <ScoreDistribution value="0" recordCount="380.0"/>
+                            </Node>
+                        </Node>
+                        <Node score="1" recordCount="317.0">
+                            <SimplePredicate field="c24" operator="greaterThan" value="0.2439895691968709"/>
+                            <ScoreDistribution value="0" recordCount="139.0"/>
+                            <ScoreDistribution value="1" recordCount="178.0"/>
+                            <Node score="0" recordCount="39.0">
+                                <SimplePredicate field="c6" operator="lessOrEqual" value="0.09613453694610269"/>
+                                <ScoreDistribution value="0" recordCount="39.0"/>
+                            </Node>
+                            <Node score="1" recordCount="278.0">
+                                <SimplePredicate field="c6" operator="greaterThan" value="0.09613453694610269"/>
+                                <ScoreDistribution value="0" recordCount="100.0"/>
+                                <ScoreDistribution value="1" recordCount="178.0"/>
+                                <Node score="0" recordCount="19.0">
+                                    <SimplePredicate field="c12" operator="lessOrEqual" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="15.0"/>
+                                    <ScoreDistribution value="1" recordCount="4.0"/>
+                                </Node>
+                                <Node score="1" recordCount="259.0">
+                                    <SimplePredicate field="c12" operator="greaterThan" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="85.0"/>
+                                    <ScoreDistribution value="1" recordCount="174.0"/>
+                                </Node>
+                            </Node>
+                        </Node>
+                    </Node>
+                </TreeModel>
+            </Segment>
+            <Segment id="4">
+                <True/>
+                <TreeModel functionName="classification" splitCharacteristic="binarySplit">
+                    <MiningSchema>
+                        <MiningField name="c4"/>
+                        <MiningField name="c6"/>
+                        <MiningField name="c12"/>
+                    </MiningSchema>
+                    <Node score="0" recordCount="1006.0">
+                        <True/>
+                        <ScoreDistribution value="0" recordCount="819.0"/>
+                        <ScoreDistribution value="1" recordCount="187.0"/>
+                        <Node score="1" recordCount="342.0">
+                            <SimplePredicate field="c4" operator="lessOrEqual" value="0.38951005906169894"/>
+                            <ScoreDistribution value="0" recordCount="161.0"/>
+                            <ScoreDistribution value="1" recordCount="181.0"/>
+                            <Node score="0" recordCount="31.0">
+                                <SimplePredicate field="c6" operator="lessOrEqual" value="0.09613453694610269"/>
+                                <ScoreDistribution value="0" recordCount="31.0"/>
+                            </Node>
+                            <Node score="1" recordCount="311.0">
+                                <SimplePredicate field="c6" operator="greaterThan" value="0.09613453694610269"/>
+                                <ScoreDistribution value="0" recordCount="130.0"/>
+                                <ScoreDistribution value="1" recordCount="181.0"/>
+                                <Node score="0" recordCount="33.0">
+                                    <SimplePredicate field="c12" operator="lessOrEqual" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="28.0"/>
+                                    <ScoreDistribution value="1" recordCount="5.0"/>
+                                </Node>
+                                <Node score="1" recordCount="278.0">
+                                    <SimplePredicate field="c12" operator="greaterThan" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="102.0"/>
+                                    <ScoreDistribution value="1" recordCount="176.0"/>
+                                </Node>
+                            </Node>
+                        </Node>
+                        <Node score="0" recordCount="664.0">
+                            <SimplePredicate field="c4" operator="greaterThan" value="0.38951005906169894"/>
+                            <ScoreDistribution value="0" recordCount="658.0"/>
+                            <ScoreDistribution value="1" recordCount="6.0"/>
+                            <Node score="0" recordCount="309.0">
+                                <SimplePredicate field="c4" operator="lessOrEqual" value="0.6635494951865268"/>
+                                <ScoreDistribution value="0" recordCount="309.0"/>
+                            </Node>
+                            <Node score="0" recordCount="355.0">
+                                <SimplePredicate field="c4" operator="greaterThan" value="0.6635494951865268"/>
+                                <ScoreDistribution value="0" recordCount="349.0"/>
+                                <ScoreDistribution value="1" recordCount="6.0"/>
+                                <Node score="0" recordCount="194.0">
+                                    <SimplePredicate field="c12" operator="lessOrEqual" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="188.0"/>
+                                    <ScoreDistribution value="1" recordCount="6.0"/>
+                                </Node>
+                                <Node score="0" recordCount="161.0">
+                                    <SimplePredicate field="c12" operator="greaterThan" value="1.349695077944921E-4"/>
+                                    <ScoreDistribution value="0" recordCount="161.0"/>
+                                </Node>
+                            </Node>
+                        </Node>
+                    </Node>
+                </TreeModel>
+            </Segment>
+        </Segmentation>
+    </MiningModel>
+</PMML>
