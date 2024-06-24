@@ -1,0 +1,38 @@
+{
+  "engineType": "Python",
+  "language": "Python",
+  "userStandalone": false,
+  "name": "file_to_dataframe",
+  "label": "Source File to DataFrame",
+  "program": "main.py",
+  "componentClass": "MCenterComponentAdapter",
+  "modelBehavior": "Auxiliary",
+  "useMLOps": true,
+  "inputInfo": [{
+    "description": "File to read contents",
+    "label": "File-Name",
+    "defaultComponent": "",
+    "type": "str",
+    "group": "data"
+  }],
+  "outputInfo": [
+    {
+      "description": "Pandas Dataframe",
+      "label": "dataframe",
+      "defaultComponent": "",
+      "type": "dataframe",
+      "group": "data"
+    }
+  ],
+  "group": "Connectors",
+  "arguments": [
+    {
+      "key": "file-path",
+      "label": "Dataset file to read",
+      "type": "str",
+      "description": "File to use for loading DataSet into DataFrame",
+      "optional": true
+    }
+  ],
+  "version": 1
+}
